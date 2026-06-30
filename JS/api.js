@@ -6,14 +6,16 @@ const API_URL = 'http://localhost:5000/api';
 
 // ----- إدارة التوكن -----
 function getToken() {
-    return localStorage.getItem('token');
+    return localStorage.getItem('token') || sessionStorage.getItem('token');
 }
 
 function setToken(token) {
     if (token) {
         localStorage.setItem('token', token);
+        sessionStorage.setItem('token', token);
     } else {
         localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
     }
 }
 
@@ -28,16 +30,11 @@ async function request(endpoint, method = 'GET', body = null, requiresAuth = fal
         if (token) {
             headers['Authorization'] = `Bearer ${token}`;
         } else {
-            // لو مفيش توكن وطلب محمي، نرجع error
             return { success: false, message: 'غير مصرح، يرجى تسجيل الدخول' };
         }
     }
 
-    const options = {
-        method,
-        headers,
-    };
-
+    const options = { method, headers };
     if (body) {
         options.body = JSON.stringify(body);
     }
@@ -48,49 +45,35 @@ async function request(endpoint, method = 'GET', body = null, requiresAuth = fal
         return data;
     } catch (error) {
         console.error('❌ خطأ في الاتصال بالسيرفر:', error);
-        return { success: false, message: 'تعذر الاتصال بالسيرفر (هل هو شغال على port 5000؟)' };
+        return { success: false, message: 'تعذر الاتصال بالسيرفر' };
     }
 }
 
-// ============================================================
-// ===== دوال المصادقة (Authentication) =====
-// ============================================================
-
-// ----- تسجيل حساب جديد -----
+// ===== دوال المصادقة =====
 async function apiRegister(userData) {
     return request('/auth/register', 'POST', userData);
 }
 
-// ----- تسجيل الدخول -----
 async function apiLogin(identifier, password) {
     const result = await request('/auth/login', 'POST', { identifier, password });
     if (result.success && result.token) {
         setToken(result.token);
         localStorage.setItem('currentUser', JSON.stringify(result.user));
+        sessionStorage.setItem('currentUser', JSON.stringify(result.user));
     }
     return result;
 }
 
-// ----- تسجيل الخروج -----
 function apiLogout() {
     setToken(null);
     localStorage.removeItem('currentUser');
+    sessionStorage.removeItem('currentUser');
     window.location.href = 'index.html';
 }
 
-// ----- جلب بيانات المستخدم الحالي (مثال لطلب محمي) -----
-async function apiGetProfile() {
-    return request('/users/profile', 'GET', null, true);
-}
-
-// ============================================================
-// ===== تصدير الدوال للاستخدام في الصفحات =====
-// ============================================================
-
-// عشان نقدر نستخدمها في الـ HTML العادي (غير module)
+// ===== تصدير الدوال =====
 window.apiRegister = apiRegister;
 window.apiLogin = apiLogin;
 window.apiLogout = apiLogout;
-window.apiGetProfile = apiGetProfile;
 
-console.log('✅ API Service loaded. Server URL:', API_URL);
+console.log('✅ API Service loaded. Server:', API_URL);
