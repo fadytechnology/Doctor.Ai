@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إدارة مراكز الأشعة - الإدارة المركزية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+<div class="admin-container">
+    <header class="admin-header">
+        <div class="logo"><i class="fas fa-crown"></i> Doctor.ai <span style="color:#1e293b;font-weight:600;font-size:16px;">| إدارة مراكز الأشعة</span></div>
+        <div class="user-area">
+            <span class="name"><i class="fas fa-user-shield"></i> المدير</span>
+            <span class="avatar">م</span>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+        </div>
+    </header>
+    <nav class="admin-sidebar">
+        <a href="index.html"><i class="fas fa-chart-pie"></i> لوحة القيادة</a>
+        <a href="users.html"><i class="fas fa-users"></i> المستخدمين</a>
+        <a href="pharmacies.html"><i class="fas fa-prescription-bottle"></i> الصيدليات</a>
+        <a href="clinics.html"><i class="fas fa-stethoscope"></i> العيادات</a>
+        <a href="labs.html"><i class="fas fa-microscope"></i> المعامل</a>
+        <a href="radiology.html" class="active"><i class="fas fa-x-ray"></i> الأشعة</a>
+        <a href="suppliers.html"><i class="fas fa-truck"></i> الموردين</a>
+        <a href="approvals.html"><i class="fas fa-clock"></i> الموافقات</a>
+        <a href="ads.html"><i class="fas fa-ad"></i> الإعلانات</a>
+        <a href="content.html"><i class="fas fa-newspaper"></i> المحتوى</a>
+        <a href="drugs-db.html"><i class="fas fa-capsules"></i> الأدوية</a>
+        <a href="subscriptions.html"><i class="fas fa-crown"></i> الباقات</a>
+        <a href="commission.html"><i class="fas fa-money-bill-wave"></i> العمولات</a>
+        <a href="loyalty.html"><i class="fas fa-gem"></i> الولاء</a>
+        <a href="notifications.html"><i class="fas fa-bell"></i> الإشعارات</a>
+        <a href="reports.html"><i class="fas fa-chart-bar"></i> التقارير</a>
+        <a href="logs.html"><i class="fas fa-history"></i> السجل</a>
+        <a href="settings.html"><i class="fas fa-cog"></i> الإعدادات</a>
+        <a href="templates.html"><i class="fas fa-file-alt"></i> القوالب</a>
+        <a href="reviews.html"><i class="fas fa-star"></i> التقييمات</a>
+        <a href="track-meds.html"><i class="fas fa-search"></i> تتبع الأدوية</a>
+        <a href="complaints.html"><i class="fas fa-exclamation-circle"></i> الشكاوى</a>
+    </nav>
+    <div class="filter-bar">
+        <input type="text" id="searchInput" placeholder="🔍 بحث عن مركز..." oninput="renderRads()" />
+        <select id="statusFilter" onchange="renderRads()">
+            <option value="all">كل الحالات</option>
+            <option value="approved">موافق</option>
+            <option value="pending">قيد المراجعة</option>
+            <option value="rejected">مرفوض</option>
+        </select>
+        <button class="btn-search" onclick="renderRads()"><i class="fas fa-search"></i> بحث</button>
+    </div>
+    <div class="table-responsive">
+        <table class="table"><thead><tr><th>#</th><th>اسم المركز</th><th>المسؤول</th><th>الحالة</th><th>التسجيل</th><th>الإجراءات</th></tr></thead><tbody id="radsBody"></tbody></table>
+    </div>
+</div>
+<script src="js/admin.js"></script>
+<script>
+let rads = getMockRadiology();
+function renderRads() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const s = document.getElementById('statusFilter').value;
+    const filtered = rads.filter(l => (l.name.includes(q) || l.owner.includes(q)) && (s === 'all' || l.status === s));
+    const tbody = document.getElementById('radsBody');
+    tbody.innerHTML = '';
+    filtered.forEach((l, i) => {
+        const smap = { approved:'موافق', pending:'قيد المراجعة', rejected:'مرفوض' };
+        tbody.innerHTML += `<tr><td>${i+1}</td><td>${l.name}</td><td>${l.owner}</td><td><span class="status-badge ${l.status}">${smap[l.status]||l.status}</span></td><td>${l.createdAt}</td><td>${l.status==='pending'?`<button class="btn-sm btn-approve" onclick="approveRad('${l.id}')"><i class="fas fa-check"></i> موافقة</button>`:''} ${l.status==='pending'?`<button class="btn-sm btn-reject" onclick="rejectRad('${l.id}')"><i class="fas fa-times"></i> رفض</button>`:''}</td></tr>`;
+    });
+}
+function approveRad(id) { const l = rads.find(x=>x.id===id); if(!l)return; l.status='approved'; localStorage.setItem('adminRadiology',JSON.stringify(rads)); renderRads(); showToast('✅ تم الموافقة'); }
+function rejectRad(id) { if(!confirm('تأكيد الرفض؟'))return; const l = rads.find(x=>x.id===id); if(!l)return; l.status='rejected'; localStorage.setItem('adminRadiology',JSON.stringify(rads)); renderRads(); showToast('⚠️ تم الرفض','warning'); }
+function logout() { if(confirm('تأكيد الخروج؟')){ localStorage.clear(); sessionStorage.clear(); window.location.href='../../auth/login.html'; } }
+document.addEventListener('DOMContentLoaded', renderRads);
+</script>
+</body>
+</html>

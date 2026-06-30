@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تواصل معنا - Doctor.ai</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <!-- ملفات الـ CSS -->
+    <link rel="stylesheet" href="CSS/style.css" />
+    <link rel="stylesheet" href="CSS/landing.css" />
+    <link rel="manifest" href="manifest.json" />
+    <style>
+        /* تنسيقات خاصة بصفحة تواصل معنا */
+        .contact-hero {
+            padding: 140px 0 60px;
+            text-align: center;
+            background: linear-gradient(135deg, #f8fafc 0%, #ecfdf5 100%);
+        }
+        .contact-hero h1 {
+            font-size: 40px;
+            font-weight: 800;
+            color: #1e293b;
+        }
+        .contact-hero h1 .highlight {
+            color: #0d9488;
+        }
+        .contact-hero p {
+            font-size: 18px;
+            color: #475569;
+            max-width: 600px;
+            margin: 10px auto 0;
+        }
+        .contact-content {
+            padding: 60px 0;
+            background: #fff;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 50px;
+        }
+        .contact-info h3 {
+            font-size: 24px;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+        .contact-info p {
+            color: #475569;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .contact-item i {
+            width: 40px;
+            height: 40px;
+            background: #d1fae5;
+            color: #0d9488;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .contact-item .info {
+            display: flex;
+            flex-direction: column;
+        }
+        .contact-item .info .label {
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .contact-item .info .value {
+            font-size: 16px;
+            color: #1e293b;
+            font-weight: 500;
+        }
+        .contact-form {
+            background: #f8fafc;
+            padding: 30px;
+            border-radius: 20px;
+        }
+        .contact-form h3 {
+            font-size: 22px;
+            color: #1e293b;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        .form-group label i {
+            color: #0d9488;
+            margin-left: 6px;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: 0.2s;
+            background: #fff;
+            font-family: inherit;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0d9488;
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+        }
+        .form-group textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: #0d9488;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-submit:hover {
+            background: #0f766e;
+        }
+        .map-section {
+            padding: 0 0 60px;
+            background: #fff;
+        }
+        .map-container {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            height: 300px;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 18px;
+        }
+        .map-container i {
+            font-size: 40px;
+            color: #0d9488;
+            margin-left: 15px;
+        }
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .contact-hero h1 {
+                font-size: 28px;
+            }
+            .contact-info {
+                order: 2;
+            }
+            .contact-form {
+                order: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== الهيدر ===== -->
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="Doctor.ai" class="logo-img" />
+                <span class="logo-text">Doctor.<span class="highlight">ai</span></span>
+            </div>
+            <nav class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="about.html">من نحن</a></li>
+                    <li><a href="contact.html" class="active">تواصل معنا</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="btn-login" onclick="window.location.href='auth/login.html'">
+                    <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                </button>
+                <button class="btn-signup" onclick="window.location.href='auth/signup.html'">
+                    <i class="fas fa-user-plus"></i> إنشاء حساب
+                </button>
+                <button class="menu-toggle" id="menuToggle" aria-label="القائمة">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== هيرو تواصل معنا ===== -->
+    <section class="contact-hero">
+        <div class="container">
+            <h1>تواصل <span class="highlight">معنا</span></h1>
+            <p>نحن هنا لخدمتك، تواصل معنا لأي استفسار أو اقتراح</p>
+        </div>
+    </section>
+
+    <!-- ===== المحتوى ===== -->
+    <section class="contact-content">
+        <div class="container">
+            <div class="contact-grid">
+
+                <!-- معلومات التواصل -->
+                <div class="contact-info">
+                    <h3>معلومات الاتصال</h3>
+                    <p>فريق Doctor.ai في انتظارك، تواصل معنا عبر القنوات التالية:</p>
+
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="info">
+                            <span class="label">العنوان</span>
+                            <span class="value">مصر، القاهرة، مدينة نصر</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div class="info">
+                            <span class="label">رقم الهاتف</span>
+                            <span class="value">+20 100 000 0000</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div class="info">
+                            <span class="label">البريد الإلكتروني</span>
+                            <span class="value">info@doctor.ai</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div class="info">
+                            <span class="label">ساعات العمل</span>
+                            <span class="value">من الأحد إلى الخميس، 9:00 ص - 6:00 م</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- نموذج التواصل -->
+                <div class="contact-form">
+                    <h3><i class="fas fa-paper-plane" style="color:#0d9488;margin-left:8px;"></i> أرسل رسالتك</h3>
+                    <form id="contactForm" onsubmit="handleContactForm(event)">
+                        <div class="form-group">
+                            <label for="contactName"><i class="fas fa-user"></i> الاسم الكامل</label>
+                            <input type="text" id="contactName" placeholder="أدخل اسمك" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail"><i class="fas fa-envelope"></i> البريد الإلكتروني</label>
+                            <input type="email" id="contactEmail" placeholder="أدخل بريدك الإلكتروني" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="contactSubject"><i class="fas fa-tag"></i> الموضوع</label>
+                            <input type="text" id="contactSubject" placeholder="موضوع الرسالة" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMessage"><i class="fas fa-comment"></i> الرسالة</label>
+                            <textarea id="contactMessage" placeholder="اكتب رسالتك هنا..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-paper-plane"></i> إرسال الرسالة
+                        </button>
+                    </form>
+                    <div id="contactSuccess" style="display:none;margin-top:15px;padding:12px;background:#d1fae5;color:#065f46;border-radius:10px;text-align:center;">
+                        ✅ تم إرسال رسالتك بنجاح، سنتواصل معك قريباً.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== الخريطة (Placeholder) ===== -->
+    <section class="map-section">
+        <div class="container">
+            <div class="map-container">
+                <i class="fas fa-map"></i>
+                <span>📍 خريطة موقعنا (سيتم تفعيلها قريباً)</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== الفوتر ===== -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <img src="assets/images/logo.png" alt="Doctor.ai" class="logo-img" />
+                        <span class="logo-text">Doctor.<span class="highlight">ai</span></span>
+                    </div>
+                    <p>منصتك الصحية المتكاملة. نربط بين جميع أطراف المنظومة الصحية في شبكة واحدة.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li><a href="about.html">من نحن</a></li>
+                        <li><a href="contact.html">تواصل معنا</a></li>
+                        <li><a href="auth/login.html">تسجيل الدخول</a></li>
+                        <li><a href="auth/signup.html">إنشاء حساب</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>الفئات</h4>
+                    <ul>
+                        <li><a href="index.html#role-patient">مريض</a></li>
+                        <li><a href="index.html#role-pharmacy">صيدلي</a></li>
+                        <li><a href="index.html#role-clinic">عيادة</a></li>
+                        <li><a href="index.html#role-lab">معمل</a></li>
+                        <li><a href="index.html#role-radiology">أشعة</a></li>
+                        <li><a href="index.html#role-supplier">مورد</a></li>
+                        <li><a href="index.html#role-admin">إدارة</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>تواصل معنا</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> info@doctor.ai</li>
+                        <li><i class="fas fa-phone"></i> +20 100 000 0000</li>
+                        <li><i class="fas fa-map-marker-alt"></i> مصر، القاهرة</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Doctor.ai - جميع الحقوق محفوظة</p>
+                <div class="footer-bottom-links">
+                    <a href="auth/terms.html">الشروط والأحكام</a>
+                    <a href="#">سياسة الخصوصية</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== جافا سكريبت ===== -->
+    <script src="JS/utils.js"></script>
+    <script src="JS/landing.js"></script>
+    <script src="JS/script.js"></script>
+    <script>
+        // معالج نموذج التواصل
+        function handleContactForm(e) {
+            e.preventDefault();
+            const form = document.getElementById('contactForm');
+            const successMsg = document.getElementById('contactSuccess');
+
+            // محاكاة الإرسال
+            successMsg.style.display = 'block';
+            form.reset();
+
+            // إخفاء الرسالة بعد 5 ثواني
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

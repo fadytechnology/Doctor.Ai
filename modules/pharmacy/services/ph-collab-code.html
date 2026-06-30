@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>كود التعاون - الصيدلي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; padding-bottom:80px; min-height:100vh; }
+        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
+        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
+        .code-box { background:linear-gradient(135deg,#0d9488,#0f766e); border-radius:16px; padding:24px; color:#fff; text-align:center; }
+        .code-box .code { font-size:36px; font-weight:800; letter-spacing:3px; background:rgba(255,255,255,0.15); padding:12px; border-radius:12px; display:inline-block; margin:8px 0; }
+        .code-box button { background:rgba(255,255,255,0.2); border:none; padding:8px 24px; border-radius:20px; color:#fff; font-size:14px; cursor:pointer; }
+        .info-text { color:#64748b; font-size:13px; text-align:center; margin-top:16px; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
+        <div class="title">🔑 كود التعاون</div>
+    </div>
+    <div class="code-box">
+        <div style="font-size:14px;opacity:0.8;">كود التعاون الخاص بك</div>
+        <div class="code" id="collabCode">PH-2024-001</div>
+        <button onclick="copyCode()"><i class="fas fa-copy"></i> نسخ الكود</button>
+    </div>
+    <div class="info-text">شارك هذا الكود مع مرضاك لربطهم بصيدليتك</div>
+</div>
+<script>
+let code = localStorage.getItem('pharmacyCode') || 'PH-' + Math.floor(1000+Math.random()*9000);
+document.getElementById('collabCode').textContent = code;
+function copyCode() {
+    if(navigator.clipboard) { navigator.clipboard.writeText(code).then(()=>alert('✅ تم النسخ')); }
+    else { alert('🔑 الكود: '+code); }
+}
+</script>
+</body>
+</html>

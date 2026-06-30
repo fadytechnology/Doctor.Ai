@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>تسجيل الدخول - Doctor.ai</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../CSS/style.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .auth-container { max-width: 420px; width: 100%; background: #fff; border-radius: 28px; padding: 32px 24px; box-shadow: 0 8px 40px rgba(0,0,0,0.06); }
+        .auth-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .auth-header .logo { font-size: 24px; font-weight: 800; color: #0d9488; }
+        .auth-header .logo i { color: #fbbf24; }
+        .auth-header .back { color: #94a3b8; text-decoration: none; font-size: 14px; }
+        .auth-header .back:hover { color: #0d9488; }
+        .auth-title { text-align: center; margin-bottom: 24px; }
+        .auth-title h2 { font-size: 24px; color: #1e293b; font-weight: 700; }
+        .auth-title p { color: #64748b; font-size: 14px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-weight: 600; color: #1e293b; font-size: 13px; margin-bottom: 4px; }
+        .form-group label i { color: #0d9488; margin-left: 6px; }
+        .form-group input { width: 100%; padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 15px; background: #f9fafb; transition: 0.2s; }
+        .form-group input:focus { outline: none; border-color: #0d9488; background: #fff; box-shadow: 0 0 0 3px rgba(13,148,136,0.08); }
+        .form-group .password-wrapper { position: relative; }
+        .form-group .password-wrapper input { padding-left: 48px; }
+        .form-group .toggle-password { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 16px; padding: 4px; }
+        .form-group .toggle-password:hover { color: #0d9488; }
+        .auth-options { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 14px; }
+        .auth-options .remember-me { display: flex; align-items: center; gap: 6px; color: #475569; cursor: pointer; }
+        .auth-options .remember-me input { accent-color: #0d9488; width: 16px; height: 16px; }
+        .auth-options .forgot-password { color: #0d9488; text-decoration: none; }
+        .auth-options .forgot-password:hover { text-decoration: underline; }
+        .btn-primary-full { width: 100%; padding: 14px; background: #0d9488; color: #fff; border: none; border-radius: 14px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .btn-primary-full:hover { background: #0f766e; }
+        .btn-primary-full:active { transform: scale(0.98); }
+        .auth-footer { text-align: center; margin-top: 20px; font-size: 14px; color: #64748b; }
+        .auth-footer a { color: #0d9488; text-decoration: none; font-weight: 600; }
+        .auth-footer a:hover { text-decoration: underline; }
+        .auth-msg { padding: 12px 16px; border-radius: 12px; font-size: 14px; margin-bottom: 16px; text-align: center; display: none; }
+        .auth-msg.error { background: #fef2f2; color: #dc2626; border-right: 4px solid #dc2626; display: block; }
+        .auth-msg.success { background: #d1fae5; color: #065f46; border-right: 4px solid #065f46; display: block; }
+        .divider { display: flex; align-items: center; margin: 20px 0; color: #94a3b8; font-size: 14px; }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
+        .divider span { padding: 0 15px; }
+        .btn-google { width: 100%; padding: 14px; background: #fff; color: #1e293b; border: 2px solid #e5e7eb; border-radius: 14px; font-size: 16px; font-weight: 500; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-google:hover { background: #f8fafc; border-color: #0d9488; }
+        @media (max-width: 480px) { .auth-container { padding: 24px 16px; } }
+    </style>
+</head>
+<body>
+
+<div class="auth-container">
+    <div class="auth-header">
+        <div class="logo"><i class="fas fa-heartbeat"></i> Doctor.<span style="color:#fbbf24;">ai</span></div>
+        <a href="../index.html" class="back"><i class="fas fa-arrow-right"></i> الرئيسية</a>
+    </div>
+    <div class="auth-title">
+        <h2>مرحباً بعودتك</h2>
+        <p>سجل الدخول لمتابعة رحلتك الصحية</p>
+    </div>
+
+    <div id="errorMsg" class="auth-msg error"></div>
+    <div id="successMsg" class="auth-msg success"></div>
+
+    <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+            <label><i class="fas fa-user"></i> البريد الإلكتروني أو رقم الهاتف</label>
+            <input type="text" id="loginField" placeholder="أدخل البريد أو رقم الهاتف" required />
+        </div>
+        <div class="form-group">
+            <label><i class="fas fa-lock"></i> كلمة السر</label>
+            <div class="password-wrapper">
+                <input type="password" id="password" placeholder="أدخل كلمة السر" required />
+                <button type="button" class="toggle-password" onclick="togglePassword('password', this)">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+        </div>
+        <div class="auth-options">
+            <label class="remember-me">
+                <input type="checkbox" id="rememberMe" checked />
+                تذكرني
+            </label>
+            <a href="forgot-password.html" class="forgot-password">نسيت كلمة السر؟</a>
+        </div>
+        <button type="submit" class="btn-primary-full"><i class="fas fa-sign-in-alt"></i> تسجيل الدخول</button>
+    </form>
+
+    <div class="divider"><span>أو</span></div>
+    <button class="btn-google" onclick="alert('🔐 سيتم تفعيل الدخول بجوجل قريباً')">
+        <i class="fab fa-google"></i> الدخول بحساب Google
+    </button>
+    <p class="auth-footer">ليس لديك حساب؟ <a href="signup.html">إنشاء حساب جديد</a></p>
+</div>
+
+<script src="../JS/api.js"></script>
+<script>
+function togglePassword(inputId, button) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const icon = button.querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+    } else {
+        input.type = 'password';
+        icon.className = 'fas fa-eye';
+    }
+}
+
+async function handleLogin(e) {
+    e.preventDefault();
+
+    const identifier = document.getElementById('loginField').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const rememberMe = document.getElementById('rememberMe').checked;
+
+    const errorMsg = document.getElementById('errorMsg');
+    const successMsg = document.getElementById('successMsg');
+
+    errorMsg.style.display = 'none';
+    successMsg.style.display = 'none';
+
+    if (!identifier || !password) {
+        errorMsg.textContent = '❌ يرجى ملء جميع الحقول';
+        errorMsg.style.display = 'block';
+        return;
+    }
+
+    // ✅ استخدام API حقيقي
+    const result = await apiLogin(identifier, password);
+
+    if (result.success) {
+        successMsg.textContent = '✅ ' + result.message;
+        successMsg.style.display = 'block';
+
+        // لو اختار "تذكرني" نخزن في localStorage، ولو لأ نخزن sessionStorage
+        // apiLogin بالفعل حفظ في localStorage، لكن هنضبطها حسب الاختيار
+        if (!rememberMe) {
+            // لو مش عايز يتذكر، نخزن في sessionStorage ونسحب من localStorage
+            const user = localStorage.getItem('currentUser');
+            const token = localStorage.getItem('token');
+            if (user) sessionStorage.setItem('currentUser', user);
+            if (token) sessionStorage.setItem('token', token);
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('token');
+        } else {
+            // لو عايز يتذكر، ننقل من sessionStorage لـ localStorage (لو كان موجود)
+            const sessionUser = sessionStorage.getItem('currentUser');
+            const sessionToken = sessionStorage.getItem('token');
+            if (sessionUser) localStorage.setItem('currentUser', sessionUser);
+            if (sessionToken) localStorage.setItem('token', sessionToken);
+        }
+
+        setTimeout(() => {
+            const user = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser'));
+            if (user && user.role) {
+                redirectToRoleDashboard(user.role);
+            } else {
+                window.location.href = '../index.html';
+            }
+        }, 1200);
+    } else {
+        errorMsg.textContent = '❌ ' + (result.message || 'بيانات الدخول غير صحيحة');
+        errorMsg.style.display = 'block';
+    }
+}
+
+// تعريف الدالة في النطاق العام عشان المتصفح يلاقيها
+window.handleLogin = handleLogin;
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('✅ Login page loaded with API integration');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>من نحن - Doctor.ai</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <!-- ملفات الـ CSS -->
+    <link rel="stylesheet" href="CSS/style.css" />
+    <link rel="stylesheet" href="CSS/landing.css" />
+    <link rel="manifest" href="manifest.json" />
+    <style>
+        /* تنسيقات إضافية خاصة بصفحة من نحن */
+        .about-hero {
+            padding: 140px 0 60px;
+            text-align: center;
+            background: linear-gradient(135deg, #f8fafc 0%, #ecfdf5 100%);
+        }
+        .about-hero h1 {
+            font-size: 40px;
+            font-weight: 800;
+            color: #1e293b;
+        }
+        .about-hero h1 .highlight {
+            color: #0d9488;
+        }
+        .about-hero p {
+            font-size: 18px;
+            color: #475569;
+            max-width: 700px;
+            margin: 10px auto 0;
+        }
+        .about-content {
+            padding: 60px 0;
+            background: #fff;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        .about-text h2 {
+            font-size: 28px;
+            color: #1e293b;
+            margin-bottom: 15px;
+        }
+        .about-text h2 i {
+            color: #0d9488;
+            margin-left: 10px;
+        }
+        .about-text p {
+            color: #475569;
+            line-height: 1.8;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        .about-text ul {
+            list-style: none;
+            padding: 0;
+        }
+        .about-text ul li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            color: #1e293b;
+            font-weight: 500;
+        }
+        .about-text ul li i {
+            color: #0d9488;
+            font-size: 18px;
+        }
+        .about-image {
+            display: flex;
+            justify-content: center;
+        }
+        .about-image img {
+            max-width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+        .values-section {
+            padding: 60px 0;
+            background: #f8fafc;
+        }
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        .value-card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            border-top: 4px solid #0d9488;
+        }
+        .value-card i {
+            font-size: 36px;
+            color: #0d9488;
+            margin-bottom: 12px;
+        }
+        .value-card h4 {
+            font-size: 18px;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+        .value-card p {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+        @media (max-width: 768px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+            .about-hero h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== الهيدر (نفس الهيدر بتاع الهبوط) ===== -->
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="Doctor.ai" class="logo-img" />
+                <span class="logo-text">Doctor.<span class="highlight">ai</span></span>
+            </div>
+            <nav class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="about.html" class="active">من نحن</a></li>
+                    <li><a href="contact.html">تواصل معنا</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="btn-login" onclick="window.location.href='auth/login.html'">
+                    <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                </button>
+                <button class="btn-signup" onclick="window.location.href='auth/signup.html'">
+                    <i class="fas fa-user-plus"></i> إنشاء حساب
+                </button>
+                <button class="menu-toggle" id="menuToggle" aria-label="القائمة">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== هيرو من نحن ===== -->
+    <section class="about-hero">
+        <div class="container">
+            <h1>من نحن <span class="highlight">Doctor.ai</span></h1>
+            <p>نؤمن بأن الصحة حق للجميع، وأن التكنولوجيا هي المفتاح لتوصيل الرعاية الصحية بسهولة وأمان للجميع.</p>
+        </div>
+    </section>
+
+    <!-- ===== المحتوى الرئيسي ===== -->
+    <section class="about-content">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-text">
+                    <h2><i class="fas fa-quote-right"></i> قصتنا</h2>
+                    <p>
+                        <strong>Doctor.ai</strong> هي منصة صحية رقمية متكاملة، انطلقت بهدف ربط جميع أطراف المنظومة الصحية
+                        (المريض، الصيدلي، الطبيب، المعمل، مركز الأشعة، المورد، والإدارة) في شبكة واحدة مترابطة.
+                    </p>
+                    <p>
+                        نحن نؤمن أن الرعاية الصحية الجيدة تبدأ بالتواصل الجيد. لهذا صممنا منصتنا لتكون جسراً يربط بين
+                        مقدمي الخدمة والمستفيدين، مع توفير أدوات ذكية تسهل الحياة اليومية للجميع.
+                    </p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> أكثر من 7 فئات صحية متكاملة</li>
+                        <li><i class="fas fa-check-circle"></i> أكثر من 22 خدمة ذاتية وخدمات ربط</li>
+                        <li><i class="fas fa-check-circle"></i> تواصل آمن ومشفر بين جميع الأطراف</li>
+                        <li><i class="fas fa-check-circle"></i> منصة متاحة للجميع (PWA) تعمل على الموبايل والويب</li>
+                    </ul>
+                </div>
+                <div class="about-image">
+                    <img src="assets/images/about-illustration.svg" alt="About Doctor.ai" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== القيم ===== -->
+    <section class="values-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>قيمنا الأساسية</h2>
+                <p>التي نبني عليها منصتنا</p>
+            </div>
+            <div class="values-grid">
+                <div class="value-card">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h4>الثقة والأمان</h4>
+                    <p>جميع بياناتك محمية بأعلى معايير الأمان والخصوصية.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-link"></i>
+                    <h4>الترابط</h4>
+                    <p>نربط جميع الأطراف في منظومة واحدة لتقديم خدمة متكاملة.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-bolt"></i>
+                    <h4>السرعة والكفاءة</h4>
+                    <p>تقديم الخدمات الصحية بسرعة ودقة عالية لتوفير الوقت والجهد.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-gem"></i>
+                    <h4>الجودة والابتكار</h4>
+                    <p>نسعى دائماً لتقديم أفضل الحلول التقنية في مجال الرعاية الصحية.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== الفوتر (نفس الفوتر بتاع الهبوط) ===== -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <img src="assets/images/logo.png" alt="Doctor.ai" class="logo-img" />
+                        <span class="logo-text">Doctor.<span class="highlight">ai</span></span>
+                    </div>
+                    <p>منصتك الصحية المتكاملة. نربط بين جميع أطراف المنظومة الصحية في شبكة واحدة.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li><a href="about.html">من نحن</a></li>
+                        <li><a href="contact.html">تواصل معنا</a></li>
+                        <li><a href="auth/login.html">تسجيل الدخول</a></li>
+                        <li><a href="auth/signup.html">إنشاء حساب</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>الفئات</h4>
+                    <ul>
+                        <li><a href="index.html#role-patient">مريض</a></li>
+                        <li><a href="index.html#role-pharmacy">صيدلي</a></li>
+                        <li><a href="index.html#role-clinic">عيادة</a></li>
+                        <li><a href="index.html#role-lab">معمل</a></li>
+                        <li><a href="index.html#role-radiology">أشعة</a></li>
+                        <li><a href="index.html#role-supplier">مورد</a></li>
+                        <li><a href="index.html#role-admin">إدارة</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>تواصل معنا</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> info@doctor.ai</li>
+                        <li><i class="fas fa-phone"></i> +20 100 000 0000</li>
+                        <li><i class="fas fa-map-marker-alt"></i> مصر، القاهرة</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Doctor.ai - جميع الحقوق محفوظة</p>
+                <div class="footer-bottom-links">
+                    <a href="auth/terms.html">الشروط والأحكام</a>
+                    <a href="#">سياسة الخصوصية</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== جافا سكريبت ===== -->
+    <script src="JS/utils.js"></script>
+    <script src="JS/landing.js"></script>
+    <script src="JS/script.js"></script>
+</body>
+</html>

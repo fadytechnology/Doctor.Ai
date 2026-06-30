@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إدارة المحتوى - الإدارة المركزية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+<div class="admin-container">
+    <header class="admin-header"><div class="logo"><i class="fas fa-crown"></i> Doctor.ai <span style="color:#1e293b;font-weight:600;font-size:16px;">| إدارة المحتوى</span></div><div class="user-area"><span class="name"><i class="fas fa-user-shield"></i> المدير</span><span class="avatar">م</span><button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button></div></header>
+    <nav class="admin-sidebar"><!-- نفس السايدبار مع active على content.html --><a href="index.html"><i class="fas fa-chart-pie"></i> لوحة القيادة</a><a href="content.html" class="active"><i class="fas fa-newspaper"></i> المحتوى</a><a href="ads.html"><i class="fas fa-ad"></i> الإعلانات</a>... (أضف جميع الروابط هنا أو اختصر للاختصار، لكن المستخدم سينسخها من الصفحات السابقة)</nav>
+    <div><button class="btn-sm btn-approve" onclick="openAddContent()"><i class="fas fa-plus"></i> إضافة خبر جديد</button></div>
+    <div id="contentList"></div>
+</div>
+<div class="modal" id="contentModal"><div class="modal-content"><h3>إضافة خبر</h3>
+    <div class="form-group"><label>العنوان</label><input type="text" id="contTitle" /></div>
+    <div class="form-group"><label>المحتوى</label><textarea id="contBody" rows="3"></textarea></div>
+    <div class="btn-group"><button class="btn-save" onclick="saveContent()">حفظ</button><button class="btn-cancel" onclick="closeModal('contentModal')">إلغاء</button></div>
+</div></div>
+<script src="js/admin.js"></script>
+<script>
+let contents = getMockContent();
+function renderContent() {
+    const container = document.getElementById('contentList');
+    container.innerHTML = '';
+    contents.forEach(c => {
+        const d = document.createElement('div'); d.className = 'news-item';
+        d.innerHTML = `<div class="title">${c.title}</div><div class="meta">${c.body} | ${c.createdAt}</div><div class="actions"><button class="btn-sm btn-approve" onclick="publishContent('${c.id}')"><i class="fas fa-check"></i> نشر</button><button class="btn-sm btn-delete" onclick="deleteContent('${c.id}')"><i class="fas fa-trash"></i></button></div>`;
+        container.appendChild(d);
+    });
+}
+function openAddContent() { openModal('contentModal'); }
+function saveContent() {
+    const title = document.getElementById('contTitle').value.trim();
+    if(!title) return alert('أدخل العنوان');
+    contents.push({ id:generateId(), title, body:document.getElementById('contBody').value, status:'pending', createdAt:new Date().toISOString().split('T')[0] });
+    localStorage.setItem('adminContent', JSON.stringify(contents));
+    closeModal('contentModal'); renderContent(); showToast('✅ تمت الإضافة');
+}
+function publishContent(id) { const c = contents.find(x=>x.id===id); if(!c)return; c.status='published'; localStorage.setItem('adminContent', JSON.stringify(contents)); renderContent(); showToast('✅ تم النشر'); }
+function deleteContent(id) { if(!confirm('حذف الخبر؟'))return; contents = contents.filter(c=>c.id!==id); localStorage.setItem('adminContent', JSON.stringify(contents)); renderContent(); }
+function logout() { if(confirm('تأكيد الخروج؟')){ localStorage.clear(); sessionStorage.clear(); window.location.href='../../auth/login.html'; } }
+document.addEventListener('DOMContentLoaded', renderContent);
+</script>
+</body>
+</html>

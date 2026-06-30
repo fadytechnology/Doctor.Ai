@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>كاش باك الولاء - الصيدلي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; padding-bottom:80px; min-height:100vh; }
+        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
+        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
+        .stat-box { background:#ecfdf5; padding:16px; border-radius:16px; border-right:4px solid #0d9488; margin-bottom:16px; }
+        .stat-box .num { font-size:28px; font-weight:800; color:#0d9488; }
+        .cash-item { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f1f5f9; font-size:14px; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
+        <div class="title">💰 كاش باك الولاء</div>
+    </div>
+    <div class="stat-box"><div class="num">320 ج.م</div><div style="color:#065f46;">إجمالي الكاش باك الممنوح</div></div>
+    <div id="cashList">
+        <div class="cash-item"><span>محمد علي</span><span style="color:#0d9488;">+15 ج.م</span></div>
+        <div class="cash-item"><span>سارة حسن</span><span style="color:#0d9488;">+8 ج.م</span></div>
+    </div>
+</div>
+</body>
+</html>

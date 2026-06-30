@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>المحفظة الذكية - Doctor.ai</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; }
+        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
+        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
+        .balance-box { background:linear-gradient(135deg,#0d9488,#0f766e); border-radius:16px; padding:20px; color:#fff; text-align:center; margin-bottom:16px; }
+        .balance-box .amount { font-size:36px; font-weight:800; }
+        .balance-box .label { font-size:14px; opacity:0.8; }
+        .balance-box .sub { font-size:13px; opacity:0.7; margin-top:4px; }
+        .stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+        .stat-card { background:#f8fafc; padding:12px; border-radius:12px; text-align:center; }
+        .stat-card .num { font-size:22px; font-weight:700; color:#0d9488; }
+        .stat-card .lbl { font-size:12px; color:#64748b; }
+        .transaction-item { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f1f5f9; font-size:13px; }
+        .transaction-item .desc { color:#1e293b; }
+        .transaction-item .amount { font-weight:600; }
+        .transaction-item .amount.plus { color:#065f46; }
+        .transaction-item .amount.minus { color:#dc2626; }
+        .btn-redeem { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; margin-top:8px; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
+        <div class="title">💳 المحفظة الذكية</div>
+    </div>
+    <div class="balance-box">
+        <div class="label">الرصيد المتاح</div>
+        <div class="amount" id="walletBalance">0 ج.م</div>
+        <div class="sub">🔄 1 نقطة = 0.10 ج.م خصم</div>
+    </div>
+    <div class="stat-grid">
+        <div class="stat-card"><div class="num" id="pointsCount">0</div><div class="lbl">نقاط الولاء</div></div>
+        <div class="stat-card"><div class="num" id="cashbackCount">0 ج.م</div><div class="lbl">كاش باك</div></div>
+    </div>
+    <button class="btn-redeem" onclick="redeemPoints()"><i class="fas fa-gift"></i> استبدال النقاط بخصم</button>
+    <div style="margin-top:16px;">
+        <h4 style="color:#1e293b;font-size:14px;border-bottom:1px solid #e5e7eb;padding-bottom:8px;">📜 سجل المعاملات</h4>
+        <div id="transactionsList"></div>
+    </div>
+</div>
+<script>
+function getWallet() {
+    return JSON.parse(localStorage.getItem('myWallet') || '{"points":120,"cashback":15,"balance":30,"transactions":[]}');
+}
+function saveWallet(data) {
+    localStorage.setItem('myWallet', JSON.stringify(data));
+}
+function renderWallet() {
+    const w = getWallet();
+    document.getElementById('walletBalance').textContent = w.balance + ' ج.م';
+    document.getElementById('pointsCount').textContent = w.points || 0;
+    document.getElementById('cashbackCount').textContent = (w.cashback || 0) + ' ج.م';
+    const container = document.getElementById('transactionsList');
+    if (w.transactions.length === 0) {
+        container.innerHTML = '<p style="color:#94a3b8;text-align:center;font-size:13px;">لا توجد معاملات</p>';
+        return;
+    }
+    container.innerHTML = '';
+    w.transactions.slice().reverse().forEach(t => {
+        const div = document.createElement('div');
+        div.className = 'transaction-item';
+        const sign = t.type === 'earned' ? 'plus' : 'minus';
+        const signChar = t.type === 'earned' ? '+' : '-';
+        div.innerHTML = `<span class="desc">${t.desc}</span><span class="amount ${sign}">${signChar}${t.value} ${t.unit || ''}</span>`;
+        container.appendChild(div);
+    });
+}
+function redeemPoints() {
+    const w = getWallet();
+    if (w.points < 100) { alert('❌ تحتاج 100 نقطة على الأقل للاستبدال (لديك ' + w.points + ' نقطة)'); return; }
+    const discount = Math.floor(w.points / 100) * 10;
+    const usedPoints = Math.floor(w.points / 100) * 100;
+    w.points -= usedPoints;
+    w.balance += discount;
+    w.transactions.push({ desc: 'استبدال نقاط بخصم', value: discount, unit: 'ج.م', type: 'earned' });
+    saveWallet(w);
+    renderWallet();
+    alert(`✅ تم استبدال ${usedPoints} نقطة مقابل ${discount} ج.م خصم`);
+}
+document.addEventListener('DOMContentLoaded', renderWallet);
+</script>
+</body>
+</html>

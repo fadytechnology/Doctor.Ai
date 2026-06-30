@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>لوحة التحكم - الصيدلي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; padding-bottom:80px; min-height:100vh; }
+        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
+        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
+        .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+        .stat-card { background:#f8fafc; padding:16px; border-radius:16px; text-align:center; }
+        .stat-card .num { font-size:28px; font-weight:800; color:#0d9488; }
+        .stat-card .label { font-size:12px; color:#64748b; }
+        .stat-card .sub { font-size:11px; color:#94a3b8; margin-top:4px; }
+        .quick-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+        .quick-action { background:#ecfdf5; padding:16px; border-radius:16px; text-align:center; text-decoration:none; color:#0d9488; border:1px solid #d1fae5; }
+        .quick-action:active { transform:scale(0.96); }
+        .quick-action i { font-size:24px; display:block; margin-bottom:4px; }
+        .quick-action span { font-size:13px; font-weight:600; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
+        <div class="title">📊 لوحة التحكم</div>
+    </div>
+    <div class="stats-grid">
+        <div class="stat-card"><div class="num" id="totalOrders">0</div><div class="label">إجمالي الطلبات</div><div class="sub">اليوم</div></div>
+        <div class="stat-card"><div class="num" id="pendingOrders">0</div><div class="label">قيد التجهيز</div><div class="sub">يحتاج إجراء</div></div>
+        <div class="stat-card"><div class="num" id="totalProducts">0</div><div class="label">المنتجات</div><div class="sub">في المخزون</div></div>
+        <div class="stat-card"><div class="num" id="totalCustomers">0</div><div class="label">العملاء</div><div class="sub">مرتبطين</div></div>
+    </div>
+    <div class="quick-actions">
+        <a href="ph-inventory.html" class="quick-action"><i class="fas fa-boxes"></i><span>المخزون</span></a>
+        <a href="ph-orders.html" class="quick-action"><i class="fas fa-shopping-cart"></i><span>الطلبات</span></a>
+        <a href="ph-store.html" class="quick-action"><i class="fas fa-store"></i><span>المتجر</span></a>
+        <a href="ph-customers.html" class="quick-action"><i class="fas fa-users"></i><span>العملاء</span></a>
+    </div>
+</div>
+<script>
+function updateDashboard() {
+    const orders = JSON.parse(localStorage.getItem('pharmacyOrders') || '[]');
+    const products = JSON.parse(localStorage.getItem('pharmacyInventory') || '[]');
+    const customers = JSON.parse(localStorage.getItem('pharmacyCustomers') || '[]');
+    document.getElementById('totalOrders').textContent = orders.length;
+    document.getElementById('pendingOrders').textContent = orders.filter(o => o.status === 'pending').length;
+    document.getElementById('totalProducts').textContent = products.length;
+    document.getElementById('totalCustomers').textContent = customers.length || 0;
+}
+document.addEventListener('DOMContentLoaded', updateDashboard);
+</script>
+</body>
+</html>

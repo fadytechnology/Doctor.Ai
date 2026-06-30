@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>سجل التطعيمات - Doctor.ai</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; }
+        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
+        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
+        .form-group { margin-bottom:12px; }
+        .form-group label { display:block; font-weight:600; color:#1e293b; font-size:13px; margin-bottom:4px; }
+        .form-group input { width:100%; padding:10px; border:2px solid #e5e7eb; border-radius:12px; font-size:14px; background:#f9fafb; }
+        .btn-primary { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; }
+        .vaccine-item { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #f1f5f9; }
+        .vaccine-item .info { font-size:14px; }
+        .vaccine-item .badge { font-size:11px; padding:2px 10px; border-radius:12px; background:#d1fae5; color:#065f46; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
+        <div class="title">💉 سجل التطعيمات</div>
+    </div>
+    <div class="form-group"><label><i class="fas fa-syringe"></i> اسم التطعيم</label><input type="text" id="vacName" placeholder="BCG، شلل الأطفال، السداسي" /></div>
+    <div class="form-group"><label><i class="fas fa-calendar"></i> تاريخ التطعيم</label><input type="date" id="vacDate" /></div>
+    <div class="form-group"><label><i class="fas fa-calendar-plus"></i> الجرعة القادمة (اختياري)</label><input type="date" id="vacNext" /></div>
+    <button class="btn-primary" onclick="addVaccine()"><i class="fas fa-plus-circle"></i> إضافة تطعيم</button>
+    <div id="vaccineList" style="margin-top:16px;"></div>
+</div>
+<script>
+function loadVaccines() {
+    const list = JSON.parse(localStorage.getItem('vaccineList') || '[]');
+    const container = document.getElementById('vaccineList');
+    if (list.length === 0) { container.innerHTML = '<p style="color:#94a3b8;text-align:center;">لا توجد تطعيمات مسجلة</p>'; return; }
+    container.innerHTML = '';
+    list.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'vaccine-item';
+        const next = item.next ? ` | القادم: ${item.next}` : '';
+        div.innerHTML = `
+            <div class="info"><strong>${item.name}</strong> - ${item.date} ${next}</div>
+            <span class="badge">${item.date ? 'تم' : 'قيد الانتظار'}</span>
+        `;
+        container.appendChild(div);
+    });
+}
+function addVaccine() {
+    const name = document.getElementById('vacName').value.trim();
+    const date = document.getElementById('vacDate').value;
+    const next = document.getElementById('vacNext').value;
+    if (!name) { alert('❌ أدخل اسم التطعيم'); return; }
+    const list = JSON.parse(localStorage.getItem('vaccineList') || '[]');
+    list.push({ name, date: date || 'غير محدد', next: next || 'غير محدد' });
+    localStorage.setItem('vaccineList', JSON.stringify(list));
+    document.getElementById('vacName').value = ''; document.getElementById('vacDate').value = ''; document.getElementById('vacNext').value = '';
+    loadVaccines();
+}
+document.addEventListener('DOMContentLoaded', loadVaccines);
+</script>
+</body>
+</html>

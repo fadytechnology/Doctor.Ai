@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إعدادات المنصة - الإدارة المركزية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+<div class="admin-container">
+    <header class="admin-header">
+        <div class="logo"><i class="fas fa-crown"></i> Doctor.ai <span style="color:#1e293b;font-weight:600;font-size:16px;">| إعدادات المنصة</span></div>
+        <div class="user-area">
+            <span class="name"><i class="fas fa-user-shield"></i> المدير</span>
+            <span class="avatar">م</span>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+        </div>
+    </header>
+    <nav class="admin-sidebar">
+        <a href="index.html"><i class="fas fa-chart-pie"></i> لوحة القيادة</a>
+        <a href="users.html"><i class="fas fa-users"></i> المستخدمين</a>
+        <a href="pharmacies.html"><i class="fas fa-prescription-bottle"></i> الصيدليات</a>
+        <a href="clinics.html"><i class="fas fa-stethoscope"></i> العيادات</a>
+        <a href="labs.html"><i class="fas fa-microscope"></i> المعامل</a>
+        <a href="radiology.html"><i class="fas fa-x-ray"></i> الأشعة</a>
+        <a href="suppliers.html"><i class="fas fa-truck"></i> الموردين</a>
+        <a href="approvals.html"><i class="fas fa-clock"></i> الموافقات</a>
+        <a href="ads.html"><i class="fas fa-ad"></i> الإعلانات</a>
+        <a href="content.html"><i class="fas fa-newspaper"></i> المحتوى</a>
+        <a href="drugs-db.html"><i class="fas fa-capsules"></i> الأدوية</a>
+        <a href="subscriptions.html"><i class="fas fa-crown"></i> الباقات</a>
+        <a href="commission.html"><i class="fas fa-money-bill-wave"></i> العمولات</a>
+        <a href="loyalty.html"><i class="fas fa-gem"></i> الولاء</a>
+        <a href="notifications.html"><i class="fas fa-bell"></i> الإشعارات</a>
+        <a href="reports.html"><i class="fas fa-chart-bar"></i> التقارير</a>
+        <a href="logs.html"><i class="fas fa-history"></i> السجل</a>
+        <a href="settings.html" class="active"><i class="fas fa-cog"></i> الإعدادات</a>
+        <a href="templates.html"><i class="fas fa-file-alt"></i> القوالب</a>
+        <a href="reviews.html"><i class="fas fa-star"></i> التقييمات</a>
+        <a href="track-meds.html"><i class="fas fa-search"></i> تتبع الأدوية</a>
+        <a href="complaints.html"><i class="fas fa-exclamation-circle"></i> الشكاوى</a>
+    </nav>
+    <div style="background:#fff;padding:24px;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);max-width:600px;">
+        <h3 style="color:#1e293b;margin-bottom:16px;">⚙️ إعدادات المنصة</h3>
+        <div class="form-group"><label>اسم المنصة</label><input type="text" id="settingAppName" /></div>
+        <div class="form-group"><label>رابط الشعار</label><input type="text" id="settingLogo" placeholder="assets/images/logo.png" /></div>
+        <div class="form-group"><label>اللغة الافتراضية</label><select id="settingLang"><option value="ar">العربية</option><option value="en">English</option></select></div>
+        <div class="form-group"><label>نسبة العمولة (%)</label><input type="number" id="settingCommission" step="0.5" /></div>
+        <div class="form-group"><label>نقاط لكل 10 ج.م</label><input type="number" id="settingLoyaltyPoints" /></div>
+        <div class="form-group"><label>وضع الصيانة</label><select id="settingMaintenance"><option value="false">معطل</option><option value="true">مفعل</option></select></div>
+        <button class="btn-sm btn-approve" onclick="saveSettings()" style="padding:10px 24px;font-size:15px;"><i class="fas fa-save"></i> حفظ الإعدادات</button>
+    </div>
+</div>
+<script src="js/admin.js"></script>
+<script>
+let settings = getMockSettings();
+function renderSettings() {
+    document.getElementById('settingAppName').value = settings.appName || '';
+    document.getElementById('settingLogo').value = settings.logo || '';
+    document.getElementById('settingLang').value = settings.defaultLanguage || 'ar';
+    document.getElementById('settingCommission').value = settings.commissionRate || 5;
+    document.getElementById('settingLoyaltyPoints').value = settings.loyaltyPointsPerEGP || 1;
+    document.getElementById('settingMaintenance').value = settings.maintenanceMode ? 'true' : 'false';
+}
+function saveSettings() {
+    settings.appName = document.getElementById('settingAppName').value.trim() || 'Doctor.ai';
+    settings.logo = document.getElementById('settingLogo').value.trim() || 'assets/images/logo.png';
+    settings.defaultLanguage = document.getElementById('settingLang').value;
+    settings.commissionRate = parseFloat(document.getElementById('settingCommission').value) || 5;
+    settings.loyaltyPointsPerEGP = parseInt(document.getElementById('settingLoyaltyPoints').value) || 1;
+    settings.maintenanceMode = document.getElementById('settingMaintenance').value === 'true';
+    localStorage.setItem('adminSettings', JSON.stringify(settings));
+    showToast('✅ تم حفظ الإعدادات');
+}
+function logout() { if(confirm('تأكيد الخروج؟')){ localStorage.clear(); sessionStorage.clear(); window.location.href='../../auth/login.html'; } }
+document.addEventListener('DOMContentLoaded', renderSettings);
+</script>
+</body>
+</html>

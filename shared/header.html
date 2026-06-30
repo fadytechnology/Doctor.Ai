@@ -1,0 +1,34 @@
+<div class="dashboard-header">
+    <div class="greeting">
+        <h2 data-key="welcome_back">مرحباً بعودتك</h2>
+        <p id="user-name-display" style="font-weight:600;color:#0d9488;">أحمد</p>
+        <p style="font-size:12px;color:#94a3b8;" data-key="today_date">اليوم: 24 يونيو 2026</p>
+    </div>
+    <div class="actions">
+        <a href="../individual/network.html" class="icon-btn" title="شبكتي الصحية">
+            <i class="fas fa-share-alt"></i>
+            <span class="badge" id="network-count">0</span>
+        </a>
+        <button class="icon-btn" onclick="alert('📬 لا توجد إشعارات جديدة')">
+            <i class="fas fa-bell"></i>
+            <span class="badge">3</span>
+        </button>
+        <div class="avatar-circle" onclick="window.location.href='../individual/profile.html'">
+            <span id="avatar-letter">أ</span>
+        </div>
+    </div>
+</div>
+<script>
+    (function() {
+        const name = localStorage.getItem('user_name') || 'أحمد';
+        const nameDisplay = document.getElementById('user-name-display');
+        const avatarLetter = document.getElementById('avatar-letter');
+        const networkCount = document.getElementById('network-count');
+        if (nameDisplay) nameDisplay.textContent = name;
+        if (avatarLetter) avatarLetter.textContent = name.charAt(0);
+        if (networkCount) {
+            const network = JSON.parse(localStorage.getItem('patient_network')) || [];
+            networkCount.textContent = network.length;
+        }
+    })();
+</script>

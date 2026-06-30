@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إدارة المستخدمين - الإدارة المركزية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+<div class="admin-container">
+    <!-- الهيدر -->
+    <header class="admin-header">
+        <div class="logo"><i class="fas fa-crown"></i> Doctor.ai <span style="color:#1e293b;font-weight:600;font-size:16px;">| إدارة المستخدمين</span></div>
+        <div class="user-area">
+            <span class="name"><i class="fas fa-user-shield"></i> المدير</span>
+            <span class="avatar">م</span>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+        </div>
+    </header>
+
+    <!-- القائمة الجانبية -->
+    <nav class="admin-sidebar">
+        <a href="index.html"><i class="fas fa-chart-pie"></i> لوحة القيادة</a>
+        <a href="users.html" class="active"><i class="fas fa-users"></i> المستخدمين</a>
+        <a href="pharmacies.html"><i class="fas fa-prescription-bottle"></i> الصيدليات</a>
+        <a href="clinics.html"><i class="fas fa-stethoscope"></i> العيادات</a>
+        <a href="complaints.html"><i class="fas fa-exclamation-circle"></i> الشكاوى</a>
+        <a href="#"><i class="fas fa-ad"></i> الإعلانات</a>
+        <a href="#"><i class="fas fa-newspaper"></i> المحتوى</a>
+        <a href="#"><i class="fas fa-cog"></i> الإعدادات</a>
+    </nav>
+
+    <!-- شريط البحث -->
+    <div class="filter-bar">
+        <input type="text" id="searchInput" placeholder="🔍 بحث عن مستخدم..." oninput="renderUsers()" />
+        <select id="roleFilter" onchange="renderUsers()">
+            <option value="all">كل الأدوار</option>
+            <option value="patient">مريض</option>
+            <option value="pharmacy">صيدلي</option>
+            <option value="clinic">عيادة</option>
+            <option value="lab">معمل</option>
+            <option value="radiology">أشعة</option>
+            <option value="supplier">مورد</option>
+            <option value="admin">إدارة</option>
+        </select>
+        <select id="statusFilter" onchange="renderUsers()">
+            <option value="all">كل الحالات</option>
+            <option value="active">نشط</option>
+            <option value="inactive">غير نشط</option>
+            <option value="pending">قيد الانتظار</option>
+        </select>
+        <button class="btn-search" onclick="renderUsers()"><i class="fas fa-search"></i> بحث</button>
+    </div>
+
+    <!-- الجدول -->
+    <div class="table-responsive">
+        <table class="table" id="usersTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>الاسم</th>
+                    <th>البريد الإلكتروني</th>
+                    <th>رقم الهاتف</th>
+                    <th>الدور</th>
+                    <th>الحالة</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody id="usersBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- مودال تعديل المستخدم -->
+<div class="modal" id="userModal">
+    <div class="modal-content">
+        <h3>تعديل حالة المستخدم</h3>
+        <div class="form-group">
+            <label>الحالة</label>
+            <select id="editStatus">
+                <option value="active">نشط</option>
+                <option value="inactive">غير نشط</option>
+                <option value="pending">قيد الانتظار</option>
+            </select>
+        </div>
+        <div class="btn-group">
+            <button class="btn-save" onclick="saveUserStatus()">حفظ</button>
+            <button class="btn-cancel" onclick="closeModal('userModal')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/admin.js"></script>
+<script>
+let users = getMockUsers();
+let currentEditUserId = null;
+
+function renderUsers() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const role = document.getElementById('roleFilter').value;
+    const status = document.getElementById('statusFilter').value;
+
+    const filtered = users.filter(u => {
+        const matchName = u.fullName.includes(search);
+        const matchRole = role === 'all' || u.role === role;
+        const matchStatus = status === 'all' || u.status === status;
+        return matchName && matchRole && matchStatus;
+    });
+
+    const tbody = document.getElementById('usersBody');
+    tbody.innerHTML = '';
+    filtered.forEach((u, idx) => {
+        const roleMap = { patient:'مريض', pharmacy:'صيدلي', clinic:'عيادة', lab:'معمل', radiology:'أشعة', supplier:'مورد', admin:'إدارة' };
+        const statusMap = { active:'نشط', inactive:'غير نشط', pending:'قيد الانتظار' };
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${idx + 1}</td>
+            <td>${u.fullName}</td>
+            <td>${u.email}</td>
+            <td>${u.phone}</td>
+            <td>${roleMap[u.role] || u.role}</td>
+            <td><span class="status-badge ${u.status}">${statusMap[u.status] || u.status}</span></td>
+            <td>
+                <button class="btn-sm btn-edit" onclick="openEditUser('${u.id}')"><i class="fas fa-edit"></i> تعديل</button>
+                <button class="btn-sm btn-delete" onclick="deleteUser('${u.id}')"><i class="fas fa-trash"></i> حذف</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function openEditUser(id) {
+    currentEditUserId = id;
+    const user = users.find(u => u.id === id);
+    if (!user) return;
+    document.getElementById('editStatus').value = user.status;
+    openModal('userModal');
+}
+
+function saveUserStatus() {
+    const user = users.find(u => u.id === currentEditUserId);
+    if (!user) return;
+    user.status = document.getElementById('editStatus').value;
+    localStorage.setItem('adminUsers', JSON.stringify(users));
+    closeModal('userModal');
+    renderUsers();
+    showToast('✅ تم تحديث حالة المستخدم بنجاح');
+}
+
+function deleteUser(id) {
+    if (!confirm('هل أنت متأكد من حذف هذا المستخدم؟')) return;
+    users = users.filter(u => u.id !== id);
+    localStorage.setItem('adminUsers', JSON.stringify(users));
+    renderUsers();
+    showToast('✅ تم حذف المستخدم', 'warning');
+}
+
+function logout() {
+    if (confirm('هل أنت متأكد من الخروج؟')) {
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.href = '../../auth/login.html';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    renderUsers();
+    console.log('✅ إدارة المستخدمين جاهزة');
+});
+</script>
+</body>
+</html>

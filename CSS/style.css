@@ -1,0 +1,4 @@
+/* ===== إخفاء شريط الحالة الوهمي من كل الفئات ===== */
+.status-icons {
+    display: none !important;
+}

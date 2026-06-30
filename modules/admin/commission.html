@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>العمولات - الإدارة المركزية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+<div class="admin-container">
+    <header class="admin-header">
+        <div class="logo"><i class="fas fa-crown"></i> Doctor.ai <span style="color:#1e293b;font-weight:600;font-size:16px;">| العمولات والمقاصة</span></div>
+        <div class="user-area">
+            <span class="name"><i class="fas fa-user-shield"></i> المدير</span>
+            <span class="avatar">م</span>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+        </div>
+    </header>
+    <nav class="admin-sidebar"><!-- نفس السايدبار مع active --></nav>
+    <div class="stats-mini-grid">
+        <div class="stats-mini-card"><div class="num" id="commTotal">0</div><div class="label">إجمالي العمولات</div></div>
+        <div class="stats-mini-card"><div class="num" id="commPaid">0</div><div class="label">مدفوع</div></div>
+        <div class="stats-mini-card"><div class="num" id="commPending">0</div><div class="label">معلق</div></div>
+        <div class="stats-mini-card"><div class="num" id="commRate">0%</div><div class="label">نسبة العمولة</div></div>
+    </div>
+    <div class="table-responsive">
+        <table class="table"><thead><tr><th>#</th><th>من</th><th>إلى</th><th>المبلغ</th><th>الحالة</th><th>التاريخ</th></tr></thead><tbody id="commBody"></tbody></table>
+    </div>
+</div>
+<script src="js/admin.js"></script>
+<script>
+let comm = getMockCommission();
+function renderCommission() {
+    document.getElementById('commTotal').textContent = comm.totalEarned + ' ج.م';
+    document.getElementById('commPaid').textContent = comm.paid + ' ج.م';
+    document.getElementById('commPending').textContent = comm.pending + ' ج.م';
+    document.getElementById('commRate').textContent = comm.percentage + '%';
+    const tbody = document.getElementById('commBody');
+    tbody.innerHTML = '';
+    comm.transactions.forEach((t, i) => {
+        const smap = { paid:'مدفوع', pending:'معلق' };
+        tbody.innerHTML += `<tr><td>${i+1}</td><td>${t.from}</td><td>${t.to}</td><td>${t.amount} ج.م</td><td><span class="status-badge ${t.status}">${smap[t.status]}</span></td><td>${t.date}</td></tr>`;
+    });
+}
+function logout() { if(confirm('تأكيد الخروج؟')){ localStorage.clear(); sessionStorage.clear(); window.location.href='../../auth/login.html'; } }
+document.addEventListener('DOMContentLoaded', renderCommission);
+</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>المتجر الإلكتروني - الصيدلي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; padding-bottom:80px; min-height:100vh; }
+        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
+        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
+        .product-item { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #f1f5f9; }
+        .product-item .info .name { font-weight:700; }
+        .product-item .info .price { color:#0d9488; font-size:14px; }
+        .product-item .toggle { color:#0d9488; cursor:pointer; font-size:18px; }
+        .product-item .toggle.off { color:#94a3b8; }
+        .empty-state { text-align:center; padding:30px 0; color:#94a3b8; }
+        .empty-state i { font-size:40px; display:block; margin-bottom:8px; color:#cbd5e1; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
+        <div class="title">🛒 المتجر الإلكتروني</div>
+    </div>
+    <p style="font-size:13px;color:#64748b;margin-bottom:12px;">المنتجات المعروضة لمرضاك المربوطين</p>
+    <div id="storeList"></div>
+</div>
+<script>
+let products = JSON.parse(localStorage.getItem('pharmacyInventory') || '[]');
+let store = JSON.parse(localStorage.getItem('pharmacyStore') || '{}');
+function renderStore() {
+    const container = document.getElementById('storeList');
+    if (products.length === 0) { container.innerHTML = '<div class="empty-state"><i class="fas fa-store"></i> لا توجد منتجات</div>'; return; }
+    container.innerHTML = '';
+    products.forEach((p, idx) => {
+        const isVisible = store[p.name] !== false;
+        const div = document.createElement('div');
+        div.className = 'product-item';
+        div.innerHTML = `
+            <div class="info"><div class="name">${p.name}</div><div class="price">${p.price} ج.م</div></div>
+            <div><span class="toggle ${isVisible ? '' : 'off'}" onclick="toggleProduct('${p.name}')"><i class="fas ${isVisible ? 'fa-eye' : 'fa-eye-slash'}"></i></span></div>
+        `;
+        container.appendChild(div);
+    });
+}
+function toggleProduct(name) {
+    store[name] = store[name] === false ? true : false;
+    localStorage.setItem('pharmacyStore', JSON.stringify(store));
+    renderStore();
+}
+document.addEventListener('DOMContentLoaded', renderStore);
+</script>
+</body>
+</html>

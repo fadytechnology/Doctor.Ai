@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>سوق B2B - الصيدلي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; padding-bottom:80px; min-height:100vh; }
+        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
+        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
+        .offer-item { background:#f8fafc; padding:12px; border-radius:12px; margin-bottom:10px; border-right:4px solid #f59e0b; }
+        .offer-item .pharmacy { font-weight:700; }
+        .offer-item .details { font-size:13px; color:#64748b; }
+        .offer-item .price { color:#0d9488; font-weight:700; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
+        <div class="title">🤝 سوق B2B</div>
+    </div>
+    <div id="b2bList">
+        <div class="offer-item"><div class="pharmacy">صيدلية الحكمة (2.3 كم)</div><div class="details">أموكسيسيلين 50 شريط</div><div class="price">35 ج.م للشريط</div></div>
+        <div class="offer-item"><div class="pharmacy">صيدلية الرحمة (4.1 كم)</div><div class="details">فيتامين د 30 كبسولة</div><div class="price">20 ج.م للعلبة</div></div>
+        <div class="offer-item"><div class="pharmacy">صيدلية الفردوس (6.5 كم)</div><div class="details">مضاد حيوي 20 شريط</div><div class="price">50 ج.م</div></div>
+    </div>
+</div>
+</body>
+</html>

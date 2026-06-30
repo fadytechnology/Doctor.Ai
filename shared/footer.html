@@ -1,0 +1,29 @@
+<div class="bottom-nav">
+    <a href="../individual/index.html" class="active" data-key="home">
+        <i class="fas fa-home"></i> <span>الرئيسية</span>
+    </a>
+    <a href="../individual/medications.html" data-key="appointments">
+        <i class="fas fa-calendar-check"></i> <span>مواعيدي</span>
+    </a>
+    <a href="../individual/prescriptions.html" data-key="prescriptions">
+        <i class="fas fa-prescription"></i> <span>روشتاتي</span>
+    </a>
+    <a href="../individual/map.html" data-key="doctors">
+        <i class="fas fa-user-md"></i> <span>الأطباء</span>
+    </a>
+    <a href="../individual/profile.html" data-key="profile">
+        <i class="fas fa-user"></i> <span>ملفي</span>
+    </a>
+</div>
+<script>
+    (function() {
+        const current = window.location.pathname.split('/').pop();
+        document.querySelectorAll('.bottom-nav a').forEach(link => {
+            link.classList.remove('active');
+            const href = link.getAttribute('href').split('/').pop();
+            if (href === current || (current === 'index.html' && href === '../individual/index.html')) {
+                link.classList.add('active');
+            }
+        });
+    })();
+</script>

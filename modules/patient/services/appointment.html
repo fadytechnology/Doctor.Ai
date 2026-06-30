@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>حجز موعد - Doctor.ai</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; }
+        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
+        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
+        .clinic-item { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #f1f5f9; }
+        .clinic-item .info .name { font-weight:700; }
+        .clinic-item .info .spec { font-size:12px; color:#64748b; }
+        .form-group { margin-bottom:12px; }
+        .form-group label { display:block; font-weight:600; color:#1e293b; font-size:13px; margin-bottom:4px; }
+        .form-group input, .form-group select { width:100%; padding:10px; border:2px solid #e5e7eb; border-radius:12px; font-size:14px; background:#f9fafb; }
+        .btn-primary { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
+        <div class="title">📅 حجز موعد</div>
+    </div>
+    <p style="font-size:13px;color:#64748b;margin-bottom:12px;">اختر العيادة المرتبطة بك:</p>
+    <div id="clinicList"></div>
+    <div style="margin-top:16px;">
+        <div class="form-group"><label><i class="fas fa-calendar"></i> التاريخ</label><input type="date" id="appDate" /></div>
+        <div class="form-group"><label><i class="fas fa-clock"></i> الوقت</label><input type="time" id="appTime" /></div>
+        <button class="btn-primary" onclick="bookAppointment()"><i class="fas fa-check-circle"></i> تأكيد الحجز</button>
+    </div>
+</div>
+<script>
+function getClinics() {
+    const partners = JSON.parse(localStorage.getItem('myNetwork') || '[]');
+    return partners.filter(p => p.type === 'clinic' && p.status === 'active');
+}
+function renderClinics() {
+    const container = document.getElementById('clinicList');
+    const clinics = getClinics();
+    if (clinics.length === 0) {
+        container.innerHTML = '<p style="color:#94a3b8;text-align:center;font-size:13px;">لا توجد عيادة مرتبطة. قم بربط عيادة من "شبكتي الصحية".</p>';
+        return;
+    }
+    container.innerHTML = '';
+    clinics.forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'clinic-item';
+        div.innerHTML = `<div class="info"><div class="name">${c.name || 'عيادة غير مسماة'}</div><div class="spec">كود: ${c.code}</div></div><span style="color:#0d9488;">✅ نشط</span>`;
+        container.appendChild(div);
+    });
+}
+function bookAppointment() {
+    const date = document.getElementById('appDate').value;
+    const time = document.getElementById('appTime').value;
+    const clinics = getClinics();
+    if (clinics.length === 0) { alert('❌ لا توجد عيادة مرتبطة'); return; }
+    if (!date || !time) { alert('❌ يرجى تحديد التاريخ والوقت'); return; }
+    const bookings = JSON.parse(localStorage.getItem('myAppointments') || '[]');
+    bookings.push({ clinic: clinics[0].name || 'عيادة غير مسماة', date, time, status: 'مؤكد', createdAt: new Date().toISOString() });
+    localStorage.setItem('myAppointments', JSON.stringify(bookings));
+    alert('✅ تم حجز موعدك بنجاح!');
+    document.getElementById('appDate').value = ''; document.getElementById('appTime').value = '';
+}
+document.addEventListener('DOMContentLoaded', renderClinics);
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>طلب تحليل - Doctor.ai</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; }
+        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
+        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
+        .form-group { margin-bottom:12px; }
+        .form-group label { display:block; font-weight:600; color:#1e293b; font-size:13px; margin-bottom:4px; }
+        .form-group input, .form-group select { width:100%; padding:10px; border:2px solid #e5e7eb; border-radius:12px; font-size:14px; background:#f9fafb; }
+        .btn-primary { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; }
+        .lab-item { padding:8px 0; border-bottom:1px solid #f1f5f9; font-size:14px; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
+        <div class="title">🔬 طلب تحليل</div>
+    </div>
+    <div id="labInfo" style="font-size:13px;color:#64748b;margin-bottom:12px;"></div>
+    <div class="form-group"><label><i class="fas fa-flask"></i> نوع التحليل</label>
+        <select id="testType">
+            <option value="CBC">صورة دم كاملة (CBC)</option>
+            <option value="Lipid">دهون (Lipid Profile)</option>
+            <option value="Liver">وظائف كبد</option>
+            <option value="Kidney">وظائف كلى</option>
+            <option value="Thyroid">غدة درقية</option>
+        </select>
+    </div>
+    <div class="form-group"><label><i class="fas fa-calendar"></i> التاريخ</label><input type="date" id="labDate" /></div>
+    <button class="btn-primary" onclick="orderLab()"><i class="fas fa-paper-plane"></i> إرسال الطلب</button>
+</div>
+<script>
+function getLab() {
+    const partners = JSON.parse(localStorage.getItem('myNetwork') || '[]');
+    return partners.find(p => p.type === 'lab' && p.status === 'active');
+}
+document.addEventListener('DOMContentLoaded', function() {
+    const lab = getLab();
+    const info = document.getElementById('labInfo');
+    if (lab) {
+        info.innerHTML = `🧪 المعمل المرتبط: <strong>${lab.name || 'معمل غير مسما'}</strong> (كود: ${lab.code})`;
+    } else {
+        info.innerHTML = '⚠️ لا يوجد معمل مرتبط. قم بربط معمل من "شبكتي الصحية".';
+    }
+});
+function orderLab() {
+    const lab = getLab();
+    if (!lab) { alert('❌ لا يوجد معمل مرتبط'); return; }
+    const test = document.getElementById('testType').value;
+    const date = document.getElementById('labDate').value;
+    if (!date) { alert('❌ يرجى تحديد التاريخ'); return; }
+    const orders = JSON.parse(localStorage.getItem('myLabOrders') || '[]');
+    orders.push({ lab: lab.name || 'معمل', test, date, status: 'قيد التنفيذ', createdAt: new Date().toISOString() });
+    localStorage.setItem('myLabOrders', JSON.stringify(orders));
+    alert('✅ تم إرسال طلب التحليل إلى المعمل بنجاح!');
+    document.getElementById('labDate').value = '';
+}
+</script>
+</body>
+</html>

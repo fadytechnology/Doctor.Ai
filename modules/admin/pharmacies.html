@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إدارة الصيدليات - الإدارة المركزية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+<div class="admin-container">
+    <header class="admin-header">
+        <div class="logo"><i class="fas fa-crown"></i> Doctor.ai <span style="color:#1e293b;font-weight:600;font-size:16px;">| إدارة الصيدليات</span></div>
+        <div class="user-area">
+            <span class="name"><i class="fas fa-user-shield"></i> المدير</span>
+            <span class="avatar">م</span>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+        </div>
+    </header>
+
+    <nav class="admin-sidebar">
+        <a href="index.html"><i class="fas fa-chart-pie"></i> لوحة القيادة</a>
+        <a href="users.html"><i class="fas fa-users"></i> المستخدمين</a>
+        <a href="pharmacies.html" class="active"><i class="fas fa-prescription-bottle"></i> الصيدليات</a>
+        <a href="clinics.html"><i class="fas fa-stethoscope"></i> العيادات</a>
+        <a href="complaints.html"><i class="fas fa-exclamation-circle"></i> الشكاوى</a>
+        <a href="#"><i class="fas fa-ad"></i> الإعلانات</a>
+        <a href="#"><i class="fas fa-newspaper"></i> المحتوى</a>
+        <a href="#"><i class="fas fa-cog"></i> الإعدادات</a>
+    </nav>
+
+    <div class="filter-bar">
+        <input type="text" id="searchInput" placeholder="🔍 بحث عن صيدلية..." oninput="renderPharmacies()" />
+        <select id="statusFilter" onchange="renderPharmacies()">
+            <option value="all">كل الحالات</option>
+            <option value="approved">موافق</option>
+            <option value="pending">قيد المراجعة</option>
+            <option value="rejected">مرفوض</option>
+        </select>
+        <button class="btn-search" onclick="renderPharmacies()"><i class="fas fa-search"></i> بحث</button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table" id="pharmaciesTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>اسم الصيدلية</th>
+                    <th>المسؤول</th>
+                    <th>كود التعاون</th>
+                    <th>الحالة</th>
+                    <th>التسجيل</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody id="pharmaciesBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script src="js/admin.js"></script>
+<script>
+let pharmacies = getMockPharmacies();
+
+function renderPharmacies() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const status = document.getElementById('statusFilter').value;
+
+    const filtered = pharmacies.filter(p => {
+        const matchName = p.name.includes(search) || p.owner.includes(search);
+        const matchStatus = status === 'all' || p.status === status;
+        return matchName && matchStatus;
+    });
+
+    const tbody = document.getElementById('pharmaciesBody');
+    tbody.innerHTML = '';
+    filtered.forEach((p, idx) => {
+        const statusMap = { approved:'موافق', pending:'قيد المراجعة', rejected:'مرفوض' };
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${idx + 1}</td>
+            <td>${p.name}</td>
+            <td>${p.owner}</td>
+            <td><strong>${p.code}</strong></td>
+            <td><span class="status-badge ${p.status}">${statusMap[p.status] || p.status}</span></td>
+            <td>${p.createdAt}</td>
+            <td>
+                ${p.status === 'pending' ? `<button class="btn-sm btn-approve" onclick="approvePharmacy('${p.id}')"><i class="fas fa-check"></i> موافقة</button>` : ''}
+                ${p.status === 'pending' ? `<button class="btn-sm btn-reject" onclick="rejectPharmacy('${p.id}')"><i class="fas fa-times"></i> رفض</button>` : ''}
+                <button class="btn-sm btn-view" onclick="showToast('🔍 عرض تفاصيل ${p.name}')"><i class="fas fa-eye"></i> عرض</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function approvePharmacy(id) {
+    const p = pharmacies.find(p => p.id === id);
+    if (!p) return;
+    p.status = 'approved';
+    localStorage.setItem('adminPharmacies', JSON.stringify(pharmacies));
+    renderPharmacies();
+    showToast('✅ تم الموافقة على صيدلية ' + p.name);
+}
+
+function rejectPharmacy(id) {
+    if (!confirm('هل أنت متأكد من رفض هذه الصيدلية؟')) return;
+    const p = pharmacies.find(p => p.id === id);
+    if (!p) return;
+    p.status = 'rejected';
+    localStorage.setItem('adminPharmacies', JSON.stringify(pharmacies));
+    renderPharmacies();
+    showToast('⚠️ تم رفض صيدلية ' + p.name, 'warning');
+}
+
+function logout() {
+    if (confirm('هل أنت متأكد من الخروج؟')) {
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.href = '../../auth/login.html';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', renderPharmacies);
+</script>
+</body>
+</html>

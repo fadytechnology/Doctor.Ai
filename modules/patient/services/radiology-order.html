@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>طلب أشعة - Doctor.ai</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; }
+        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
+        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
+        .form-group { margin-bottom:12px; }
+        .form-group label { display:block; font-weight:600; color:#1e293b; font-size:13px; margin-bottom:4px; }
+        .form-group input, .form-group select { width:100%; padding:10px; border:2px solid #e5e7eb; border-radius:12px; font-size:14px; background:#f9fafb; }
+        .btn-primary { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
+        <div class="title">📷 طلب أشعة</div>
+    </div>
+    <div id="radInfo" style="font-size:13px;color:#64748b;margin-bottom:12px;"></div>
+    <div class="form-group"><label><i class="fas fa-x-ray"></i> نوع الأشعة</label>
+        <select id="radType">
+            <option value="X-Ray">أشعة عادية (X-Ray)</option>
+            <option value="CT">أشعة مقطعية (CT)</option>
+            <option value="MRI">رنين مغناطيسي (MRI)</option>
+            <option value="Ultrasound">موجات فوق صوتية</option>
+        </select>
+    </div>
+    <div class="form-group"><label><i class="fas fa-calendar"></i> التاريخ</label><input type="date" id="radDate" /></div>
+    <button class="btn-primary" onclick="orderRadiology()"><i class="fas fa-paper-plane"></i> إرسال الطلب</button>
+</div>
+<script>
+function getRadiology() {
+    const partners = JSON.parse(localStorage.getItem('myNetwork') || '[]');
+    return partners.find(p => p.type === 'radiology' && p.status === 'active');
+}
+document.addEventListener('DOMContentLoaded', function() {
+    const rad = getRadiology();
+    const info = document.getElementById('radInfo');
+    if (rad) info.innerHTML = `📷 مركز الأشعة المرتبط: <strong>${rad.name || 'مركز غير مسمى'}</strong>`;
+    else info.innerHTML = '⚠️ لا يوجد مركز أشعة مرتبط. قم بربط مركز من "شبكتي الصحية".';
+});
+function orderRadiology() {
+    const rad = getRadiology();
+    if (!rad) { alert('❌ لا يوجد مركز أشعة مرتبط'); return; }
+    const type = document.getElementById('radType').value;
+    const date = document.getElementById('radDate').value;
+    if (!date) { alert('❌ يرجى تحديد التاريخ'); return; }
+    const orders = JSON.parse(localStorage.getItem('myRadiologyOrders') || '[]');
+    orders.push({ rad: rad.name || 'مركز أشعة', type, date, status: 'قيد التنفيذ', createdAt: new Date().toISOString() });
+    localStorage.setItem('myRadiologyOrders', JSON.stringify(orders));
+    alert('✅ تم إرسال طلب الأشعة إلى المركز بنجاح!');
+    document.getElementById('radDate').value = '';
+}
+</script>
+</body>
+</html>

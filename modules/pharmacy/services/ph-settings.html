@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>إعدادات الصيدلية - الصيدلي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; padding-bottom:80px; min-height:100vh; }
+        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
+        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
+        .form-group { margin-bottom:14px; }
+        .form-group label { display:block; font-weight:600; font-size:13px; color:#1e293b; margin-bottom:4px; }
+        .form-group input, .form-group select { width:100%; padding:10px; border:2px solid #e5e7eb; border-radius:12px; }
+        .btn-save { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; cursor:pointer; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
+        <div class="title">⚙️ إعدادات الصيدلية</div>
+    </div>
+    <div class="form-group"><label>اسم الصيدلية</label><input type="text" id="phName" placeholder="صيدلية النور" /></div>
+    <div class="form-group"><label>رقم الهاتف</label><input type="text" id="phPhone" placeholder="01001234567" /></div>
+    <div class="form-group"><label>العنوان</label><input type="text" id="phAddress" placeholder="القاهرة، مدينة نصر" /></div>
+    <div class="form-group"><label>ساعات العمل</label><input type="text" id="phHours" placeholder="9 ص - 11 م" /></div>
+    <button class="btn-save" onclick="saveSettings()"><i class="fas fa-save"></i> حفظ الإعدادات</button>
+</div>
+<script>
+function loadSettings() {
+    const s = JSON.parse(localStorage.getItem('pharmacySettings') || '{}');
+    document.getElementById('phName').value = s.name || 'صيدلية النور';
+    document.getElementById('phPhone').value = s.phone || '01001234567';
+    document.getElementById('phAddress').value = s.address || 'القاهرة، مدينة نصر';
+    document.getElementById('phHours').value = s.hours || '9 ص - 11 م';
+}
+function saveSettings() {
+    const data = {
+        name: document.getElementById('phName').value.trim(),
+        phone: document.getElementById('phPhone').value.trim(),
+        address: document.getElementById('phAddress').value.trim(),
+        hours: document.getElementById('phHours').value.trim()
+    };
+    localStorage.setItem('pharmacySettings', JSON.stringify(data));
+    alert('✅ تم حفظ الإعدادات');
+}
+document.addEventListener('DOMContentLoaded', loadSettings);
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>تشغيل الخدمة - Doctor.ai</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; }
+        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
+        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
+        .service-info { background:#f1f5f9; padding:12px; border-radius:12px; margin-bottom:16px; font-size:13px; color:#475569; }
+        .empty-state { text-align:center; padding:40px 0; color:#94a3b8; }
+        .empty-state i { font-size:48px; display:block; margin-bottom:12px; color:#cbd5e1; }
+        .btn-back { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
+        <div class="title" id="serviceTitle">⚙️ تحميل الخدمة...</div>
+    </div>
+    <div class="service-info" id="serviceDesc">جاري تحميل معلومات الخدمة...</div>
+    <div id="serviceContent">
+        <div class="empty-state"><i class="fas fa-spinner fa-pulse"></i> جاري التحميل...</div>
+    </div>
+    <button class="btn-back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i> العودة لمركز الخدمات</button>
+</div>
+<script>
+const params = new URLSearchParams(window.location.search);
+const serviceId = params.get('service');
+
+let registry = [];
+try {
+    const stored = localStorage.getItem('pharmacyServices');
+    if (stored) registry = JSON.parse(stored);
+} catch(e) {}
+
+const service = registry.find(s => s.id === serviceId);
+
+if (service) {
+    document.getElementById('serviceTitle').innerHTML = `<i class="fas ${service.icon}"></i> ${service.name}`;
+    document.getElementById('serviceDesc').textContent = service.description || '🔜 هذه الخدمة قيد التطوير';
+    let html = `<div style="padding:20px 0;text-align:center;">`;
+    html += `<i class="fas ${service.icon}" style="font-size:48px;color:#0d9488;display:block;margin-bottom:16px;"></i>`;
+    html += `<h3 style="color:#1e293b;">${service.name}</h3>`;
+    html += `<p style="color:#64748b;margin:8px 0;">${service.description || 'خدمة الصيدلي'}</p>`;
+    html += `<div style="background:#ecfdf5;padding:16px;border-radius:12px;margin:16px 0;border-right:4px solid #0d9488;">`;
+    html += `<p style="color:#065f46;font-size:14px;">✅ هذه الخدمة جاهزة للتشغيل.<br>سيتم ربطها بالسيرفر في المرحلة القادمة.</p>`;
+    html += `</div>`;
+    html += `<button class="btn-back" onclick="alert('🔜 سيتم فتح ${service.name} قريباً')" style="margin-top:12px;"><i class="fas fa-play"></i> تشغيل الخدمة</button>`;
+    html += `</div>`;
+    document.getElementById('serviceContent').innerHTML = html;
+} else {
+    document.getElementById('serviceTitle').textContent = '⚠️ خدمة غير موجودة';
+    document.getElementById('serviceDesc').textContent = 'الخدمة المطلوبة غير مسجلة في النظام';
+    document.getElementById('serviceContent').innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i> الخدمة غير موجودة</div>`;
+}
+</script>
+</body>
+</html>

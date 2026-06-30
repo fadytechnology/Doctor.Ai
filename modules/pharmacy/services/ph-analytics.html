@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>تحليلات المبيعات - الصيدلي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; padding-bottom:80px; min-height:100vh; }
+        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
+        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
+        .stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+        .stat-card { background:#f8fafc; padding:16px; border-radius:16px; text-align:center; }
+        .stat-card .num { font-size:24px; font-weight:800; color:#0d9488; }
+        .stat-card .label { font-size:12px; color:#64748b; }
+        .best-item { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f1f5f9; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
+        <div class="title">📊 تحليلات المبيعات</div>
+    </div>
+    <div class="stat-grid">
+        <div class="stat-card"><div class="num">4,850 ج.م</div><div class="label">إجمالي المبيعات</div></div>
+        <div class="stat-card"><div class="num">12</div><div class="label">طلبات اليوم</div></div>
+        <div class="stat-card"><div class="num">28</div><div class="label">عملاء نشطون</div></div>
+        <div class="stat-card"><div class="num">15%</div><div class="label">نمو شهري</div></div>
+    </div>
+    <h4 style="font-size:14px;color:#1e293b;">🏆 أفضل المنتجات مبيعاً</h4>
+    <div id="bestProducts">
+        <div class="best-item"><span>باراسيتامول</span><span style="color:#0d9488;">50 شريط</span></div>
+        <div class="best-item"><span>أموكسيسيلين</span><span style="color:#0d9488;">30 شريط</span></div>
+        <div class="best-item"><span>فيتامين C</span><span style="color:#0d9488;">25 علبة</span></div>
+    </div>
+</div>
+</body>
+</html>

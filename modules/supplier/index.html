@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>لوحة المورد - Doctor.ai</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; padding-bottom: 80px; min-height: 100vh; }
+        .app-container { max-width: 480px; margin: 0 auto; }
+        .supplier-header { background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 16px; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; }
+        .user-info { display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 48px; height: 48px; border-radius: 50%; background: #0d9488; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; }
+        .user-details h3 { font-size: 16px; color: #1e293b; font-weight: 700; }
+        .user-details .sub { font-size: 12px; color: #94a3b8; }
+        .header-actions { display: flex; gap: 10px; }
+        .btn-notification { background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; position: relative; }
+        .btn-notification .badge { position: absolute; top: -2px; right: -2px; background: #ef4444; color: #fff; font-size: 10px; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        .btn-logout { background: transparent; border: none; font-size: 20px; color: #94a3b8; cursor: pointer; padding: 8px; border-radius: 50%; }
+        .link-status { display: flex; justify-content: space-between; align-items: center; background: #d1fae5; padding: 10px 14px; border-radius: 14px; margin-bottom: 16px; cursor: pointer; }
+        .link-status-content { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #065f46; flex-wrap: wrap; }
+        .link-status-content i { color: #0d9488; }
+        .link-status-content .code { font-weight: 800; background: rgba(13,148,136,0.15); padding: 2px 10px; border-radius: 12px; }
+        .btn-link { background: #0d9488; color: #fff; border: none; padding: 4px 14px; border-radius: 16px; font-size: 12px; cursor: pointer; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+        .stat-card { background: #fff; padding: 14px 8px; border-radius: 16px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+        .stat-card .num { font-size: 22px; font-weight: 800; color: #0d9488; }
+        .stat-card .label { font-size: 11px; color: #94a3b8; }
+        .services-hub-btn { display: block; background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); color: #fff; padding: 16px; border-radius: 16px; text-decoration: none; text-align: center; margin-bottom: 16px; box-shadow: 0 4px 20px rgba(13,148,136,0.25); }
+        .services-hub-btn i { font-size: 24px; display: block; margin-bottom: 4px; }
+        .services-hub-btn span { font-size: 18px; font-weight: 700; }
+        .services-hub-btn small { font-size: 13px; opacity: 0.85; display: block; margin-top: 2px; }
+        .orders-section { background: #fff; border-radius: 16px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); margin-bottom: 16px; }
+        .orders-section .title { font-size: 15px; font-weight: 700; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .orders-section .title i { color: #0d9488; }
+        .order-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f3f4f6; }
+        .order-item:last-child { border-bottom: none; }
+        .order-info .pharmacy { font-weight: 600; color: #1e293b; font-size: 14px; }
+        .order-info .meds { font-size: 12px; color: #64748b; display: block; }
+        .order-status { font-size: 11px; padding: 2px 12px; border-radius: 12px; font-weight: 600; }
+        .order-status.pending { background: #fef3c7; color: #92400e; }
+        .order-status.shipped { background: #d1fae5; color: #065f46; }
+        .order-status.delivered { background: #dbeafe; color: #1e40af; }
+        .quick-services { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+        .quick-service { background: #fff; padding: 10px 4px; border-radius: 12px; text-align: center; text-decoration: none; color: #1e293b; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+        .quick-service:active { transform: scale(0.95); }
+        .quick-service i { font-size: 20px; color: #0d9488; display: block; margin-bottom: 2px; }
+        .quick-service span { font-size: 10px; font-weight: 600; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; display: flex; justify-content: space-around; align-items: center; padding: 6px 0 10px; box-shadow: 0 -4px 20px rgba(0,0,0,0.04); z-index: 100; border-top: 1px solid #f1f5f9; max-width: 480px; margin: 0 auto; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; color: #94a3b8; transition: 0.3s; padding: 4px 12px; border: none; background: transparent; font-family: inherit; }
+        .nav-item i { font-size: 20px; }
+        .nav-item span { font-size: 10px; margin-top: 2px; }
+        .nav-item.active { color: #0d9488; }
+        .nav-item.active i { transform: scale(1.1); }
+        @media (max-width: 480px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .quick-services { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 481px) { .bottom-nav { border-left: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb; } }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <header class="supplier-header">
+        <div class="header-top">
+            <div class="user-info">
+                <div class="avatar" id="userAvatar">م</div>
+                <div class="user-details">
+                    <h3 id="userName">مورد <span style="color:#0d9488;">الأدوية</span></h3>
+                    <span class="sub" id="userId"><i class="fas fa-id-card"></i> #SUP-2024</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn-notification" onclick="alert('📬 لديك 6 إشعارات جديدة')"><i class="fas fa-bell"></i><span class="badge">6</span></button>
+                <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <div class="link-status" onclick="copyCode()">
+        <div class="link-status-content"><i class="fas fa-link"></i><span>كود التعاون: <span class="code" id="supplierCode">SUP-2024-001</span></span></div>
+        <button class="btn-link"><i class="fas fa-copy"></i> نسخ</button>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card"><div class="num" id="medCount">24</div><div class="label">أدوية متاحة</div></div>
+        <div class="stat-card"><div class="num" id="ordersToday">8</div><div class="label">طلبات اليوم</div></div>
+        <div class="stat-card"><div class="num" id="warehousesCount">3</div><div class="label">مخازن نشطة</div></div>
+        <div class="stat-card"><div class="num" id="surplusCount">5</div><div class="label">رواكد للبيع</div></div>
+    </div>
+
+    <a href="services-hub.html" class="services-hub-btn">
+        <i class="fas fa-th-large"></i>
+        <span>🚚 مركز خدمات المورد</span>
+        <small>12 خدمة (تطبيقية + ربط)</small>
+    </a>
+
+    <div class="quick-services">
+        <a href="services/sup-medicines.html" class="quick-service"><i class="fas fa-capsules"></i><span>الأدوية</span></a>
+        <a href="services/sup-orders.html" class="quick-service"><i class="fas fa-shopping-bag"></i><span>الطلبات</span></a>
+        <a href="services/sup-warehouses.html" class="quick-service"><i class="fas fa-warehouse"></i><span>المخازن</span></a>
+        <a href="services/sup-b2b.html" class="quick-service"><i class="fas fa-handshake"></i><span>B2B</span></a>
+    </div>
+
+    <div class="orders-section">
+        <div class="title"><i class="fas fa-shopping-bag"></i> أحدث الطلبات</div>
+        <div class="order-item">
+            <div class="order-info"><span class="pharmacy">صيدلية النور</span><span class="meds">باراسيتامول 100 شريط</span></div>
+            <span class="order-status pending">قيد التجهيز</span>
+        </div>
+        <div class="order-item">
+            <div class="order-info"><span class="pharmacy">صيدلية الرحمة</span><span class="meds">أموكسيسيلين 50 شريط</span></div>
+            <span class="order-status shipped">جاهز للشحن</span>
+        </div>
+        <div class="order-item">
+            <div class="order-info"><span class="pharmacy">صيدلية الفردوس</span><span class="meds">فيتامين C 200 علبة</span></div>
+            <span class="order-status delivered">تم التوصيل</span>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="navigateTo('home')"><i class="fas fa-home"></i><span>الرئيسية</span></div>
+        <div class="nav-item" onclick="navigateTo('medicines')"><i class="fas fa-capsules"></i><span>الأدوية</span></div>
+        <div class="nav-item" onclick="navigateTo('orders')"><i class="fas fa-shopping-bag"></i><span>الطلبات</span></div>
+        <div class="nav-item" onclick="navigateTo('warehouses')"><i class="fas fa-warehouse"></i><span>المخازن</span></div>
+        <div class="nav-item" onclick="navigateTo('more')"><i class="fas fa-ellipsis-h"></i><span>المزيد</span></div>
+    </nav>
+</div>
+<script>
+function loadSupplierData() {
+    let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (!user.fullName) user = { fullName: 'مورد الأدوية', id: 'SUP-2024', avatar: 'م' };
+    document.getElementById('userName').innerHTML = 'مورد <span style="color:#0d9488;">' + user.fullName.replace('مورد ', '') + '</span>';
+    document.getElementById('userId').innerHTML = '<i class="fas fa-id-card"></i> ' + (user.id || 'SUP-2024');
+    document.getElementById('userAvatar').textContent = user.fullName.charAt(0) || 'م';
+    let code = localStorage.getItem('supplierCode');
+    if (!code) { code = 'SUP-' + Math.floor(1000 + Math.random() * 9000); localStorage.setItem('supplierCode', code); }
+    document.getElementById('supplierCode').textContent = code;
+}
+function copyCode() { const code = document.getElementById('supplierCode').textContent; if(navigator.clipboard) navigator.clipboard.writeText(code).then(() => alert('✅ تم نسخ الكود: ' + code)); else alert('🔑 كود التعاون: ' + code); }
+function logout() { if(confirm('هل أنت متأكد من الخروج؟')) { localStorage.clear(); sessionStorage.clear(); window.location.href = '../../auth/login.html'; } }
+function navigateTo(page) {
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    const pages = ['home', 'medicines', 'orders', 'warehouses', 'more'];
+    const index = pages.indexOf(page);
+    if (index !== -1) document.querySelectorAll('.nav-item')[index].classList.add('active');
+    const pageMap = { 'home': 'index.html', 'medicines': 'services/sup-medicines.html', 'orders': 'services/sup-orders.html', 'warehouses': 'services/sup-warehouses.html', 'more': 'services-hub.html' };
+    if (pageMap[page]) window.location.href = pageMap[page];
+}
+document.addEventListener('DOMContentLoaded', function() { loadSupplierData(); console.log('✅ لوحة المورد جاهزة!'); });
+</script>
+</body>
+</html>

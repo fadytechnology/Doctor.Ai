@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Doctor.ai - منصتك الصحية المتكاملة</title>
+    <!-- Font Awesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <!-- ملفات الـ CSS -->
+    <link rel="stylesheet" href="CSS/style.css" />
+    <link rel="stylesheet" href="CSS/landing.css" />
+    <!-- Manifest PWA -->
+    <link rel="manifest" href="manifest.json" />
+</head>
+<body>
+
+    <!-- ========================================================== -->
+    <!-- ===== الهيدر (القائمة العلوية) ===== -->
+    <!-- ========================================================== -->
+    <header class="main-header">
+        <div class="container header-container">
+            <!-- الشعار -->
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="Doctor.ai" class="logo-img" />
+                <span class="logo-text">Doctor.<span class="highlight">ai</span></span>
+            </div>
+
+            <!-- القائمة -->
+            <nav class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="index.html" class="active">الرئيسية</a></li>
+                    <li><a href="about.html">من نحن</a></li>
+                    <li><a href="contact.html">تواصل معنا</a></li>
+                </ul>
+            </nav>
+
+            <!-- أزرار الدخول -->
+            <div class="header-actions">
+                <button class="btn-login" onclick="window.location.href='auth/login.html'">
+                    <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                </button>
+                <button class="btn-signup" onclick="window.location.href='auth/signup.html'">
+                    <i class="fas fa-user-plus"></i> إنشاء حساب
+                </button>
+                <button class="menu-toggle" id="menuToggle" aria-label="القائمة">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========================================================== -->
+    <!-- ===== الجسم الرئيسي (Hero Section - مركزية) ===== -->
+    <!-- ========================================================== -->
+    <section class="hero-centered">
+        <div class="container hero-centered-container">
+            <!-- الشعار في المنتصف -->
+            <div class="hero-logo">
+                <img src="assets/images/logo-large.png" alt="Doctor.ai" class="hero-logo-img" />
+                <h1>Doctor.<span class="highlight">ai</span></h1>
+            </div>
+
+            <!-- تعريف المنصة -->
+            <div class="hero-description">
+                <p>
+                    منصتك الصحية المتكاملة. <br />
+                    نربط بين جميع أطراف المنظومة الصحية في شبكة واحدة مترابطة.
+                </p>
+            </div>
+
+            <!-- أزرار الدخول السريع -->
+            <div class="hero-buttons">
+                <button class="btn-primary" onclick="window.location.href='auth/signup.html'">
+                    <i class="fas fa-rocket"></i> ابدأ الآن
+                </button>
+                <button class="btn-outline" onclick="document.getElementById('roles-section').scrollIntoView({behavior:'smooth'})">
+                    <i class="fas fa-chevron-down"></i> اكتشف المميزات
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- ===== تبويبات مميزات الربط (لكل فئة) ===== -->
+    <!-- ========================================================== -->
+    <section class="roles-section" id="roles-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>مميزات الربط لكل فئة</h2>
+                <p>اختر فئتك واكتشف كيف يمكنك الاستفادة من خدمات الربط مع الآخرين</p>
+            </div>
+
+            <!-- التبويبات -->
+            <div class="roles-tabs">
+                <button class="tab-btn active" data-role="patient">
+                    <i class="fas fa-user"></i> مريض
+                </button>
+                <button class="tab-btn" data-role="pharmacy">
+                    <i class="fas fa-prescription-bottle"></i> صيدلي
+                </button>
+                <button class="tab-btn" data-role="clinic">
+                    <i class="fas fa-stethoscope"></i> عيادة
+                </button>
+                <button class="tab-btn" data-role="lab">
+                    <i class="fas fa-microscope"></i> معمل
+                </button>
+                <button class="tab-btn" data-role="radiology">
+                    <i class="fas fa-x-ray"></i> أشعة
+                </button>
+                <button class="tab-btn" data-role="supplier">
+                    <i class="fas fa-truck"></i> مورد
+                </button>
+                <button class="tab-btn" data-role="admin">
+                    <i class="fas fa-crown"></i> إدارة
+                </button>
+            </div>
+
+            <!-- محتوى التبويبات (مميزات الربط لكل فئة) -->
+            <div class="roles-content">
+
+                <!-- === المريض === -->
+                <div class="role-panel active" id="role-patient">
+                    <div class="role-info">
+                        <h3>المريض <span class="badge">العميل الأساسي</span></h3>
+                        <p>كيف تربط نفسك بمقدمي الخدمة وتستفيد من خدماتهم؟</p>
+                        <ul class="role-services">
+                            <li><i class="fas fa-link"></i> <strong>ربط الصيدلي:</strong> أدخل كود التعاون وارتبط بصيدليتك المفضلة.</li>
+                            <li><i class="fas fa-store"></i> <strong>متجر الصيدلي:</strong> شوف منتجات الصيدلي اللي مرتبط بها واطلب اللي تحتاجه.</li>
+                            <li><i class="fas fa-comments"></i> <strong>شات مع الصيدلي:</strong> تواصل مباشر مع صيدليك للاستفسار عن الأدوية والجرعات.</li>
+                            <li><i class="fas fa-users"></i> <strong>جروبات صحية:</strong> انضم لجروبات يديرها الصيدلي (تخسيس، سكري، عناية بالشعر).</li>
+                            <li><i class="fas fa-calendar-check"></i> <strong>حجز عيادة:</strong> احجز موعد عند عيادة موصى بها من صيدليك.</li>
+                            <li><i class="fas fa-flask"></i> <strong>طلب تحليل:</strong> اطلب تحاليل من معمل مرتبط بصيدليتك.</li>
+                            <li><i class="fas fa-x-ray"></i> <strong>طلب أشعة:</strong> اطلب أشعة من مركز أشعة مرتبط بصيدليتك.</li>
+                            <li><i class="fas fa-share-alt"></i> <strong>مشاركة الملف الطبي:</strong> شارك ملفك الطبي مع طبيبك بضغطة زر.</li>
+                        </ul>
+                        <button class="btn-primary" onclick="window.location.href='auth/signup.html'">
+                            <i class="fas fa-user-plus"></i> انضم كمريض
+                        </button>
+                    </div>
+                </div>
+
+                <!-- === الصيدلي === -->
+                <div class="role-panel" id="role-pharmacy">
+                    <div class="role-info">
+                        <h3>الصيدلي <span class="badge">المحور الأساسي</span></h3>
+                        <p>كيف تربط نفسك بالمرضى ومقدمي الخدمة الآخرين؟</p>
+                        <ul class="role-services">
+                            <li><i class="fas fa-link"></i> <strong>كود التعاون:</strong> أنشئ كود تعاون خاص لصيدليتك ووزعه على مرضاك.</li>
+                            <li><i class="fas fa-user-check"></i> <strong>إدارة المرضى:</strong> استقبل طلبات الربط من المرضى ووافق عليها.</li>
+                            <li><i class="fas fa-store"></i> <strong>المتجر الخاص:</strong> اعرض منتجاتك للمرضى المرتبطين بك.</li>
+                            <li><i class="fas fa-shopping-cart"></i> <strong>استقبال الطلبات:</strong> استقبل طلبات الأدوية من مرضاك وقم بتجهيزها.</li>
+                            <li><i class="fas fa-comments"></i> <strong>شات مع المرضى:</strong> تواصل مع مرضاك للاستفسار عن الطلبات والجرعات.</li>
+                            <li><i class="fas fa-users"></i> <strong>إدارة الجروبات:</strong> أنشئ جروبات صحية لمرضاك (تخسيس، سكري).</li>
+                            <li><i class="fas fa-handshake"></i> <strong>التواصل مع العيادات:</strong> استقبل عروض تعاون من العيادات ووجّه مرضاك لهم.</li>
+                            <li><i class="fas fa-flask"></i> <strong>التواصل مع المعامل:</strong> أرسل طلبات تحاليل للمعمل نيابة عن مرضاك.</li>
+                            <li><i class="fas fa-x-ray"></i> <strong>التواصل مع مراكز الأشعة:</strong> أرسل طلبات أشعة لمركز الأشعة نيابة عن مرضاك.</li>
+                            <li><i class="fas fa-map-marked-alt"></i> <strong>المتجر الجغرافي (B2B):</strong> تبادل الأدوية الراكدة مع الصيدليات المجاورة.</li>
+                        </ul>
+                        <button class="btn-primary" onclick="window.location.href='auth/signup.html'">
+                            <i class="fas fa-user-plus"></i> انضم كصيدلي
+                        </button>
+                    </div>
+                </div>
+
+                <!-- === العيادة === -->
+                <div class="role-panel" id="role-clinic">
+                    <div class="role-info">
+                        <h3>العيادة/الطبيب <span class="badge">مقدم خدمة</span></h3>
+                        <p>كيف تربط نفسك بالمرضى ومقدمي الخدمة الآخرين؟</p>
+                        <ul class="role-services">
+                            <li><i class="fas fa-prescription"></i> <strong>الروشتة الرقمية:</strong> اكتب روشتة وأرسلها للمريض والصيدلي المرتبط به.</li>
+                            <li><i class="fas fa-user-md"></i> <strong>إدارة المرضى:</strong> شوف الملف الطبي الكامل لمرضاك (التاريخ، الحساسية، الأدوية).</li>
+                            <li><i class="fas fa-calendar-check"></i> <strong>المواعيد:</strong> أدر جدول مواعيدك واستقبل حجوزات من المرضى.</li>
+                            <li><i class="fas fa-flask"></i> <strong>تحويل للمعمل:</strong> أرسل طلب تحليل لمعمل محدد.</li>
+                            <li><i class="fas fa-x-ray"></i> <strong>تحويل لأشعة:</strong> أرسل طلب أشعة لمركز أشعة محدد.</li>
+                            <li><i class="fas fa-handshake"></i> <strong>التواصل مع الصيدليات:</strong> أرسل عروض تعاون للصيدليات لتوجيه المرضى.</li>
+                            <li><i class="fas fa-chart-line"></i> <strong>متابعة التزام المريض:</strong> تابع إذا كان المريض قد صرف الدواء والالتزم بالعلاج.</li>
+                            <li><i class="fas fa-share-alt"></i> <strong>مشاركة الملف الطبي:</strong> شارك الملف الطبي للمريض مع صيدلي أو معمل.</li>
+                        </ul>
+                        <button class="btn-primary" onclick="window.location.href='auth/signup.html'">
+                            <i class="fas fa-user-plus"></i> انضم كعيادة
+                        </button>
+                    </div>
+                </div>
+
+                <!-- === المعمل === -->
+                <div class="role-panel" id="role-lab">
+                    <div class="role-info">
+                        <h3>المعمل <span class="badge">مقدم خدمة</span></h3>
+                        <p>كيف تربط نفسك بالمرضى ومقدمي الخدمة الآخرين؟</p>
+                        <ul class="role-services">
+                            <li><i class="fas fa-flask"></i> <strong>استقبال طلبات التحاليل:</strong> استقبل طلبات من العيادات والصيدليات.</li>
+                            <li><i class="fas fa-vial"></i> <strong>إدارة العينات:</strong> تتبع حالة العينة (تم السحب، قيد التحليل، جاهز).</li>
+                            <li><i class="fas fa-file-medical"></i> <strong>تسجيل النتائج:</strong> سجل نتائج التحاليل وأرسلها للمريض والطبيب.</li>
+                            <li><i class="fas fa-bell"></i> <strong>تنبيه النتائج الحرجة:</strong> أرسل إشعار فوري للطبيب لو النتيجة حرجة.</li>
+                            <li><i class="fas fa-share-alt"></i> <strong>ربط النتائج بالملف الطبي:</strong> اربط النتيجة بملف المريض الإلكتروني.</li>
+                            <li><i class="fas fa-handshake"></i> <strong>التواصل مع الصيدليات:</strong> استقبل طلبات من الصيدليات لتحاليل لعملائهم.</li>
+                        </ul>
+                        <button class="btn-primary" onclick="window.location.href='auth/signup.html'">
+                            <i class="fas fa-user-plus"></i> انضم كمعمل
+                        </button>
+                    </div>
+                </div>
+
+                <!-- === الأشعة === -->
+                <div class="role-panel" id="role-radiology">
+                    <div class="role-info">
+                        <h3>مركز الأشعة <span class="badge">مقدم خدمة</span></h3>
+                        <p>كيف تربط نفسك بالمرضى ومقدمي الخدمة الآخرين؟</p>
+                        <ul class="role-services">
+                            <li><i class="fas fa-calendar-plus"></i> <strong>استقبال حجوزات الأشعة:</strong> استقبل حجوزات من العيادات والصيدليات.</li>
+                            <li><i class="fas fa-image"></i> <strong>رفع صور الأشعة:</strong> ارفع صور الأشعة بجودة عالية.</li>
+                            <li><i class="fas fa-file-alt"></i> <strong>كتابة وإرسال التقارير:</strong> اكتب تقرير الأشعة وأرسله للمريض والطبيب.</li>
+                            <li><i class="fas fa-archive"></i> <strong>أرشفة الصور والتقارير:</strong> أرشف الصور والتقارير بشكل منظم.</li>
+                            <li><i class="fas fa-share-alt"></i> <strong>ربط الصور بالملف الطبي:</strong> اربط الصور بملف المريض الإلكتروني.</li>
+                            <li><i class="fas fa-handshake"></i> <strong>التواصل مع الصيدليات:</strong> استقبل طلبات من الصيدليات لأشعة لعملائهم.</li>
+                        </ul>
+                        <button class="btn-primary" onclick="window.location.href='auth/signup.html'">
+                            <i class="fas fa-user-plus"></i> انضم كمركز أشعة
+                        </button>
+                    </div>
+                </div>
+
+                <!-- === المورد === -->
+                <div class="role-panel" id="role-supplier">
+                    <div class="role-info">
+                        <h3>المورد <span class="badge">شريك تجاري</span></h3>
+                        <p>كيف تربط نفسك بالصيدليات ومقدمي الخدمة الآخرين؟</p>
+                        <ul class="role-services">
+                            <li><i class="fas fa-truck"></i> <strong>توريد الأدوية:</strong> استقبل طلبات التوريد من الصيدليات.</li>
+                            <li><i class="fas fa-handshake"></i> <strong>سوق B2B:</strong> شارك في الشراء الجماعي مع صيدليات أخرى للحصول على خصومات.</li>
+                            <li><i class="fas fa-bell"></i> <strong>تنبيه النواقص:</strong> أرسل إشعار للصيدليات عند توفير دواء كان ناقصاً.</li>
+                            <li><i class="fas fa-tags"></i> <strong>عروض خاصة:</strong> أرسل عروض على أدوية معينة للصيدليات.</li>
+                            <li><i class="fas fa-chart-line"></i> <strong>تحليل الطلب:</strong> حلل بيانات الطلب السابقة للتنبؤ بالكميات المطلوبة.</li>
+                            <li><i class="fas fa-file-invoice"></i> <strong>الفوترة الإلكترونية:</strong> أرسل الفواتير إلكترونياً للصيدليات.</li>
+                        </ul>
+                        <button class="btn-primary" onclick="window.location.href='auth/signup.html'">
+                            <i class="fas fa-user-plus"></i> انضم كمورد
+                        </button>
+                    </div>
+                </div>
+
+                <!-- === الإدارة === -->
+                <div class="role-panel" id="role-admin">
+                    <div class="role-info">
+                        <h3>الإدارة المركزية <span class="badge">صاحب المنصة</span></h3>
+                        <p>كيف تشرف على المنصة وتدير العلاقات بين الأطراف؟</p>
+                        <ul class="role-services">
+                            <li><i class="fas fa-user-check"></i> <strong>الموافقة على التسجيل:</strong> وافق أو ارفض طلبات تسجيل الصيدليات والعيادات.</li>
+                            <li><i class="fas fa-newspaper"></i> <strong>الموافقة على نشر الأخبار:</strong> راجع الأخبار قبل ظهورها للمستخدمين.</li>
+                            <li><i class="fas fa-money-bill-wave"></i> <strong>الفوترة والمقاصة:</strong> تابع المبالغ المالية بين الأطراف (تحويلات، عمولات).</li>
+                            <li><i class="fas fa-ban"></i> <strong>تعطيل/تفعيل الحسابات:</strong> عطّل أو فعّل أي حساب في المنصة.</li>
+                            <li><i class="fas fa-chart-pie"></i> <strong>تقارير الأداء:</strong> شوف تقارير عن إيرادات المنصة ونمو المستخدمين.</li>
+                            <li><i class="fas fa-bullhorn"></i> <strong>إدارة الإعلانات:</strong> أدر الإعلانات المدفوعة من شركات الأدوية.</li>
+                        </ul>
+                        <button class="btn-primary" onclick="window.location.href='auth/signup.html'">
+                            <i class="fas fa-user-plus"></i> انضم كإدارة
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- ===== الفوتر (Footer) ===== -->
+    <!-- ========================================================== -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <img src="assets/images/logo.png" alt="Doctor.ai" class="logo-img" />
+                        <span class="logo-text">Doctor.<span class="highlight">ai</span></span>
+                    </div>
+                    <p>منصتك الصحية المتكاملة. نربط بين جميع أطراف المنظومة الصحية في شبكة واحدة.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li><a href="about.html">من نحن</a></li>
+                        <li><a href="contact.html">تواصل معنا</a></li>
+                        <li><a href="auth/login.html">تسجيل الدخول</a></li>
+                        <li><a href="auth/signup.html">إنشاء حساب</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>الفئات</h4>
+                    <ul>
+                        <li><a href="#role-patient">مريض</a></li>
+                        <li><a href="#role-pharmacy">صيدلي</a></li>
+                        <li><a href="#role-clinic">عيادة</a></li>
+                        <li><a href="#role-lab">معمل</a></li>
+                        <li><a href="#role-radiology">أشعة</a></li>
+                        <li><a href="#role-supplier">مورد</a></li>
+                        <li><a href="#role-admin">إدارة</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>تواصل معنا</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> info@doctor.ai</li>
+                        <li><i class="fas fa-phone"></i> +20 100 000 0000</li>
+                        <li><i class="fas fa-map-marker-alt"></i> مصر، القاهرة</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Doctor.ai - جميع الحقوق محفوظة</p>
+                <div class="footer-bottom-links">
+                    <a href="auth/terms.html">الشروط والأحكام</a>
+                    <a href="#">سياسة الخصوصية</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================================== -->
+    <!-- ===== ملفات الجافا سكريبت ===== -->
+    <!-- ========================================================== -->
+    <script src="JS/utils.js"></script>
+    <script src="JS/landing.js"></script>
+    <script src="JS/script.js"></script>
+</body>
+</html>

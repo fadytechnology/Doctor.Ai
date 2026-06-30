@@ -1,0 +1,468 @@
+/* ========================================================== */
+/* ===== CSS خاص بصفحة الهبوط (النسخة المركزية) ===== */
+/* ========================================================== */
+
+/* ----- الهيدر ----- */
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+    padding: 12px 0;
+}
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.logo-img {
+    height: 40px;
+    width: auto;
+}
+.logo-text {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1e293b;
+}
+.logo-text .highlight {
+    color: #0d9488;
+}
+.nav-menu ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+}
+.nav-menu ul li a {
+    text-decoration: none;
+    color: #475569;
+    font-weight: 600;
+    font-size: 15px;
+    transition: 0.3s;
+    padding-bottom: 4px;
+}
+.nav-menu ul li a:hover,
+.nav-menu ul li a.active {
+    color: #0d9488;
+    border-bottom: 2px solid #0d9488;
+}
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.btn-login {
+    background: transparent;
+    border: 2px solid #0d9488;
+    color: #0d9488;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-login:hover {
+    background: #0d9488;
+    color: #fff;
+}
+.btn-signup {
+    background: #0d9488;
+    border: none;
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-signup:hover {
+    background: #0f766e;
+    transform: scale(1.04);
+}
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #1e293b;
+    cursor: pointer;
+}
+
+/* ----- الجسم المركزي (Hero) ----- */
+.hero-centered {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 20px 80px;
+    background: linear-gradient(135deg, #f8fafc 0%, #ecfdf5 100%);
+}
+.hero-centered-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.hero-logo {
+    margin-bottom: 20px;
+}
+.hero-logo-img {
+    max-height: 120px;
+    width: auto;
+    margin-bottom: 10px;
+}
+.hero-logo h1 {
+    font-size: 48px;
+    font-weight: 800;
+    color: #1e293b;
+}
+.hero-logo h1 .highlight {
+    color: #0d9488;
+}
+.hero-description p {
+    font-size: 20px;
+    color: #475569;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+.btn-primary {
+    background: #0d9488;
+    color: #fff;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+.btn-primary:hover {
+    background: #0f766e;
+    transform: scale(1.04);
+}
+.btn-outline {
+    background: transparent;
+    color: #0d9488;
+    padding: 14px 32px;
+    border: 2px solid #0d9488;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+.btn-outline:hover {
+    background: #0d9488;
+    color: #fff;
+}
+
+/* ----- تبويبات الأدوار ----- */
+.roles-section {
+    padding: 60px 0 80px;
+    background: #fff;
+}
+.section-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.section-header h2 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1e293b;
+}
+.section-header p {
+    color: #64748b;
+    font-size: 16px;
+}
+.roles-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+.tab-btn {
+    background: #f1f5f9;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.tab-btn:hover {
+    background: #e2e8f0;
+    color: #0d9488;
+}
+.tab-btn.active {
+    background: #0d9488;
+    color: #fff;
+}
+.role-panel {
+    display: none;
+    background: #f8fafc;
+    border-radius: 20px;
+    padding: 30px 35px;
+    max-width: 900px;
+    margin: 0 auto;
+    animation: fadeIn 0.4s ease;
+}
+.role-panel.active {
+    display: block;
+}
+.role-info h3 {
+    font-size: 26px;
+    color: #1e293b;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.badge {
+    background: #d1fae5;
+    color: #0d9488;
+    font-size: 12px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+.role-info p {
+    color: #475569;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+.role-services {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 25px;
+    margin-bottom: 25px;
+}
+.role-services li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: #1e293b;
+    line-height: 1.6;
+}
+.role-services li i {
+    color: #0d9488;
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+.role-services li strong {
+    color: #0d9488;
+}
+
+/* ----- الفوتر ----- */
+.main-footer {
+    background: #1e293b;
+    color: #cbd5e1;
+    padding: 50px 0 20px;
+}
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 40px;
+    margin-bottom: 30px;
+}
+.footer-brand .logo-text {
+    color: #fff;
+}
+.footer-brand p {
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 16px 0;
+}
+.social-links {
+    display: flex;
+    gap: 12px;
+}
+.social-links a {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #cbd5e1;
+    transition: 0.3s;
+    text-decoration: none;
+}
+.social-links a:hover {
+    background: #0d9488;
+    color: #fff;
+}
+.footer-links h4,
+.footer-contact h4 {
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+.footer-links ul li {
+    margin-bottom: 10px;
+}
+.footer-links ul li a {
+    color: #94a3b8;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 14px;
+}
+.footer-links ul li a:hover {
+    color: #0d9488;
+}
+.footer-contact ul {
+    list-style: none;
+    padding: 0;
+}
+.footer-contact ul li {
+    margin-bottom: 12px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.footer-contact ul li i {
+    color: #0d9488;
+    width: 20px;
+}
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 14px;
+}
+.footer-bottom-links {
+    display: flex;
+    gap: 20px;
+}
+.footer-bottom-links a {
+    color: #94a3b8;
+    text-decoration: none;
+    transition: 0.3s;
+}
+.footer-bottom-links a:hover {
+    color: #fff;
+}
+
+/* ----- أنيميشن ----- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================================== */
+/* ===== استجابة للشاشات الصغيرة ===== */
+/* ========================================================== */
+@media (max-width: 992px) {
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .role-services {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 768px) {
+    .nav-menu {
+        display: none;
+        width: 100%;
+        flex-basis: 100%;
+    }
+    .nav-menu.open {
+        display: block;
+    }
+    .nav-menu ul {
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px 0;
+        border-top: 1px solid #e5e7eb;
+    }
+    .menu-toggle {
+        display: block;
+    }
+    .header-actions .btn-login,
+    .header-actions .btn-signup {
+        font-size: 12px;
+        padding: 6px 14px;
+    }
+    .hero-logo h1 {
+        font-size: 32px;
+    }
+    .hero-description p {
+        font-size: 16px;
+    }
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+    .roles-tabs {
+        gap: 6px;
+    }
+    .tab-btn {
+        font-size: 12px;
+        padding: 6px 14px;
+    }
+    .role-panel {
+        padding: 20px;
+    }
+    .role-info h3 {
+        font-size: 20px;
+    }
+    .btn-primary,
+    .btn-outline {
+        padding: 12px 24px;
+        font-size: 14px;
+    }
+}

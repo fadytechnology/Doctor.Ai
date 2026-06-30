@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>مركز خدمات المعمل - Doctor.ai</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; }
+        .app-container { max-width:480px; margin:0 auto; }
+        .header { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
+        .search-box { width:100%; padding:12px 16px; border:2px solid #e5e7eb; border-radius:16px; font-size:15px; background:#fff; margin-bottom:16px; outline:none; }
+        .search-box:focus { border-color:#0d9488; }
+        .category-title { font-size:16px; font-weight:700; color:#0d9488; margin:16px 0 10px; border-right:4px solid #0d9488; padding-right:10px; }
+        .services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
+        .service-card { background:#fff; padding:14px 6px; border-radius:16px; text-align:center; cursor:pointer; transition:0.2s; box-shadow:0 1px 4px rgba(0,0,0,0.04); border:1px solid transparent; }
+        .service-card:active { transform:scale(0.94); background:#f8fafc; }
+        .service-card i { font-size:28px; color:#0d9488; display:block; margin-bottom:4px; }
+        .service-card h4 { font-size:11px; color:#1e293b; font-weight:600; line-height:1.3; }
+        .service-card.link-card { border-left:3px solid #f59e0b; }
+        .service-card.link-card i { color:#f59e0b; }
+        .empty-state { text-align:center; padding:40px 0; color:#94a3b8; }
+        @media (max-width:480px) { .services-grid { grid-template-columns:repeat(3,1fr); } }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <button class="back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button>
+        <div class="title">🔬 مركز خدمات المعمل</div>
+    </div>
+    <input class="search-box" type="text" id="searchInput" placeholder="🔍 ابحث في الخدمات..." oninput="filterServices(this.value)" />
+    <div id="servicesContainer"><div class="empty-state"><i class="fas fa-spinner fa-pulse"></i> جاري تحميل الخدمات...</div></div>
+</div>
+<script>
+let registry = [];
+try { const stored = localStorage.getItem('labServices'); if (stored) registry = JSON.parse(stored); } catch(e) {}
+if (registry.length === 0) { registry = [{ id: 'lab-dashboard', name: 'لوحة التحكم', icon: 'fa-chart-pie', category: 'تطبيقية', url: 'services/lab-dashboard.html' }]; localStorage.setItem('labServices', JSON.stringify(registry)); }
+function renderServices(filter = '') {
+    const container = document.getElementById('servicesContainer');
+    container.innerHTML = '';
+    const q = filter.toLowerCase();
+    const categories = {};
+    registry.forEach(s => { const cat = s.category || 'أخرى'; if (!categories[cat]) categories[cat] = []; categories[cat].push(s); });
+    let hasResults = false;
+    Object.keys(categories).forEach(cat => {
+        const services = categories[cat].filter(s => s.name.includes(q) || (s.description && s.description.includes(q)));
+        if (services.length === 0) return;
+        hasResults = true;
+        const catDiv = document.createElement('div');
+        catDiv.className = 'category-title';
+        catDiv.textContent = cat + ' (' + services.length + ')';
+        container.appendChild(catDiv);
+        const grid = document.createElement('div');
+        grid.className = 'services-grid';
+        services.forEach(s => {
+            const card = document.createElement('div');
+            card.className = 'service-card';
+            if (cat === 'ربط') card.classList.add('link-card');
+            card.innerHTML = `<i class="fas ${s.icon}"></i><h4>${s.name}</h4>`;
+            card.onclick = () => { if (s.url) window.location.href = s.url; else alert('🔜 هذه الخدمة قيد التطوير'); };
+            grid.appendChild(card);
+        });
+        container.appendChild(grid);
+    });
+    if (!hasResults) container.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i> لا توجد خدمات مطابقة</div>';
+}
+function filterServices(value) { renderServices(value); }
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => { try { const stored = localStorage.getItem('labServices'); if (stored) { const parsed = JSON.parse(stored); if (parsed.length > 0) registry = parsed; } } catch(e) {} renderServices(); }, 100);
+});
+</script>
+</body>
+</html>

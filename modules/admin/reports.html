@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>التقارير الاستراتيجية - الإدارة المركزية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="admin.css" />
+    <style>
+        .report-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .report-box { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); border-right: 4px solid #0d9488; }
+        .report-box .value { font-size: 28px; font-weight: 800; color: #0d9488; }
+        .report-box .label { font-size: 13px; color: #64748b; }
+        .report-box .change { font-size: 12px; color: #065f46; }
+        .report-box .change.down { color: #dc2626; }
+        .report-chart { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); margin-bottom: 16px; }
+        .report-chart h4 { font-size: 15px; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .report-chart .placeholder { height: 150px; background: #f8fafc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 14px; }
+    </style>
+</head>
+<body>
+<div class="admin-container">
+    <header class="admin-header">
+        <div class="logo"><i class="fas fa-crown"></i> Doctor.ai <span style="color:#1e293b;font-weight:600;font-size:16px;">| التقارير الاستراتيجية</span></div>
+        <div class="user-area">
+            <span class="name"><i class="fas fa-user-shield"></i> المدير</span>
+            <span class="avatar">م</span>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+        </div>
+    </header>
+    <nav class="admin-sidebar">
+        <a href="index.html"><i class="fas fa-chart-pie"></i> لوحة القيادة</a>
+        <a href="users.html"><i class="fas fa-users"></i> المستخدمين</a>
+        <a href="pharmacies.html"><i class="fas fa-prescription-bottle"></i> الصيدليات</a>
+        <a href="clinics.html"><i class="fas fa-stethoscope"></i> العيادات</a>
+        <a href="labs.html"><i class="fas fa-microscope"></i> المعامل</a>
+        <a href="radiology.html"><i class="fas fa-x-ray"></i> الأشعة</a>
+        <a href="suppliers.html"><i class="fas fa-truck"></i> الموردين</a>
+        <a href="approvals.html"><i class="fas fa-clock"></i> الموافقات</a>
+        <a href="ads.html"><i class="fas fa-ad"></i> الإعلانات</a>
+        <a href="content.html"><i class="fas fa-newspaper"></i> المحتوى</a>
+        <a href="drugs-db.html"><i class="fas fa-capsules"></i> الأدوية</a>
+        <a href="subscriptions.html"><i class="fas fa-crown"></i> الباقات</a>
+        <a href="commission.html"><i class="fas fa-money-bill-wave"></i> العمولات</a>
+        <a href="loyalty.html"><i class="fas fa-gem"></i> الولاء</a>
+        <a href="notifications.html"><i class="fas fa-bell"></i> الإشعارات</a>
+        <a href="reports.html" class="active"><i class="fas fa-chart-bar"></i> التقارير</a>
+        <a href="logs.html"><i class="fas fa-history"></i> السجل</a>
+        <a href="settings.html"><i class="fas fa-cog"></i> الإعدادات</a>
+        <a href="templates.html"><i class="fas fa-file-alt"></i> القوالب</a>
+        <a href="reviews.html"><i class="fas fa-star"></i> التقييمات</a>
+        <a href="track-meds.html"><i class="fas fa-search"></i> تتبع الأدوية</a>
+        <a href="complaints.html"><i class="fas fa-exclamation-circle"></i> الشكاوى</a>
+    </nav>
+    <div class="report-grid">
+        <div class="report-box"><div class="value" id="reportUsers">0</div><div class="label">إجمالي المستخدمين</div><div class="change">📈 +12% هذا الشهر</div></div>
+        <div class="report-box"><div class="value" id="reportOrders">0</div><div class="label">إجمالي الطلبات</div><div class="change">📈 +8% هذا الشهر</div></div>
+        <div class="report-box"><div class="value" id="reportRevenue">0 ج.م</div><div class="label">الإيرادات</div><div class="change">📈 +15% هذا الشهر</div></div>
+        <div class="report-box"><div class="value" id="reportActive">0</div><div class="label">المستخدمين النشطين</div><div class="change">📈 +5% هذا الشهر</div></div>
+    </div>
+    <div class="report-chart">
+        <h4><i class="fas fa-chart-line" style="color:#0d9488;"></i> نمو المستخدمين (آخر 6 أشهر)</h4>
+        <div class="placeholder">📊 رسم بياني للنمو (سيتم ربطه بـ Chart.js لاحقاً)</div>
+    </div>
+    <div class="report-chart">
+        <h4><i class="fas fa-chart-pie" style="color:#0d9488;"></i> توزيع الفئات</h4>
+        <div class="placeholder">📊 رسم بياني دائري للفئات (سيتم ربطه بـ Chart.js لاحقاً)</div>
+    </div>
+</div>
+<script src="js/admin.js"></script>
+<script>
+function renderReports() {
+    const users = getMockUsers();
+    const pharmacies = getMockPharmacies();
+    const clinics = getMockClinics();
+    const orders = JSON.parse(localStorage.getItem('pharmacyOrders') || '[]');
+    const comm = getMockCommission();
+    document.getElementById('reportUsers').textContent = users.length;
+    document.getElementById('reportOrders').textContent = orders.length || 0;
+    document.getElementById('reportRevenue').textContent = comm.totalEarned + ' ج.م';
+    document.getElementById('reportActive').textContent = users.filter(u => u.status === 'active').length;
+}
+function logout() { if(confirm('تأكيد الخروج؟')){ localStorage.clear(); sessionStorage.clear(); window.location.href='../../auth/login.html'; } }
+document.addEventListener('DOMContentLoaded', renderReports);
+</script>
+</body>
+</html>

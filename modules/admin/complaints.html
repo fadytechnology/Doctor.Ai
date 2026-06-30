@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إدارة الشكاوى - الإدارة المركزية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+<div class="admin-container">
+    <header class="admin-header">
+        <div class="logo"><i class="fas fa-crown"></i> Doctor.ai <span style="color:#1e293b;font-weight:600;font-size:16px;">| إدارة الشكاوى</span></div>
+        <div class="user-area">
+            <span class="name"><i class="fas fa-user-shield"></i> المدير</span>
+            <span class="avatar">م</span>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+        </div>
+    </header>
+
+    <nav class="admin-sidebar">
+        <a href="index.html"><i class="fas fa-chart-pie"></i> لوحة القيادة</a>
+        <a href="users.html"><i class="fas fa-users"></i> المستخدمين</a>
+        <a href="pharmacies.html"><i class="fas fa-prescription-bottle"></i> الصيدليات</a>
+        <a href="clinics.html"><i class="fas fa-stethoscope"></i> العيادات</a>
+        <a href="complaints.html" class="active"><i class="fas fa-exclamation-circle"></i> الشكاوى</a>
+        <a href="#"><i class="fas fa-ad"></i> الإعلانات</a>
+        <a href="#"><i class="fas fa-newspaper"></i> المحتوى</a>
+        <a href="#"><i class="fas fa-cog"></i> الإعدادات</a>
+    </nav>
+
+    <div class="filter-bar">
+        <input type="text" id="searchInput" placeholder="🔍 بحث عن شكوى..." oninput="renderComplaints()" />
+        <select id="statusFilter" onchange="renderComplaints()">
+            <option value="all">كل الحالات</option>
+            <option value="pending">قيد الانتظار</option>
+            <option value="in-progress">قيد المعالجة</option>
+            <option value="resolved">تم الحل</option>
+        </select>
+        <button class="btn-search" onclick="renderComplaints()"><i class="fas fa-search"></i> بحث</button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table" id="complaintsTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>المريض</th>
+                    <th>مقدم الخدمة</th>
+                    <th>الموضوع</th>
+                    <th>الحالة</th>
+                    <th>التاريخ</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody id="complaintsBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- مودال عرض تفاصيل الشكوى -->
+<div class="modal" id="complaintModal">
+    <div class="modal-content">
+        <h3>تفاصيل الشكوى</h3>
+        <div id="complaintDetails"></div>
+        <div class="form-group">
+            <label>تغيير الحالة</label>
+            <select id="complaintStatus">
+                <option value="pending">قيد الانتظار</option>
+                <option value="in-progress">قيد المعالجة</option>
+                <option value="resolved">تم الحل</option>
+            </select>
+        </div>
+        <div class="btn-group">
+            <button class="btn-save" onclick="updateComplaintStatus()">حفظ</button>
+            <button class="btn-cancel" onclick="closeModal('complaintModal')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/admin.js"></script>
+<script>
+let complaints = getMockComplaints();
+let currentComplaintId = null;
+
+function renderComplaints() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const status = document.getElementById('statusFilter').value;
+
+    const filtered = complaints.filter(c => {
+        const matchSearch = c.patient.includes(search) || c.provider.includes(search) || c.subject.includes(search);
+        const matchStatus = status === 'all' || c.status === status;
+        return matchSearch && matchStatus;
+    });
+
+    const tbody = document.getElementById('complaintsBody');
+    tbody.innerHTML = '';
+    filtered.forEach((c, idx) => {
+        const statusMap = { pending:'قيد الانتظار', 'in-progress':'قيد المعالجة', resolved:'تم الحل' };
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${idx + 1}</td>
+            <td>${c.patient}</td>
+            <td>${c.provider}</td>
+            <td>${c.subject}</td>
+            <td><span class="status-badge ${c.status}">${statusMap[c.status] || c.status}</span></td>
+            <td>${c.createdAt}</td>
+            <td>
+                <button class="btn-sm btn-view" onclick="viewComplaint('${c.id}')"><i class="fas fa-eye"></i> عرض</button>
+                <button class="btn-sm btn-resolve" onclick="resolveComplaint('${c.id}')"><i class="fas fa-check"></i> حل</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function viewComplaint(id) {
+    currentComplaintId = id;
+    const c = complaints.find(c => c.id === id);
+    if (!c) return;
+    document.getElementById('complaintDetails').innerHTML = `
+        <div class="form-group"><label>المريض</label><p>${c.patient}</p></div>
+        <div class="form-group"><label>مقدم الخدمة</label><p>${c.provider}</p></div>
+        <div class="form-group"><label>الموضوع</label><p>${c.subject}</p></div>
+        <div class="form-group"><label>الوصف</label><p>${c.description}</p></div>
+        <div class="form-group"><label>الحالة الحالية</label><p><span class="status-badge ${c.status}">${c.status}</span></p></div>
+    `;
+    document.getElementById('complaintStatus').value = c.status;
+    openModal('complaintModal');
+}
+
+function updateComplaintStatus() {
+    const c = complaints.find(c => c.id === currentComplaintId);
+    if (!c) return;
+    c.status = document.getElementById('complaintStatus').value;
+    localStorage.setItem('adminComplaints', JSON.stringify(complaints));
+    closeModal('complaintModal');
+    renderComplaints();
+    showToast('✅ تم تحديث حالة الشكوى');
+}
+
+function resolveComplaint(id) {
+    if (!confirm('هل أنت متأكد من حل هذه الشكوى؟')) return;
+    const c = complaints.find(c => c.id === id);
+    if (!c) return;
+    c.status = 'resolved';
+    localStorage.setItem('adminComplaints', JSON.stringify(complaints));
+    renderComplaints();
+    showToast('✅ تم حل الشكوى');
+}
+
+function logout() {
+    if (confirm('هل أنت متأكد من الخروج؟')) {
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.href = '../../auth/login.html';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', renderComplaints);
+</script>
+</body>
+</html>

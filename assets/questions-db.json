@@ -1,0 +1,43 @@
+{
+  "sections": [
+    {
+      "id": "cardio",
+      "title": "أمراض القلب والضغط",
+      "questions": [
+        {
+          "id": "q1",
+          "text": "هل تعاني من ألم في الصدر؟",
+          "type": "boolean",
+          "if_yes_ask": ["q2", "q3"],
+          "severity": "high"
+        },
+        {
+          "id": "q2",
+          "text": "هل الألم يزداد مع المجهود؟",
+          "type": "boolean",
+          "if_yes_ask": ["q4"],
+          "severity": "high"
+        },
+        {
+          "id": "q3",
+          "text": "هل تشعر بضيق في التنفس؟",
+          "type": "boolean",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "id": "digestive",
+      "title": "الجهاز الهضمي",
+      "questions": [
+        {
+          "id": "q10",
+          "text": "هل تعاني من حرقة في المعدة بعد الأكل؟",
+          "type": "boolean",
+          "if_yes_ask": ["q11"],
+          "severity": "medium"
+        }
+      ]
+    }
+  ]
+}
