@@ -6,7 +6,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
-// ===== استدعاء جميع الـ Routes =====
+// استدعاء جميع الـ Routes
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const pharmacyRoutes = require('./routes/pharmacyRoutes');
@@ -17,6 +17,9 @@ const supplierRoutes = require('./routes/supplierRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const patientRoutes = require('./routes/patientRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const prescriptionRoutes = require('./routes/prescriptionRoutes');
+const labOrderRoutes = require('./routes/labOrderRoutes');
+const walletRoutes = require('./routes/walletRoutes');
 
 const db = require('./config/db');
 
@@ -25,7 +28,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ===== الميدل وير =====
+// ميدل وير
 app.use(cors({
     origin: '*',
     credentials: true
@@ -33,7 +36,7 @@ app.use(cors({
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// ===== اختبار الاتصال بقاعدة البيانات =====
+// اختبار الاتصال بقاعدة البيانات
 (async function testDB() {
     try {
         const [rows] = await db.query('SELECT 1');
@@ -43,7 +46,7 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
     }
 })();
 
-// ===== المسارات (APIs) =====
+// المسارات (APIs)
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/pharmacy', pharmacyRoutes);
@@ -54,8 +57,11 @@ app.use('/api/supplier', supplierRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/patient', patientRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/prescriptions', prescriptionRoutes);
+app.use('/api/lab-orders', labOrderRoutes);
+app.use('/api/wallet', walletRoutes);
 
-// ===== مسار الاختبار =====
+// مسار الاختبار
 app.get('/api/test', (req, res) => {
     res.json({
         success: true,
@@ -64,12 +70,12 @@ app.get('/api/test', (req, res) => {
     });
 });
 
-// ===== مسار للصحة (Health Check) =====
+// مسار للصحة
 app.get('/health', (req, res) => {
     res.status(200).json({ status: 'OK', uptime: process.uptime() });
 });
 
-// ===== التعامل مع الأخطاء =====
+// التعامل مع الأخطاء
 app.use((err, req, res, next) => {
     console.error('❌ خطأ:', err.stack);
     res.status(500).json({
@@ -78,7 +84,7 @@ app.use((err, req, res, next) => {
     });
 });
 
-// ===== تشغيل السيرفر =====
+// تشغيل السيرفر
 app.listen(PORT, () => {
     console.log(`🚀 خادم Doctor.ai شغال على http://localhost:${PORT}`);
     console.log(`📡 اختبره: http://localhost:${PORT}/api/test`);

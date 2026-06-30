@@ -4,4 +4,6 @@ backend/node_modules/
 backend/.env
 *.log
 .vscode/
+.idea/
 .DS_Store
+Thumbs.db
