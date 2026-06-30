@@ -11,40 +11,46 @@
 </head>
 <body>
 <div class="admin-container">
-    <header class="admin-header"><div class="logo"><i class="fas fa-crown"></i> Doctor.ai <span style="color:#1e293b;font-weight:600;font-size:16px;">| إدارة المحتوى</span></div><div class="user-area"><span class="name"><i class="fas fa-user-shield"></i> المدير</span><span class="avatar">م</span><button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button></div></header>
-    <nav class="admin-sidebar"><!-- نفس السايدبار مع active على content.html --><a href="index.html"><i class="fas fa-chart-pie"></i> لوحة القيادة</a><a href="content.html" class="active"><i class="fas fa-newspaper"></i> المحتوى</a><a href="ads.html"><i class="fas fa-ad"></i> الإعلانات</a>... (أضف جميع الروابط هنا أو اختصر للاختصار، لكن المستخدم سينسخها من الصفحات السابقة)</nav>
-    <div><button class="btn-sm btn-approve" onclick="openAddContent()"><i class="fas fa-plus"></i> إضافة خبر جديد</button></div>
-    <div id="contentList"></div>
+    <header class="admin-header">
+        <div class="logo"><i class="fas fa-crown"></i> Doctor.ai <span style="color:#1e293b;font-weight:600;font-size:16px;">| إدارة المحتوى</span></div>
+        <div class="user-area">
+            <span class="name"><i class="fas fa-user-shield"></i> المدير</span>
+            <span class="avatar">م</span>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+        </div>
+    </header>
+    <nav class="admin-sidebar">
+        <a href="index.html"><i class="fas fa-chart-pie"></i> لوحة القيادة</a>
+        <a href="users.html"><i class="fas fa-users"></i> المستخدمين</a>
+        <a href="pharmacies.html"><i class="fas fa-prescription-bottle"></i> الصيدليات</a>
+        <a href="clinics.html"><i class="fas fa-stethoscope"></i> العيادات</a>
+        <a href="labs.html" ><i class="fas fa-microscope"></i> المعامل</a>
+        <a href="radiology.html" ><i class="fas fa-x-ray"></i> الأشعة</a>
+        <a href="suppliers.html" ><i class="fas fa-truck"></i> الموردين</a>
+        <a href="approvals.html" ><i class="fas fa-clock"></i> الموافقات</a>
+        <a href="ads.html" ><i class="fas fa-ad"></i> الإعلانات</a>
+        <a href="content.html" class="active"><i class="fas fa-newspaper"></i> المحتوى</a>
+        <a href="drugs-db.html" ><i class="fas fa-capsules"></i> الأدوية</a>
+        <a href="subscriptions.html" ><i class="fas fa-crown"></i> الباقات</a>
+        <a href="commission.html" ><i class="fas fa-money-bill-wave"></i> العمولات</a>
+        <a href="loyalty.html" ><i class="fas fa-gem"></i> الولاء</a>
+        <a href="notifications.html" ><i class="fas fa-bell"></i> الإشعارات</a>
+        <a href="reports.html" ><i class="fas fa-chart-bar"></i> التقارير</a>
+        <a href="logs.html" ><i class="fas fa-history"></i> السجل</a>
+        <a href="settings.html" ><i class="fas fa-cog"></i> الإعدادات</a>
+        <a href="templates.html" ><i class="fas fa-file-alt"></i> القوالب</a>
+        <a href="reviews.html" ><i class="fas fa-star"></i> التقييمات</a>
+        <a href="track-meds.html" ><i class="fas fa-search"></i> تتبع الأدوية</a>
+        <a href="complaints.html"><i class="fas fa-exclamation-circle"></i> الشكاوى</a>
+    </nav>
+    <div style="background:#fff;padding:20px;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+        <h3 style="color:#1e293b;">إدارة المحتوى</h3>
+        <p style="color:#94a3b8;font-size:13px;">🔜 هذه الصفحة قيد التطوير وستكتمل قريباً</p>
+    </div>
 </div>
-<div class="modal" id="contentModal"><div class="modal-content"><h3>إضافة خبر</h3>
-    <div class="form-group"><label>العنوان</label><input type="text" id="contTitle" /></div>
-    <div class="form-group"><label>المحتوى</label><textarea id="contBody" rows="3"></textarea></div>
-    <div class="btn-group"><button class="btn-save" onclick="saveContent()">حفظ</button><button class="btn-cancel" onclick="closeModal('contentModal')">إلغاء</button></div>
-</div></div>
 <script src="js/admin.js"></script>
 <script>
-let contents = getMockContent();
-function renderContent() {
-    const container = document.getElementById('contentList');
-    container.innerHTML = '';
-    contents.forEach(c => {
-        const d = document.createElement('div'); d.className = 'news-item';
-        d.innerHTML = `<div class="title">${c.title}</div><div class="meta">${c.body} | ${c.createdAt}</div><div class="actions"><button class="btn-sm btn-approve" onclick="publishContent('${c.id}')"><i class="fas fa-check"></i> نشر</button><button class="btn-sm btn-delete" onclick="deleteContent('${c.id}')"><i class="fas fa-trash"></i></button></div>`;
-        container.appendChild(d);
-    });
-}
-function openAddContent() { openModal('contentModal'); }
-function saveContent() {
-    const title = document.getElementById('contTitle').value.trim();
-    if(!title) return alert('أدخل العنوان');
-    contents.push({ id:generateId(), title, body:document.getElementById('contBody').value, status:'pending', createdAt:new Date().toISOString().split('T')[0] });
-    localStorage.setItem('adminContent', JSON.stringify(contents));
-    closeModal('contentModal'); renderContent(); showToast('✅ تمت الإضافة');
-}
-function publishContent(id) { const c = contents.find(x=>x.id===id); if(!c)return; c.status='published'; localStorage.setItem('adminContent', JSON.stringify(contents)); renderContent(); showToast('✅ تم النشر'); }
-function deleteContent(id) { if(!confirm('حذف الخبر؟'))return; contents = contents.filter(c=>c.id!==id); localStorage.setItem('adminContent', JSON.stringify(contents)); renderContent(); }
 function logout() { if(confirm('تأكيد الخروج؟')){ localStorage.clear(); sessionStorage.clear(); window.location.href='../../auth/login.html'; } }
-document.addEventListener('DOMContentLoaded', renderContent);
 </script>
 </body>
 </html>

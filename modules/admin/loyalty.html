@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>نظام الولاء - الإدارة المركزية</title>
+    <title>إدارة الولاء - الإدارة المركزية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../../CSS/style.css" />
@@ -11,36 +11,46 @@
 </head>
 <body>
 <div class="admin-container">
-    <header class="admin-header"><div class="logo"><i class="fas fa-crown"></i> Doctor.ai <span style="color:#1e293b;font-weight:600;font-size:16px;">| نظام الولاء</span></div><div class="user-area"><span class="name"><i class="fas fa-user-shield"></i> المدير</span><span class="avatar">م</span><button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button></div></header>
-    <nav class="admin-sidebar"><!-- نفس السايدبار مع active --></nav>
-    <div class="stats-mini-grid">
-        <div class="stats-mini-card"><div class="num" id="loyaltyIssued">0</div><div class="label">نقاط مصدرة</div></div>
-        <div class="stats-mini-card"><div class="num" id="loyaltyRedeemed">0</div><div class="label">نقاط مستخدمة</div></div>
-    </div>
-    <div class="card" style="background:#fff;padding:20px;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);max-width:500px;">
-        <h4 style="color:#1e293b;margin-bottom:12px;">إعدادات النقاط</h4>
-        <div class="form-group"><label>نقاط لكل 10 ج.م إنفاق</label><input type="number" id="loyaltyPointsPer10" /></div>
-        <div class="form-group"><label>خصم لكل 100 نقطة (ج.م)</label><input type="number" id="loyaltyDiscountPer100" /></div>
-        <button class="btn-sm btn-approve" onclick="saveLoyaltySettings()"><i class="fas fa-save"></i> حفظ الإعدادات</button>
+    <header class="admin-header">
+        <div class="logo"><i class="fas fa-crown"></i> Doctor.ai <span style="color:#1e293b;font-weight:600;font-size:16px;">| إدارة الولاء</span></div>
+        <div class="user-area">
+            <span class="name"><i class="fas fa-user-shield"></i> المدير</span>
+            <span class="avatar">م</span>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+        </div>
+    </header>
+    <nav class="admin-sidebar">
+        <a href="index.html"><i class="fas fa-chart-pie"></i> لوحة القيادة</a>
+        <a href="users.html"><i class="fas fa-users"></i> المستخدمين</a>
+        <a href="pharmacies.html"><i class="fas fa-prescription-bottle"></i> الصيدليات</a>
+        <a href="clinics.html"><i class="fas fa-stethoscope"></i> العيادات</a>
+        <a href="labs.html" ><i class="fas fa-microscope"></i> المعامل</a>
+        <a href="radiology.html" ><i class="fas fa-x-ray"></i> الأشعة</a>
+        <a href="suppliers.html" ><i class="fas fa-truck"></i> الموردين</a>
+        <a href="approvals.html" ><i class="fas fa-clock"></i> الموافقات</a>
+        <a href="ads.html" ><i class="fas fa-ad"></i> الإعلانات</a>
+        <a href="content.html" ><i class="fas fa-newspaper"></i> المحتوى</a>
+        <a href="drugs-db.html" ><i class="fas fa-capsules"></i> الأدوية</a>
+        <a href="subscriptions.html" ><i class="fas fa-crown"></i> الباقات</a>
+        <a href="commission.html" ><i class="fas fa-money-bill-wave"></i> العمولات</a>
+        <a href="loyalty.html" class="active"><i class="fas fa-gem"></i> الولاء</a>
+        <a href="notifications.html" ><i class="fas fa-bell"></i> الإشعارات</a>
+        <a href="reports.html" ><i class="fas fa-chart-bar"></i> التقارير</a>
+        <a href="logs.html" ><i class="fas fa-history"></i> السجل</a>
+        <a href="settings.html" ><i class="fas fa-cog"></i> الإعدادات</a>
+        <a href="templates.html" ><i class="fas fa-file-alt"></i> القوالب</a>
+        <a href="reviews.html" ><i class="fas fa-star"></i> التقييمات</a>
+        <a href="track-meds.html" ><i class="fas fa-search"></i> تتبع الأدوية</a>
+        <a href="complaints.html"><i class="fas fa-exclamation-circle"></i> الشكاوى</a>
+    </nav>
+    <div style="background:#fff;padding:20px;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+        <h3 style="color:#1e293b;">إدارة الولاء</h3>
+        <p style="color:#94a3b8;font-size:13px;">🔜 هذه الصفحة قيد التطوير وستكتمل قريباً</p>
     </div>
 </div>
 <script src="js/admin.js"></script>
 <script>
-let loyalty = getMockLoyalty();
-function renderLoyalty() {
-    document.getElementById('loyaltyIssued').textContent = loyalty.totalPointsIssued;
-    document.getElementById('loyaltyRedeemed').textContent = loyalty.totalPointsRedeemed;
-    document.getElementById('loyaltyPointsPer10').value = loyalty.pointsPer10EGP;
-    document.getElementById('loyaltyDiscountPer100').value = loyalty.discountPer100Points;
-}
-function saveLoyaltySettings() {
-    loyalty.pointsPer10EGP = parseInt(document.getElementById('loyaltyPointsPer10').value) || 1;
-    loyalty.discountPer100Points = parseInt(document.getElementById('loyaltyDiscountPer100').value) || 10;
-    localStorage.setItem('adminLoyalty', JSON.stringify(loyalty));
-    showToast('✅ تم حفظ الإعدادات');
-}
 function logout() { if(confirm('تأكيد الخروج؟')){ localStorage.clear(); sessionStorage.clear(); window.location.href='../../auth/login.html'; } }
-document.addEventListener('DOMContentLoaded', renderLoyalty);
 </script>
 </body>
 </html>

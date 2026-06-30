@@ -3,332 +3,42 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>الاستبيان السريري الشامل - Doctor.ai</title>
+    <title>الملف البيومتري - Doctor.ai</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../../../CSS/style.css" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .app-container { max-width: 480px; width: 100%; background: #fff; border-radius: 28px; padding: 24px 20px; box-shadow: 0 8px 40px rgba(0,0,0,0.06); }
-
-        .header { margin-bottom: 16px; }
-        .header .back { background: none; border: none; font-size: 20px; color: #0d9488; cursor: pointer; }
-        .header .title { font-size: 18px; font-weight: 700; color: #1e293b; text-align: center; flex: 1; }
-        .header-top { display: flex; align-items: center; gap: 12px; }
-
-        .progress-bar { background: #f1f5f9; border-radius: 10px; height: 6px; margin: 12px 0 6px; overflow: hidden; }
-        .progress-fill { height: 100%; background: #0d9488; width: 10%; transition: 0.4s; }
-        .slide-counter { font-size: 12px; color: #94a3b8; text-align: center; }
-
-        .slide { display: none; animation: fadeIn 0.3s ease; padding-top: 8px; }
-        .slide.active { display: block; }
-        .slide-title { font-size: 16px; font-weight: 700; color: #0d9488; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #ecfdf5; padding-bottom: 8px; }
-
-        .question-item { background: #fafcfc; border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; border: 1px solid #f1f5f9; }
-        .question-item .q-text { font-weight: 600; color: #1e293b; font-size: 14px; margin-bottom: 6px; display: flex; align-items: flex-start; gap: 6px; }
-        .question-item .q-text .q-num { color: #0d9488; font-weight: 800; font-size: 13px; background: #d1fae5; padding: 0 8px; border-radius: 6px; }
-        .question-item .q-options { display: flex; flex-wrap: wrap; gap: 8px; }
-        .question-item .q-options label { display: flex; align-items: center; gap: 4px; font-weight: 400; font-size: 13px; background: #f1f5f9; padding: 4px 12px; border-radius: 8px; cursor: pointer; }
-        .question-item .q-options input[type="radio"] { accent-color: #0d9488; width: 14px; height: 14px; }
-        .question-item .q-options input[type="checkbox"] { accent-color: #0d9488; width: 14px; height: 14px; }
-        .question-item input[type="text"], .question-item input[type="number"] { width: 100%; padding: 8px 12px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; background: #fff; margin-top: 4px; }
-        .question-item input:focus { outline: none; border-color: #0d9488; }
-
-        .btn-group { display: flex; gap: 12px; margin-top: 20px; }
-        .btn-primary { flex: 1; padding: 14px; background: #0d9488; color: #fff; border: none; border-radius: 14px; font-size: 16px; font-weight: 600; cursor: pointer; }
-        .btn-primary:active { transform: scale(0.98); }
-        .btn-secondary { flex: 0.5; padding: 14px; background: transparent; color: #64748b; border: 2px solid #e5e7eb; border-radius: 14px; font-size: 16px; font-weight: 600; cursor: pointer; }
-
-        .hidden { display: none; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 480px) { .app-container { padding: 16px; } }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; display:flex; align-items:center; justify-content:center; }
+        .app-container { max-width:480px; width:100%; background:#fff; border-radius:28px; padding:24px 20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
+        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; display:flex; align-items:center; gap:8px; }
+        .header .title i { color:#0d9488; }
+        .service-box { background:#ecfdf5; border-radius:16px; padding:20px; text-align:center; border:2px dashed #0d9488; }
+        .service-box .icon { font-size:64px; color:#0d9488; display:block; margin-bottom:12px; }
+        .service-box h3 { color:#1e293b; margin-bottom:6px; }
+        .service-box p { color:#64748b; font-size:14px; line-height:1.8; }
+        .btn-action { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; margin-top:12px; }
+        .btn-action:active { transform:scale(0.98); }
+        .info-text { font-size:12px; color:#94a3b8; text-align:center; margin-top:12px; }
     </style>
 </head>
 <body>
 <div class="app-container">
-    <!-- الهيدر -->
     <div class="header">
-        <div class="header-top">
-            <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
-            <div class="title">📋 الاستبيان السريري الشامل</div>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        <div class="slide-counter" id="slideCounter">الشريحة 1 من 10</div>
+        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
+        <div class="title"><i class="fas fa-user-md"></i> الملف البيومتري</div>
     </div>
-
-    <!-- المحتوى -->
-    <div id="slidesContainer"></div>
-
-    <!-- الأزرار -->
-    <div class="btn-group" id="btnGroup">
-        <button class="btn-secondary" id="prevBtn" onclick="prevSlide()"><i class="fas fa-arrow-right"></i> رجوع</button>
-        <button class="btn-primary" id="nextBtn" onclick="nextSlide()">التالي <i class="fas fa-arrow-left"></i></button>
+    <div class="service-box">
+        <span class="icon"><i class="fas fa-user-md"></i></span>
+        <h3>الملف البيومتري</h3>
+        <p>هذه الخدمة جاهزة للتشغيل. سيتم ربطها بالسيرفر في الإصدار القادم.</p>
+        <button class="btn-action" onclick="alert('🔜 سيتم فتح الملف البيومتري قريباً')">
+            <i class="fas fa-play"></i> تشغيل الخدمة
+        </button>
     </div>
+    <div class="info-text">🆔 biometric-profile | خدمة patient</div>
 </div>
-
-<script>
-// ============================================================
-// ===== الاستبيان السريري - 50 سؤال (10 شرائح) =====
-// ============================================================
-
-// ----- تعريف الأسئلة (50 سؤال موزعين على 10 شرائح) -----
-const QUESTIONS = [
-    // الشريحة 1: الأعراض الحالية (5 أسئلة)
-    { id: 'q1', slide: 1, text: 'هل تعاني من صداع متكرر أو صداع نصفي؟', type: 'radio', options: ['نعم', 'لا'] },
-    { id: 'q2', slide: 1, text: 'هل تعاني من آلام في المفاصل أو العظام؟', type: 'radio', options: ['نعم', 'لا'] },
-    { id: 'q3', slide: 1, text: 'هل تشعر بخمول أو إرهاق مزمن؟', type: 'radio', options: ['نعم', 'لا'] },
-    { id: 'q4', slide: 1, text: 'هل تعاني من ضيق تنفس أو كحة مستمرة؟', type: 'radio', options: ['نعم', 'لا'] },
-    { id: 'q5', slide: 1, text: 'هل تعاني من ألم في الصدر أو خفقان؟', type: 'radio', options: ['نعم', 'لا'] },
-
-    // الشريحة 2: التاريخ العائلي (5 أسئلة)
-    { id: 'q6', slide: 2, text: 'هل هناك تاريخ عائلي للإصابة بالسكري (أب/أم/إخوة)؟', type: 'radio', options: ['نعم', 'لا'] },
-    { id: 'q7', slide: 2, text: 'هل هناك تاريخ عائلي لارتفاع ضغط الدم؟', type: 'radio', options: ['نعم', 'لا'] },
-    { id: 'q8', slide: 2, text: 'هل هناك تاريخ عائلي لأمراض القلب أو الجلطات؟', type: 'radio', options: ['نعم', 'لا'] },
-    { id: 'q9', slide: 2, text: 'هل هناك تاريخ عائلي للسرطان؟', type: 'radio', options: ['نعم', 'لا'] },
-    { id: 'q10', slide: 2, text: 'هل هناك تاريخ عائلي لأمراض الغدة الدرقية؟', type: 'radio', options: ['نعم', 'لا'] },
-
-    // الشريحة 3: التاريخ الطبي الشخصي (5 أسئلة)
-    { id: 'q11', slide: 3, text: 'هل تم تشخيصك بأي من الأمراض المزمنة التالية؟', type: 'checkbox', options: ['سكري', 'ضغط', 'كوليسترول', 'غدة', 'قلب', 'لا يوجد'] },
-    { id: 'q12', slide: 3, text: 'هل أجريت أي عملية جراحية كبرى؟', type: 'radio', options: ['نعم', 'لا'] },
-    { id: 'q13', slide: 3, text: 'إذا كانت الإجابة نعم، اذكر العملية (اختياري)', type: 'text', placeholder: 'مثال: عملية زائدة، قسطرة قلبية' },
-    { id: 'q14', slide: 3, text: 'هل تعاني من أي نوع من الحساسية؟', type: 'radio', options: ['نعم', 'لا'] },
-    { id: 'q15', slide: 3, text: 'اذكر الحساسية إن وجدت (اختياري)', type: 'text', placeholder: 'مثال: بنسلين، مكسرات، غبار' },
-
-    // الشريحة 4: الأدوية الحالية (5 أسئلة)
-    { id: 'q16', slide: 4, text: 'هل تتناول أي أدوية حالياً؟', type: 'radio', options: ['نعم', 'لا'] },
-    { id: 'q17', slide: 4, text: 'اذكر الأدوية الحالية والجرعات', type: 'text', placeholder: 'مثال: ميتفورمين 500mg مرتين يومياً' },
-    { id: 'q18', slide: 4, text: 'هل تتناول مكملات غذائية (فيتامينات، معادن)؟', type: 'radio', options: ['نعم', 'لا'] },
-    { id: 'q19', slide: 4, text: 'اذكر المكملات إن وجدت', type: 'text', placeholder: 'مثال: فيتامين د 1000 وحدة' },
-    { id: 'q20', slide: 4, text: 'هل توقفت عن أي دواء مؤخراً بسبب آثار جانبية؟', type: 'radio', options: ['نعم', 'لا'] },
-
-    // الشريحة 5: العادات الغذائية (5 أسئلة)
-    { id: 'q21', slide: 5, text: 'كيف تصف نظامك الغذائي الحالي؟', type: 'select', options: ['صحي جداً', 'متوازن', 'يعتمد على السريع', 'غير منتظم'] },
-    { id: 'q22', slide: 5, text: 'كم وجبة رئيسية تتناول يومياً؟', type: 'select', options: ['وجبة', 'وجبتين', '3 وجبات', 'أكثر من 3'] },
-    { id: 'q23', slide: 5, text: 'كم مرة تتناول الخضروات والفواكه أسبوعياً؟', type: 'select', options: ['يومياً', '3-4 مرات', 'مرة', 'نادراً'] },
-    { id: 'q24', slide: 5, text: 'هل تتناول مشروبات غازية أو محلاة؟', type: 'radio', options: ['نعم', 'لا'] },
-    { id: 'q25', slide: 5, text: 'إذا نعم، كم مرة أسبوعياً؟', type: 'text', placeholder: 'مثال: 3 مرات' },
-
-    // الشريحة 6: النوم والنشاط (5 أسئلة)
-    { id: 'q26', slide: 6, text: 'كم ساعة تنام في الليلة المتوسطة؟', type: 'select', options: ['أقل من 5', '5-7', '7-9', 'أكثر من 9'] },
-    { id: 'q27', slide: 6, text: 'هل تواجه صعوبة في النوم (أرق)؟', type: 'radio', options: ['نادراً', 'بانتظام', 'دائماً'] },
-    { id: 'q28', slide: 6, text: 'هل تستيقظ متعباً حتى لو نمت كافياً؟', type: 'radio', options: ['نعم', 'لا'] },
-    { id: 'q29', slide: 6, text: 'ما هو مستوى نشاطك البدني؟', type: 'select', options: ['خامل (مكتبي)', 'نشاط خفيف (مشي)', 'نشاط متوسط (جيم)', 'رياضي محترف'] },
-    { id: 'q30', slide: 6, text: 'كم مرة تمارس الرياضة أسبوعياً (٣٠ دقيقة)؟', type: 'select', options: ['0', '1-2', '3-5', 'يومياً'] },
-
-    // الشريحة 7: الصحة النفسية (5 أسئلة)
-    { id: 'q31', slide: 7, text: 'كيف تقيم مستوى التوتر لديك؟', type: 'select', options: ['منخفض', 'متوسط', 'مرتفع', 'مرتفع جداً'] },
-    { id: 'q32', slide: 7, text: 'هل تعاني من تقلبات مزاجية حادة؟', type: 'radio', options: ['نعم', 'لا'] },
-    { id: 'q33', slide: 7, text: 'هل تعاني من صداع مرتبط بالتوتر؟', type: 'radio', options: ['نعم', 'لا'] },
-    { id: 'q34', slide: 7, text: 'هل تشعر بالحزن أو الاكتئاب؟', type: 'radio', options: ['نادراً', 'أحياناً', 'دائماً'] },
-    { id: 'q35', slide: 7, text: 'هل تلاحظ صعوبة في التركيز أو النسيان؟', type: 'radio', options: ['نعم', 'لا'] },
-
-    // الشريحة 8: العلامات الحيوية (5 أسئلة رقمية)
-    { id: 'q36', slide: 8, text: 'ضغط الدم الانقباضي (الرقم العلوي)', type: 'number', placeholder: 'مثل 120' },
-    { id: 'q37', slide: 8, text: 'ضغط الدم الانبساطي (الرقم السفلي)', type: 'number', placeholder: 'مثل 80' },
-    { id: 'q38', slide: 8, text: 'معدل نبضات القلب (راحة)', type: 'number', placeholder: 'مثل 72' },
-    { id: 'q39', slide: 8, text: 'درجة حرارة الجسم (مئوي)', type: 'number', step: '0.1', placeholder: 'مثل 37.0' },
-    { id: 'q40', slide: 8, text: 'نسبة الأكسجين في الدم (SpO2)', type: 'number', placeholder: 'مثل 98' },
-
-    // الشريحة 9: السكر والدهون (5 أسئلة رقمية)
-    { id: 'q41', slide: 9, text: 'السكر الصائم (مجم/دل)', type: 'number', placeholder: 'مثل 95' },
-    { id: 'q42', slide: 9, text: 'السكر التراكمي (HbA1c) %', type: 'number', step: '0.1', placeholder: 'مثل 5.7' },
-    { id: 'q43', slide: 9, text: 'الكوليسترول الكلي (مجم/دل)', type: 'number', placeholder: 'مثل 180' },
-    { id: 'q44', slide: 9, text: 'الدهون الثلاثية (مجم/دل)', type: 'number', placeholder: 'مثل 150' },
-    { id: 'q45', slide: 9, text: 'HDL (الكوليسترول النافع)', type: 'number', placeholder: 'مثل 50' },
-
-    // الشريحة 10: الكلى، الكبد، الفيتامينات (5 أسئلة رقمية)
-    { id: 'q46', slide: 10, text: 'الكرياتينين (مجم/دل)', type: 'number', step: '0.1', placeholder: 'مثل 1.0' },
-    { id: 'q47', slide: 10, text: 'ALT (إنزيم الكبد)', type: 'number', placeholder: 'مثل 25' },
-    { id: 'q48', slide: 10, text: 'فيتامين د (نانوجرام/مل)', type: 'number', step: '0.1', placeholder: 'مثل 30' },
-    { id: 'q49', slide: 10, text: 'فيتامين ب12 (بيكوجرام/مل)', type: 'number', placeholder: 'مثل 400' },
-    { id: 'q50', slide: 10, text: 'TSH (الغدة الدرقية)', type: 'number', step: '0.1', placeholder: 'مثل 2.5' }
-];
-
-// ----- متغيرات التحكم -----
-let currentSlide = 1;
-const totalSlides = 10;
-
-// ----- توليد الشرائح -----
-function renderSlides() {
-    const container = document.getElementById('slidesContainer');
-    container.innerHTML = '';
-    for (let s = 1; s <= totalSlides; s++) {
-        const slideDiv = document.createElement('div');
-        slideDiv.className = `slide ${s === 1 ? 'active' : ''}`;
-        slideDiv.id = `slide${s}`;
-
-        const questions = QUESTIONS.filter(q => q.slide === s);
-        const titles = [
-            'الأعراض الحالية', 'التاريخ العائلي', 'التاريخ الطبي الشخصي',
-            'الأدوية الحالية', 'العادات الغذائية', 'النوم والنشاط',
-            'الصحة النفسية', 'العلامات الحيوية', 'السكر والدهون',
-            'الكلى، الكبد والفيتامينات'
-        ];
-        const icons = ['fa-head-side-virus', 'fa-users', 'fa-file-medical', 'fa-pills', 'fa-utensils', 'fa-moon', 'fa-brain', 'fa-heartbeat', 'fa-flask', 'fa-kidney'];
-
-        let html = `<div class="slide-title"><i class="fas ${icons[s-1]}"></i> ${titles[s-1]}</div>`;
-
-        questions.forEach((q, idx) => {
-            const qNum = QUESTIONS.indexOf(q) + 1;
-            html += `<div class="question-item">`;
-            html += `<div class="q-text"><span class="q-num">${qNum}</span> ${q.text}</div>`;
-
-            if (q.type === 'radio') {
-                html += `<div class="q-options">`;
-                q.options.forEach(opt => {
-                    const val = opt.replace(/\s/g, '');
-                    html += `<label><input type="radio" name="${q.id}" value="${opt}" /> ${opt}</label>`;
-                });
-                html += `</div>`;
-            } else if (q.type === 'checkbox') {
-                html += `<div class="q-options">`;
-                q.options.forEach(opt => {
-                    const val = opt.replace(/\s/g, '');
-                    html += `<label><input type="checkbox" name="${q.id}" value="${opt}" /> ${opt}</label>`;
-                });
-                html += `</div>`;
-            } else if (q.type === 'select') {
-                html += `<select id="${q.id}" style="width:100%;padding:8px 12px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;background:#fff;margin-top:4px;">`;
-                q.options.forEach(opt => {
-                    html += `<option value="${opt}">${opt}</option>`;
-                });
-                html += `</select>`;
-            } else if (q.type === 'text') {
-                html += `<input type="text" id="${q.id}" placeholder="${q.placeholder || ''}" />`;
-            } else if (q.type === 'number') {
-                html += `<input type="number" id="${q.id}" step="${q.step || '1'}" placeholder="${q.placeholder || ''}" />`;
-            }
-            html += `</div>`;
-        });
-
-        slideDiv.innerHTML = html;
-        container.appendChild(slideDiv);
-    }
-}
-
-// ----- تحديث واجهة المستخدم -----
-function updateUI() {
-    document.querySelectorAll('.slide').forEach(el => el.classList.remove('active'));
-    document.getElementById(`slide${currentSlide}`).classList.add('active');
-    document.getElementById('progressFill').style.width = `${(currentSlide / totalSlides) * 100}%`;
-    document.getElementById('slideCounter').textContent = `الشريحة ${currentSlide} من ${totalSlides}`;
-
-    document.getElementById('prevBtn').style.visibility = currentSlide === 1 ? 'hidden' : 'visible';
-    const nextBtn = document.getElementById('nextBtn');
-    if (currentSlide === totalSlides) {
-        nextBtn.textContent = '💾 حفظ الاستبيان';
-        nextBtn.innerHTML = '<i class="fas fa-check-circle"></i> حفظ الاستبيان';
-    } else {
-        nextBtn.textContent = 'التالي';
-        nextBtn.innerHTML = 'التالي <i class="fas fa-arrow-left"></i>';
-    }
-}
-
-// ----- التنقل بين الشرائح -----
-function nextSlide() {
-    // حفظ البيانات الحالية
-    saveCurrentSlideData();
-    if (currentSlide === totalSlides) {
-        finishQuestionnaire();
-        return;
-    }
-    currentSlide++;
-    updateUI();
-    loadSlideData(currentSlide);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function prevSlide() {
-    if (currentSlide > 1) {
-        saveCurrentSlideData();
-        currentSlide--;
-        updateUI();
-        loadSlideData(currentSlide);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-}
-
-// ----- حفظ بيانات الشريحة الحالية -----
-function saveCurrentSlideData() {
-    const data = JSON.parse(localStorage.getItem('biometricQuestionnaire') || '{}');
-    const questions = QUESTIONS.filter(q => q.slide === currentSlide);
-    questions.forEach(q => {
-        const el = document.getElementById(q.id);
-        if (!el) return;
-        if (q.type === 'radio') {
-            const checked = document.querySelector(`input[name="${q.id}"]:checked`);
-            data[q.id] = checked ? checked.value : '';
-        } else if (q.type === 'checkbox') {
-            const checked = document.querySelectorAll(`input[name="${q.id}"]:checked`);
-            data[q.id] = Array.from(checked).map(c => c.value);
-        } else {
-            data[q.id] = el.value || '';
-        }
-    });
-    localStorage.setItem('biometricQuestionnaire', JSON.stringify(data));
-}
-
-// ----- تحميل بيانات الشريحة -----
-function loadSlideData(slide) {
-    const data = JSON.parse(localStorage.getItem('biometricQuestionnaire') || '{}');
-    const questions = QUESTIONS.filter(q => q.slide === slide);
-    questions.forEach(q => {
-        const el = document.getElementById(q.id);
-        if (!el) return;
-        if (q.type === 'radio') {
-            const val = data[q.id] || '';
-            const radio = document.querySelector(`input[name="${q.id}"][value="${val}"]`);
-            if (radio) radio.checked = true;
-        } else if (q.type === 'checkbox') {
-            const vals = data[q.id] || [];
-            document.querySelectorAll(`input[name="${q.id}"]`).forEach(cb => {
-                cb.checked = vals.includes(cb.value);
-            });
-        } else {
-            el.value = data[q.id] || '';
-        }
-    });
-}
-
-// ----- إنهاء الاستبيان -----
-function finishQuestionnaire() {
-    saveCurrentSlideData();
-    const data = JSON.parse(localStorage.getItem('biometricQuestionnaire') || '{}');
-
-    // دمج البيانات مع الملف البيومتري القديم
-    let mainData = localStorage.getItem('biometricAdvanced');
-    let main = mainData ? JSON.parse(mainData) : { measurements: [] };
-    main.questionnaire = data;
-    main.updatedAt = new Date().toISOString();
-    // استخراج المؤشرات الحيوية من الأسئلة لتحديث الـ Dashboard
-    main.weight = parseFloat(data.q_weight) || main.weight || 0;
-    main.height = parseFloat(data.q_height) || main.height || 0;
-    if (main.weight && main.height) {
-        const h = main.height / 100;
-        main.bmi = Math.round((main.weight / (h * h)) * 10) / 10;
-    }
-    // نسخ بعض القيم الحيوية للعرض السريع
-    main.vitals = {
-        systolic: data.q36 || '',
-        diastolic: data.q37 || '',
-        heartRate: data.q38 || '',
-        oxygen: data.q40 || ''
-    };
-
-    localStorage.setItem('biometricAdvanced', JSON.stringify(main));
-
-    alert('✅ تم حفظ الاستبيان السريري بالكامل (50 سؤال)!');
-    window.location.href = '../index.html';
-}
-
-// ----- تحميل الصفحة -----
-document.addEventListener('DOMContentLoaded', function() {
-    renderSlides();
-    updateUI();
-    loadSlideData(1);
-    console.log('✅ الاستبيان السريري (50 سؤال) جاهز!');
-});
-</script>
 </body>
 </html>

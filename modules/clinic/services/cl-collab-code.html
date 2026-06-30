@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>كود التعاون - Doctor.ai</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; display:flex; align-items:center; justify-content:center; }
+        .app-container { max-width:480px; width:100%; background:#fff; border-radius:28px; padding:24px 20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
+        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; display:flex; align-items:center; gap:8px; }
+        .header .title i { color:#0d9488; }
+        .service-box { background:#ecfdf5; border-radius:16px; padding:20px; text-align:center; border:2px dashed #0d9488; }
+        .service-box .icon { font-size:64px; color:#0d9488; display:block; margin-bottom:12px; }
+        .service-box h3 { color:#1e293b; margin-bottom:6px; }
+        .service-box p { color:#64748b; font-size:14px; line-height:1.8; }
+        .btn-action { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; margin-top:12px; }
+        .btn-action:active { transform:scale(0.98); }
+        .info-text { font-size:12px; color:#94a3b8; text-align:center; margin-top:12px; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
+        <div class="title"><i class="fas fa-qrcode"></i> كود التعاون</div>
+    </div>
+    <div class="service-box">
+        <span class="icon"><i class="fas fa-qrcode"></i></span>
+        <h3>كود التعاون</h3>
+        <p>هذه الخدمة جاهزة للتشغيل. سيتم ربطها بالسيرفر في الإصدار القادم.</p>
+        <button class="btn-action" onclick="alert('🔜 سيتم فتح كود التعاون قريباً')">
+            <i class="fas fa-play"></i> تشغيل الخدمة
+        </button>
+    </div>
+    <div class="info-text">🆔 cl-collab-code | خدمة clinic</div>
+</div>
+</body>
+</html>

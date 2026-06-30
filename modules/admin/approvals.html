@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>طلبات الموافقة - الإدارة المركزية</title>
+    <title>إدارة الموافقات - الإدارة المركزية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../../CSS/style.css" />
@@ -12,7 +12,7 @@
 <body>
 <div class="admin-container">
     <header class="admin-header">
-        <div class="logo"><i class="fas fa-crown"></i> Doctor.ai <span style="color:#1e293b;font-weight:600;font-size:16px;">| طلبات الموافقة</span></div>
+        <div class="logo"><i class="fas fa-crown"></i> Doctor.ai <span style="color:#1e293b;font-weight:600;font-size:16px;">| إدارة الموافقات</span></div>
         <div class="user-area">
             <span class="name"><i class="fas fa-user-shield"></i> المدير</span>
             <span class="avatar">م</span>
@@ -24,82 +24,33 @@
         <a href="users.html"><i class="fas fa-users"></i> المستخدمين</a>
         <a href="pharmacies.html"><i class="fas fa-prescription-bottle"></i> الصيدليات</a>
         <a href="clinics.html"><i class="fas fa-stethoscope"></i> العيادات</a>
-        <a href="labs.html"><i class="fas fa-microscope"></i> المعامل</a>
-        <a href="radiology.html"><i class="fas fa-x-ray"></i> الأشعة</a>
-        <a href="suppliers.html"><i class="fas fa-truck"></i> الموردين</a>
+        <a href="labs.html" ><i class="fas fa-microscope"></i> المعامل</a>
+        <a href="radiology.html" ><i class="fas fa-x-ray"></i> الأشعة</a>
+        <a href="suppliers.html" ><i class="fas fa-truck"></i> الموردين</a>
         <a href="approvals.html" class="active"><i class="fas fa-clock"></i> الموافقات</a>
-        <a href="ads.html"><i class="fas fa-ad"></i> الإعلانات</a>
-        <a href="content.html"><i class="fas fa-newspaper"></i> المحتوى</a>
-        <a href="drugs-db.html"><i class="fas fa-capsules"></i> الأدوية</a>
-        <a href="subscriptions.html"><i class="fas fa-crown"></i> الباقات</a>
-        <a href="commission.html"><i class="fas fa-money-bill-wave"></i> العمولات</a>
-        <a href="loyalty.html"><i class="fas fa-gem"></i> الولاء</a>
-        <a href="notifications.html"><i class="fas fa-bell"></i> الإشعارات</a>
-        <a href="reports.html"><i class="fas fa-chart-bar"></i> التقارير</a>
-        <a href="logs.html"><i class="fas fa-history"></i> السجل</a>
-        <a href="settings.html"><i class="fas fa-cog"></i> الإعدادات</a>
-        <a href="templates.html"><i class="fas fa-file-alt"></i> القوالب</a>
-        <a href="reviews.html"><i class="fas fa-star"></i> التقييمات</a>
-        <a href="track-meds.html"><i class="fas fa-search"></i> تتبع الأدوية</a>
+        <a href="ads.html" ><i class="fas fa-ad"></i> الإعلانات</a>
+        <a href="content.html" ><i class="fas fa-newspaper"></i> المحتوى</a>
+        <a href="drugs-db.html" ><i class="fas fa-capsules"></i> الأدوية</a>
+        <a href="subscriptions.html" ><i class="fas fa-crown"></i> الباقات</a>
+        <a href="commission.html" ><i class="fas fa-money-bill-wave"></i> العمولات</a>
+        <a href="loyalty.html" ><i class="fas fa-gem"></i> الولاء</a>
+        <a href="notifications.html" ><i class="fas fa-bell"></i> الإشعارات</a>
+        <a href="reports.html" ><i class="fas fa-chart-bar"></i> التقارير</a>
+        <a href="logs.html" ><i class="fas fa-history"></i> السجل</a>
+        <a href="settings.html" ><i class="fas fa-cog"></i> الإعدادات</a>
+        <a href="templates.html" ><i class="fas fa-file-alt"></i> القوالب</a>
+        <a href="reviews.html" ><i class="fas fa-star"></i> التقييمات</a>
+        <a href="track-meds.html" ><i class="fas fa-search"></i> تتبع الأدوية</a>
         <a href="complaints.html"><i class="fas fa-exclamation-circle"></i> الشكاوى</a>
     </nav>
-    <div class="stats-mini-grid">
-        <div class="stats-mini-card"><div class="num" id="pendingPharm">0</div><div class="label">صيدليات</div></div>
-        <div class="stats-mini-card"><div class="num" id="pendingClinics">0</div><div class="label">عيادات</div></div>
-        <div class="stats-mini-card"><div class="num" id="pendingLabs">0</div><div class="label">معامل</div></div>
-        <div class="stats-mini-card"><div class="num" id="pendingRads">0</div><div class="label">أشعة</div></div>
-        <div class="stats-mini-card"><div class="num" id="pendingSuppliers">0</div><div class="label">موردين</div></div>
+    <div style="background:#fff;padding:20px;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+        <h3 style="color:#1e293b;">إدارة الموافقات</h3>
+        <p style="color:#94a3b8;font-size:13px;">🔜 هذه الصفحة قيد التطوير وستكتمل قريباً</p>
     </div>
-    <div id="approvalsList"></div>
 </div>
 <script src="js/admin.js"></script>
 <script>
-function renderApprovals() {
-    const pharmacies = getMockPharmacies().filter(p => p.status === 'pending');
-    const clinics = getMockClinics().filter(c => c.status === 'pending');
-    const labs = getMockLabs().filter(l => l.status === 'pending');
-    const rads = getMockRadiology().filter(r => r.status === 'pending');
-    const suppliers = getMockSuppliers().filter(s => s.status === 'pending');
-    document.getElementById('pendingPharm').textContent = pharmacies.length;
-    document.getElementById('pendingClinics').textContent = clinics.length;
-    document.getElementById('pendingLabs').textContent = labs.length;
-    document.getElementById('pendingRads').textContent = rads.length;
-    document.getElementById('pendingSuppliers').textContent = suppliers.length;
-    const container = document.getElementById('approvalsList');
-    const all = [...pharmacies.map(p=>({...p, type:'صيدلية'})), ...clinics.map(c=>({...c, type:'عيادة'})), ...labs.map(l=>({...l, type:'معمل'})), ...rads.map(r=>({...r, type:'أشعة'})), ...suppliers.map(s=>({...s, type:'مورد'}))];
-    if(all.length===0){ container.innerHTML='<p style="text-align:center;color:#94a3b8;padding:20px;">✅ لا توجد طلبات معلقة</p>'; return; }
-    container.innerHTML = '';
-    all.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'news-item';
-        div.innerHTML = `<div><span class="title">${item.name}</span> <span style="font-size:12px;color:#94a3b8;">(${item.type})</span></div>
-        <div style="font-size:13px;color:#64748b;">المسؤول: ${item.owner} | ${item.createdAt}</div>
-        <div class="actions"><button class="btn-sm btn-approve" onclick="quickApprove('${item.id}','${item.type}')"><i class="fas fa-check"></i> موافقة</button>
-        <button class="btn-sm btn-reject" onclick="quickReject('${item.id}','${item.type}')"><i class="fas fa-times"></i> رفض</button></div>`;
-        container.appendChild(div);
-    });
-}
-function quickApprove(id, type) {
-    let list = [];
-    if(type==='صيدلية') { list = getMockPharmacies(); const item = list.find(x=>x.id===id); if(item){item.status='approved'; localStorage.setItem('adminPharmacies',JSON.stringify(list));} }
-    else if(type==='عيادة') { list = getMockClinics(); const item = list.find(x=>x.id===id); if(item){item.status='approved'; localStorage.setItem('adminClinics',JSON.stringify(list));} }
-    else if(type==='معمل') { list = getMockLabs(); const item = list.find(x=>x.id===id); if(item){item.status='approved'; localStorage.setItem('adminLabs',JSON.stringify(list));} }
-    else if(type==='أشعة') { list = getMockRadiology(); const item = list.find(x=>x.id===id); if(item){item.status='approved'; localStorage.setItem('adminRadiology',JSON.stringify(list));} }
-    else if(type==='مورد') { list = getMockSuppliers(); const item = list.find(x=>x.id===id); if(item){item.status='approved'; localStorage.setItem('adminSuppliers',JSON.stringify(list));} }
-    renderApprovals(); showToast('✅ تمت الموافقة');
-}
-function quickReject(id, type) {
-    if(!confirm('تأكيد الرفض؟')) return;
-    let list = [];
-    if(type==='صيدلية') { list = getMockPharmacies(); const item = list.find(x=>x.id===id); if(item){item.status='rejected'; localStorage.setItem('adminPharmacies',JSON.stringify(list));} }
-    else if(type==='عيادة') { list = getMockClinics(); const item = list.find(x=>x.id===id); if(item){item.status='rejected'; localStorage.setItem('adminClinics',JSON.stringify(list));} }
-    else if(type==='معمل') { list = getMockLabs(); const item = list.find(x=>x.id===id); if(item){item.status='rejected'; localStorage.setItem('adminLabs',JSON.stringify(list));} }
-    else if(type==='أشعة') { list = getMockRadiology(); const item = list.find(x=>x.id===id); if(item){item.status='rejected'; localStorage.setItem('adminRadiology',JSON.stringify(list));} }
-    else if(type==='مورد') { list = getMockSuppliers(); const item = list.find(x=>x.id===id); if(item){item.status='rejected'; localStorage.setItem('adminSuppliers',JSON.stringify(list));} }
-    renderApprovals(); showToast('⚠️ تم الرفض','warning');
-}
 function logout() { if(confirm('تأكيد الخروج؟')){ localStorage.clear(); sessionStorage.clear(); window.location.href='../../auth/login.html'; } }
-document.addEventListener('DOMContentLoaded', renderApprovals);
 </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>سجل النشاطات - الإدارة المركزية</title>
+    <title>إدارة السجل - الإدارة المركزية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../../CSS/style.css" />
@@ -12,7 +12,7 @@
 <body>
 <div class="admin-container">
     <header class="admin-header">
-        <div class="logo"><i class="fas fa-crown"></i> Doctor.ai <span style="color:#1e293b;font-weight:600;font-size:16px;">| سجل النشاطات</span></div>
+        <div class="logo"><i class="fas fa-crown"></i> Doctor.ai <span style="color:#1e293b;font-weight:600;font-size:16px;">| إدارة السجل</span></div>
         <div class="user-area">
             <span class="name"><i class="fas fa-user-shield"></i> المدير</span>
             <span class="avatar">م</span>
@@ -24,53 +24,33 @@
         <a href="users.html"><i class="fas fa-users"></i> المستخدمين</a>
         <a href="pharmacies.html"><i class="fas fa-prescription-bottle"></i> الصيدليات</a>
         <a href="clinics.html"><i class="fas fa-stethoscope"></i> العيادات</a>
-        <a href="labs.html"><i class="fas fa-microscope"></i> المعامل</a>
-        <a href="radiology.html"><i class="fas fa-x-ray"></i> الأشعة</a>
-        <a href="suppliers.html"><i class="fas fa-truck"></i> الموردين</a>
-        <a href="approvals.html"><i class="fas fa-clock"></i> الموافقات</a>
-        <a href="ads.html"><i class="fas fa-ad"></i> الإعلانات</a>
-        <a href="content.html"><i class="fas fa-newspaper"></i> المحتوى</a>
-        <a href="drugs-db.html"><i class="fas fa-capsules"></i> الأدوية</a>
-        <a href="subscriptions.html"><i class="fas fa-crown"></i> الباقات</a>
-        <a href="commission.html"><i class="fas fa-money-bill-wave"></i> العمولات</a>
-        <a href="loyalty.html"><i class="fas fa-gem"></i> الولاء</a>
-        <a href="notifications.html"><i class="fas fa-bell"></i> الإشعارات</a>
-        <a href="reports.html"><i class="fas fa-chart-bar"></i> التقارير</a>
+        <a href="labs.html" ><i class="fas fa-microscope"></i> المعامل</a>
+        <a href="radiology.html" ><i class="fas fa-x-ray"></i> الأشعة</a>
+        <a href="suppliers.html" ><i class="fas fa-truck"></i> الموردين</a>
+        <a href="approvals.html" ><i class="fas fa-clock"></i> الموافقات</a>
+        <a href="ads.html" ><i class="fas fa-ad"></i> الإعلانات</a>
+        <a href="content.html" ><i class="fas fa-newspaper"></i> المحتوى</a>
+        <a href="drugs-db.html" ><i class="fas fa-capsules"></i> الأدوية</a>
+        <a href="subscriptions.html" ><i class="fas fa-crown"></i> الباقات</a>
+        <a href="commission.html" ><i class="fas fa-money-bill-wave"></i> العمولات</a>
+        <a href="loyalty.html" ><i class="fas fa-gem"></i> الولاء</a>
+        <a href="notifications.html" ><i class="fas fa-bell"></i> الإشعارات</a>
+        <a href="reports.html" ><i class="fas fa-chart-bar"></i> التقارير</a>
         <a href="logs.html" class="active"><i class="fas fa-history"></i> السجل</a>
-        <a href="settings.html"><i class="fas fa-cog"></i> الإعدادات</a>
-        <a href="templates.html"><i class="fas fa-file-alt"></i> القوالب</a>
-        <a href="reviews.html"><i class="fas fa-star"></i> التقييمات</a>
-        <a href="track-meds.html"><i class="fas fa-search"></i> تتبع الأدوية</a>
+        <a href="settings.html" ><i class="fas fa-cog"></i> الإعدادات</a>
+        <a href="templates.html" ><i class="fas fa-file-alt"></i> القوالب</a>
+        <a href="reviews.html" ><i class="fas fa-star"></i> التقييمات</a>
+        <a href="track-meds.html" ><i class="fas fa-search"></i> تتبع الأدوية</a>
         <a href="complaints.html"><i class="fas fa-exclamation-circle"></i> الشكاوى</a>
     </nav>
-    <div class="filter-bar">
-        <input type="text" id="searchInput" placeholder="🔍 بحث في السجل..." oninput="renderLogs()" />
-        <button class="btn-search" onclick="renderLogs()"><i class="fas fa-search"></i> بحث</button>
+    <div style="background:#fff;padding:20px;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+        <h3 style="color:#1e293b;">إدارة السجل</h3>
+        <p style="color:#94a3b8;font-size:13px;">🔜 هذه الصفحة قيد التطوير وستكتمل قريباً</p>
     </div>
-    <div id="logsList"></div>
 </div>
 <script src="js/admin.js"></script>
 <script>
-let logs = getMockLogs();
-function renderLogs() {
-    const q = document.getElementById('searchInput').value.toLowerCase();
-    const filtered = logs.filter(l => l.user.includes(q) || l.action.includes(q));
-    const container = document.getElementById('logsList');
-    container.innerHTML = '';
-    filtered.forEach(l => {
-        const div = document.createElement('div');
-        div.className = 'log-item';
-        div.innerHTML = `<span class="user">${l.user}</span> <span class="action">${l.action}</span> <span class="time">${l.time}</span>`;
-        container.appendChild(div);
-    });
-    if(filtered.length === 0) container.innerHTML = '<p style="text-align:center;color:#94a3b8;padding:20px;">لا توجد سجلات</p>';
-}
-function addLog(user, action) {
-    logs.push({ id: generateId(), user, action, time: new Date().toLocaleString('ar-EG') });
-    localStorage.setItem('adminLogs', JSON.stringify(logs));
-}
 function logout() { if(confirm('تأكيد الخروج؟')){ localStorage.clear(); sessionStorage.clear(); window.location.href='../../auth/login.html'; } }
-document.addEventListener('DOMContentLoaded', renderLogs);
 </script>
 </body>
 </html>

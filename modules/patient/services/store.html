@@ -19,19 +19,22 @@
         .product-item .info .name { font-weight:700; }
         .product-item .info .price { color:#0d9488; font-weight:600; font-size:14px; }
         .btn-add { background:#0d9488; color:#fff; border:none; padding:4px 16px; border-radius:20px; cursor:pointer; font-size:13px; }
+        .btn-add:disabled { opacity:0.5; cursor:not-allowed; }
         .cart-box { background:#ecfdf5; border-radius:16px; padding:16px; margin-top:16px; border:2px dashed #0d9488; }
         .cart-box .item { display:flex; justify-content:space-between; padding:4px 0; font-size:14px; }
         .btn-checkout { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; margin-top:8px; }
+        .btn-checkout:disabled { opacity:0.5; cursor:not-allowed; }
         .empty-state { text-align:center; padding:20px; color:#94a3b8; }
+        .loading { text-align:center; padding:20px; color:#0d9488; }
     </style>
 </head>
 <body>
 <div class="app-container">
     <div class="header">
-        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
+        <button class="back" onclick="window.location.href='../services-hub.html'"><i class="fas fa-arrow-right"></i></button>
         <div class="title">🛒 المتجر</div>
     </div>
-    <div class="pharmacy-name" id="pharmacyName">📍 صيدليتك المرتبطة: <strong>صيدلية النور</strong></div>
+    <div class="pharmacy-name" id="pharmacyName">📍 صيدليتك المرتبطة: <strong id="pharmacyNameStrong">غير مرتبط</strong></div>
     <div id="productList"></div>
     <div class="cart-box" id="cartBox">
         <h4 style="color:#0d9488;"><i class="fas fa-shopping-cart"></i> السلة</h4>
@@ -40,74 +43,173 @@
             <span>الإجمالي</span>
             <span id="cartTotal">0 ج.م</span>
         </div>
-        <button class="btn-checkout" onclick="checkout()"><i class="fas fa-check"></i> تأكيد الطلب</button>
+        <button class="btn-checkout" id="checkoutBtn" onclick="checkout()"><i class="fas fa-check"></i> تأكيد الطلب</button>
     </div>
 </div>
+<script src="../../../JS/api.js"></script>
 <script>
+// ============================================================
+// ===== المتجر - المريض =====
+// ============================================================
+
 const products = [
     { id:1, name:'باراسيتامول', price:15, stock:50 },
     { id:2, name:'أموكسيسيلين', price:40, stock:20 },
-    { id:3, name:'فيتامين C', price:25, stock:100 }
+    { id:3, name:'فيتامين C', price:25, stock:100 },
+    { id:4, name:'أنسولين', price:120, stock:5 },
+    { id:5, name:'مضاد حيوي', price:60, stock:0 }
 ];
-let cart = JSON.parse(localStorage.getItem('myCart') || '[]');
 
+let cart = JSON.parse(localStorage.getItem('myCart') || '[]');
+let pharmacyId = null;
+let pharmacyName = 'غير مرتبط';
+
+// ----- تحميل الصيدلية المرتبطة -----
+function loadPharmacy() {
+    const partners = JSON.parse(localStorage.getItem('myNetwork') || '[]');
+    const pharmacy = partners.find(p => p.type === 'pharmacy' && p.status === 'active');
+    if (pharmacy) {
+        pharmacyId = pharmacy.id || 1;
+        pharmacyName = pharmacy.name || 'صيدلية النور';
+        document.getElementById('pharmacyNameStrong').textContent = pharmacyName;
+    } else {
+        document.getElementById('pharmacyNameStrong').textContent = '⚠️ غير مرتبط';
+        document.getElementById('pharmacyNameStrong').style.color = '#dc2626';
+    }
+}
+
+// ----- عرض المنتجات -----
 function renderProducts() {
     const container = document.getElementById('productList');
     container.innerHTML = '';
+    if (!pharmacyId) {
+        container.innerHTML = '<div class="empty-state"><i class="fas fa-store"></i> يرجى ربط صيدلية أولاً من "شبكتي الصحية"</div>';
+        return;
+    }
     products.forEach(p => {
         const div = document.createElement('div');
         div.className = 'product-item';
+        const inCart = cart.find(c => c.id === p.id);
+        const qtyInCart = inCart ? inCart.qty : 0;
+        const available = p.stock - qtyInCart;
         div.innerHTML = `
             <div class="info">
                 <div class="name">💊 ${p.name}</div>
-                <div class="price">${p.price} ج.م | متبقي: ${p.stock}</div>
+                <div class="price">${p.price} ج.م | متبقي: ${available}</div>
             </div>
-            <button class="btn-add" onclick="addToCart(${p.id})" ${p.stock===0?'disabled style="opacity:0.5;"':''}>${p.stock===0?'غير متوفر':'إضافة'}</button>
+            <button class="btn-add" onclick="addToCart(${p.id})" ${available <= 0 ? 'disabled' : ''}>
+                ${available <= 0 ? 'غير متوفر' : 'إضافة'}
+            </button>
         `;
         container.appendChild(div);
     });
 }
 
+// ----- إضافة للسلة -----
 function addToCart(id) {
     const product = products.find(p => p.id === id);
-    if (!product || product.stock === 0) return;
-    const existing = cart.find(c => c.id === id);
-    if (existing) existing.qty += 1;
-    else cart.push({ ...product, qty: 1 });
+    if (!product) return;
+    const inCart = cart.find(c => c.id === id);
+    const currentQty = inCart ? inCart.qty : 0;
+    if (currentQty >= product.stock) {
+        alert('⚠️ الكمية المطلوبة غير متوفرة في المخزون');
+        return;
+    }
+    if (inCart) {
+        inCart.qty += 1;
+    } else {
+        cart.push({ ...product, qty: 1 });
+    }
     localStorage.setItem('myCart', JSON.stringify(cart));
     renderCart();
+    renderProducts();
 }
 
+// ----- عرض السلة -----
 function renderCart() {
     const container = document.getElementById('cartItems');
     const totalEl = document.getElementById('cartTotal');
-    if (cart.length === 0) { container.innerHTML = '<p style="font-size:13px;color:#94a3b8;">السلة فارغة</p>'; totalEl.textContent = '0 ج.م'; return; }
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    if (cart.length === 0) {
+        container.innerHTML = '<p style="font-size:13px;color:#94a3b8;">السلة فارغة</p>';
+        totalEl.textContent = '0 ج.م';
+        checkoutBtn.disabled = true;
+        return;
+    }
     let total = 0;
     container.innerHTML = '';
     cart.forEach((item, i) => {
         total += item.price * item.qty;
         const div = document.createElement('div');
         div.className = 'item';
-        div.innerHTML = `<span>${item.name} × ${item.qty}</span><span>${item.price * item.qty} ج.م</span>`;
+        div.innerHTML = `
+            <span>${item.name} × ${item.qty}</span>
+            <span>${item.price * item.qty} ج.م</span>
+        `;
         container.appendChild(div);
     });
     totalEl.textContent = total + ' ج.م';
+    checkoutBtn.disabled = false;
 }
 
-function checkout() {
-    if (cart.length === 0) { alert('❌ السلة فارغة'); return; }
-    alert('✅ تم إرسال الطلب إلى الصيدلية بنجاح!');
-    cart = [];
-    localStorage.setItem('myCart', JSON.stringify(cart));
-    renderCart();
+// ----- تأكيد الطلب -----
+async function checkout() {
+    if (cart.length === 0) {
+        alert('❌ السلة فارغة');
+        return;
+    }
+
+    if (!pharmacyId) {
+        alert('❌ لا توجد صيدلية مرتبطة. اذهب إلى "شبكتي الصحية" أولاً.');
+        return;
+    }
+
+    // حساب الإجمالي
+    let total = 0;
+    cart.forEach(item => total += item.price * item.qty);
+
+    // تجهيز بيانات الطلب
+    const orderData = {
+        pharmacy_id: pharmacyId,
+        items: cart.map(item => ({
+            drug_name: item.name,
+            quantity: item.qty,
+            price: item.price
+        })),
+        total_price: total,
+        notes: 'طلب من تطبيق Doctor.ai'
+    };
+
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    checkoutBtn.disabled = true;
+    checkoutBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> جاري الإرسال...';
+
+    try {
+        const result = await apiCreateOrder(orderData);
+        if (result.success) {
+            alert('✅ تم إرسال طلبك إلى الصيدلية بنجاح!');
+            cart = [];
+            localStorage.setItem('myCart', JSON.stringify(cart));
+            renderCart();
+            renderProducts();
+        } else {
+            alert('❌ فشل إرسال الطلب: ' + (result.message || 'خطأ غير معروف'));
+        }
+    } catch (error) {
+        alert('❌ حدث خطأ في الاتصال بالسيرفر');
+        console.error(error);
+    } finally {
+        checkoutBtn.disabled = false;
+        checkoutBtn.innerHTML = '<i class="fas fa-check"></i> تأكيد الطلب';
+    }
 }
 
+// ----- تحميل الصفحة -----
 document.addEventListener('DOMContentLoaded', function() {
+    loadPharmacy();
     renderProducts();
     renderCart();
-    const partners = JSON.parse(localStorage.getItem('myNetwork') || '[]');
-    const pharmacy = partners.find(p => p.type === 'pharmacy' && p.status === 'active');
-    if (pharmacy) document.getElementById('pharmacyName').innerHTML = '📍 صيدليتك المرتبطة: <strong>' + pharmacy.name + '</strong>';
+    console.log('✅ المتجر جاهز (مرتبط بالسيرفر)');
 });
 </script>
 </body>

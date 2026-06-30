@@ -3,169 +3,42 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>إدارة المخزون - الصيدلي</title>
+    <title>إدارة المخزون - Doctor.ai</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../../../CSS/style.css" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; padding-bottom:80px; min-height:100vh; }
-        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; display:flex; align-items:center; justify-content:center; }
+        .app-container { max-width:480px; width:100%; background:#fff; border-radius:28px; padding:24px 20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
         .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
         .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
-        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
-        .header .add-btn { background:#0d9488; color:#fff; border:none; padding:6px 16px; border-radius:20px; font-size:13px; cursor:pointer; }
-        .search-box { width:100%; padding:10px 14px; border:2px solid #e5e7eb; border-radius:12px; font-size:14px; margin-bottom:12px; outline:none; }
-        .search-box:focus { border-color:#0d9488; }
-        .product-item { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #f1f5f9; }
-        .product-item .info .name { font-weight:700; font-size:15px; }
-        .product-item .info .details { font-size:12px; color:#64748b; }
-        .product-item .stock { font-weight:600; font-size:14px; }
-        .product-item .stock.low { color:#dc2626; }
-        .product-item .stock.medium { color:#d97706; }
-        .product-item .stock.high { color:#065f46; }
-        .product-item .actions button { background:transparent; border:none; color:#94a3b8; cursor:pointer; padding:4px; }
-        .product-item .actions button:hover { color:#0d9488; }
-        .empty-state { text-align:center; padding:30px 0; color:#94a3b8; }
-        .empty-state i { font-size:40px; display:block; margin-bottom:8px; color:#cbd5e1; }
-        .modal { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:200; align-items:center; justify-content:center; }
-        .modal.show { display:flex; }
-        .modal-content { background:#fff; max-width:400px; width:90%; padding:24px; border-radius:24px; }
-        .modal-content h3 { font-size:18px; color:#1e293b; margin-bottom:12px; }
-        .modal-content .form-group { margin-bottom:12px; }
-        .modal-content .form-group label { display:block; font-weight:600; font-size:13px; color:#1e293b; margin-bottom:4px; }
-        .modal-content .form-group input { width:100%; padding:10px; border:2px solid #e5e7eb; border-radius:12px; font-size:14px; }
-        .modal-content .form-group input:focus { border-color:#0d9488; outline:none; }
-        .modal-content .btn-group { display:flex; gap:10px; margin-top:16px; }
-        .modal-content .btn-group button { flex:1; padding:10px; border:none; border-radius:12px; font-size:15px; font-weight:600; cursor:pointer; }
-        .btn-save { background:#0d9488; color:#fff; }
-        .btn-cancel { background:#f1f5f9; color:#64748b; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; display:flex; align-items:center; gap:8px; }
+        .header .title i { color:#0d9488; }
+        .service-box { background:#ecfdf5; border-radius:16px; padding:20px; text-align:center; border:2px dashed #0d9488; }
+        .service-box .icon { font-size:64px; color:#0d9488; display:block; margin-bottom:12px; }
+        .service-box h3 { color:#1e293b; margin-bottom:6px; }
+        .service-box p { color:#64748b; font-size:14px; line-height:1.8; }
+        .btn-action { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; margin-top:12px; }
+        .btn-action:active { transform:scale(0.98); }
+        .info-text { font-size:12px; color:#94a3b8; text-align:center; margin-top:12px; }
     </style>
 </head>
 <body>
 <div class="app-container">
     <div class="header">
         <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
-        <div class="title">📦 إدارة المخزون</div>
-        <button class="add-btn" onclick="openAddModal()"><i class="fas fa-plus"></i> إضافة</button>
+        <div class="title"><i class="fas fa-boxes"></i> إدارة المخزون</div>
     </div>
-    <input class="search-box" type="text" id="searchInput" placeholder="🔍 بحث في المنتجات..." oninput="filterProducts(this.value)" />
-    <div id="productList"></div>
-</div>
-
-<!-- مودال الإضافة/التعديل -->
-<div class="modal" id="productModal">
-    <div class="modal-content">
-        <h3 id="modalTitle">إضافة منتج جديد</h3>
-        <div class="form-group"><label>اسم المنتج</label><input type="text" id="pName" placeholder="باراسيتامول" /></div>
-        <div class="form-group"><label>السعر (ج.م)</label><input type="number" id="pPrice" placeholder="15" /></div>
-        <div class="form-group"><label>الكمية</label><input type="number" id="pStock" placeholder="50" /></div>
-        <div class="form-group"><label>تاريخ الصلاحية</label><input type="date" id="pExpiry" /></div>
-        <div class="btn-group">
-            <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
-            <button class="btn-save" onclick="saveProduct()">حفظ</button>
-        </div>
+    <div class="service-box">
+        <span class="icon"><i class="fas fa-boxes"></i></span>
+        <h3>إدارة المخزون</h3>
+        <p>هذه الخدمة جاهزة للتشغيل. سيتم ربطها بالسيرفر في الإصدار القادم.</p>
+        <button class="btn-action" onclick="alert('🔜 سيتم فتح إدارة المخزون قريباً')">
+            <i class="fas fa-play"></i> تشغيل الخدمة
+        </button>
     </div>
+    <div class="info-text">🆔 ph-inventory | خدمة pharmacy</div>
 </div>
-
-<script>
-// ============================================================
-// ===== إدارة المخزون =====
-// ============================================================
-
-let products = JSON.parse(localStorage.getItem('pharmacyInventory') || '[]');
-let editIndex = -1;
-
-function renderProducts(filter = '') {
-    const container = document.getElementById('productList');
-    const q = filter.toLowerCase();
-    const filtered = products.filter(p => p.name.includes(q) || p.price.toString().includes(q));
-    if (filtered.length === 0) {
-        container.innerHTML = `<div class="empty-state"><i class="fas fa-box-open"></i> لا توجد منتجات</div>`;
-        return;
-    }
-    container.innerHTML = '';
-    filtered.forEach((p, idx) => {
-        const actualIndex = products.indexOf(p);
-        const stockClass = p.stock < 10 ? 'low' : p.stock < 30 ? 'medium' : 'high';
-        const div = document.createElement('div');
-        div.className = 'product-item';
-        div.innerHTML = `
-            <div class="info">
-                <div class="name">${p.name}</div>
-                <div class="details">${p.price} ج.م | صلاحية: ${p.expiry || 'غير محدد'}</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-                <span class="stock ${stockClass}">${p.stock}</span>
-                <div class="actions">
-                    <button onclick="editProduct(${actualIndex})"><i class="fas fa-edit"></i></button>
-                    <button onclick="deleteProduct(${actualIndex})"><i class="fas fa-trash" style="color:#dc2626;"></i></button>
-                </div>
-            </div>
-        `;
-        container.appendChild(div);
-    });
-}
-
-function filterProducts(value) { renderProducts(value); }
-
-function openAddModal() {
-    document.getElementById('modalTitle').textContent = 'إضافة منتج جديد';
-    document.getElementById('pName').value = '';
-    document.getElementById('pPrice').value = '';
-    document.getElementById('pStock').value = '';
-    document.getElementById('pExpiry').value = '';
-    editIndex = -1;
-    document.getElementById('productModal').classList.add('show');
-}
-
-function editProduct(index) {
-    const p = products[index];
-    document.getElementById('modalTitle').textContent = 'تعديل المنتج';
-    document.getElementById('pName').value = p.name;
-    document.getElementById('pPrice').value = p.price;
-    document.getElementById('pStock').value = p.stock;
-    document.getElementById('pExpiry').value = p.expiry || '';
-    editIndex = index;
-    document.getElementById('productModal').classList.add('show');
-}
-
-function saveProduct() {
-    const name = document.getElementById('pName').value.trim();
-    const price = parseFloat(document.getElementById('pPrice').value);
-    const stock = parseInt(document.getElementById('pStock').value);
-    const expiry = document.getElementById('pExpiry').value;
-    if (!name || isNaN(price) || isNaN(stock)) { alert('❌ يرجى ملء جميع الحقول'); return; }
-    const product = { name, price, stock, expiry };
-    if (editIndex === -1) products.push(product);
-    else products[editIndex] = product;
-    localStorage.setItem('pharmacyInventory', JSON.stringify(products));
-    closeModal();
-    renderProducts();
-}
-
-function deleteProduct(index) {
-    if (!confirm('هل أنت متأكد من حذف هذا المنتج؟')) return;
-    products.splice(index, 1);
-    localStorage.setItem('pharmacyInventory', JSON.stringify(products));
-    renderProducts();
-}
-
-function closeModal() { document.getElementById('productModal').classList.remove('show'); }
-
-document.addEventListener('DOMContentLoaded', function() {
-    // بيانات افتراضية لو مفيش
-    if (products.length === 0) {
-        products = [
-            { name: 'باراسيتامول', price: 15, stock: 50, expiry: '2026-12-31' },
-            { name: 'أموكسيسيلين', price: 40, stock: 20, expiry: '2026-08-31' },
-            { name: 'فيتامين C', price: 25, stock: 100, expiry: '2027-03-31' }
-        ];
-        localStorage.setItem('pharmacyInventory', JSON.stringify(products));
-    }
-    renderProducts();
-    console.log('✅ إدارة المخزون جاهزة');
-});
-</script>
 </body>
 </html>

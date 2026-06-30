@@ -5,6 +5,8 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+
+// ===== استدعاء جميع الـ Routes =====
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const pharmacyRoutes = require('./routes/pharmacyRoutes');
@@ -13,6 +15,9 @@ const labRoutes = require('./routes/labRoutes');
 const radiologyRoutes = require('./routes/radiologyRoutes');
 const supplierRoutes = require('./routes/supplierRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const patientRoutes = require('./routes/patientRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+
 const db = require('./config/db');
 
 dotenv.config();
@@ -47,6 +52,8 @@ app.use('/api/lab', labRoutes);
 app.use('/api/radiology', radiologyRoutes);
 app.use('/api/supplier', supplierRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/patient', patientRoutes);
+app.use('/api/orders', orderRoutes);
 
 // ===== مسار الاختبار =====
 app.get('/api/test', (req, res) => {

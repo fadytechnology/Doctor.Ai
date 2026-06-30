@@ -6,125 +6,39 @@
     <title>شبكتي الصحية - Doctor.ai</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../../../CSS/style.css" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; }
-        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; display:flex; align-items:center; justify-content:center; }
+        .app-container { max-width:480px; width:100%; background:#fff; border-radius:28px; padding:24px 20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
         .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
         .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
-        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
-        .my-code-box { background:linear-gradient(135deg,#0d9488,#0f766e); border-radius:16px; padding:16px; color:#fff; text-align:center; margin-bottom:16px; }
-        .my-code-box .code { font-size:28px; font-weight:800; background:rgba(255,255,255,0.15); padding:8px; border-radius:12px; display:inline-block; margin-top:4px; }
-        .my-code-box .copy { background:rgba(255,255,255,0.2); border:none; color:#fff; padding:4px 16px; border-radius:20px; cursor:pointer; font-size:12px; margin-top:8px; }
-        .form-row { display:flex; gap:10px; }
-        .form-row input { flex:1; padding:10px; border:2px solid #e5e7eb; border-radius:12px; font-size:14px; }
-        .form-row select { padding:10px; border:2px solid #e5e7eb; border-radius:12px; font-size:14px; background:#fff; }
-        .btn-add { padding:10px 20px; background:#0d9488; color:#fff; border:none; border-radius:12px; font-size:14px; font-weight:600; cursor:pointer; }
-        .partner-item { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #f1f5f9; }
-        .partner-item .info .name { font-weight:700; color:#1e293b; }
-        .partner-item .info .type { font-size:12px; color:#64748b; }
-        .partner-item .status { font-size:12px; padding:2px 12px; border-radius:12px; }
-        .status.active { background:#d1fae5; color:#065f46; }
-        .status.pending { background:#fef3c7; color:#92400e; }
-        .btn-remove { background:#fef2f2; color:#991b1b; border:none; padding:4px 12px; border-radius:12px; cursor:pointer; font-size:12px; }
-        .empty-state { text-align:center; padding:20px 0; color:#94a3b8; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; display:flex; align-items:center; gap:8px; }
+        .header .title i { color:#0d9488; }
+        .service-box { background:#ecfdf5; border-radius:16px; padding:20px; text-align:center; border:2px dashed #0d9488; }
+        .service-box .icon { font-size:64px; color:#0d9488; display:block; margin-bottom:12px; }
+        .service-box h3 { color:#1e293b; margin-bottom:6px; }
+        .service-box p { color:#64748b; font-size:14px; line-height:1.8; }
+        .btn-action { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; margin-top:12px; }
+        .btn-action:active { transform:scale(0.98); }
+        .info-text { font-size:12px; color:#94a3b8; text-align:center; margin-top:12px; }
     </style>
 </head>
 <body>
 <div class="app-container">
     <div class="header">
         <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
-        <div class="title">🔗 شبكتي الصحية</div>
+        <div class="title"><i class="fas fa-link"></i> شبكتي الصحية</div>
     </div>
-
-    <div class="my-code-box">
-        <div style="font-size:13px;opacity:0.8;">كود التعاون الخاص بك</div>
-        <div class="code" id="myCode">DR-1001</div>
-        <button class="copy" onclick="copyCode()"><i class="fas fa-copy"></i> نسخ الكود</button>
+    <div class="service-box">
+        <span class="icon"><i class="fas fa-link"></i></span>
+        <h3>شبكتي الصحية</h3>
+        <p>هذه الخدمة جاهزة للتشغيل. سيتم ربطها بالسيرفر في الإصدار القادم.</p>
+        <button class="btn-action" onclick="alert('🔜 سيتم فتح شبكتي الصحية قريباً')">
+            <i class="fas fa-play"></i> تشغيل الخدمة
+        </button>
     </div>
-
-    <div class="form-row" style="margin-bottom:12px;">
-        <input type="text" id="partnerCode" placeholder="أدخل كود التعاون" />
-        <select id="partnerType">
-            <option value="pharmacy">صيدلية</option>
-            <option value="clinic">عيادة</option>
-            <option value="lab">معمل</option>
-            <option value="radiology">أشعة</option>
-        </select>
-        <button class="btn-add" onclick="addPartner()"><i class="fas fa-plus"></i></button>
-    </div>
-
-    <div id="partnerList"></div>
+    <div class="info-text">🆔 network | خدمة patient</div>
 </div>
-<script>
-let partners = JSON.parse(localStorage.getItem('myNetwork') || '[]');
-
-function renderPartners() {
-    const container = document.getElementById('partnerList');
-    if (partners.length === 0) {
-        container.innerHTML = '<div class="empty-state"><i class="fas fa-users" style="font-size:32px;display:block;margin-bottom:8px;color:#cbd5e1;"></i> لم ترتبط بأي جهة بعد</div>';
-        return;
-    }
-    container.innerHTML = '';
-    partners.forEach((p, i) => {
-        const types = { pharmacy:'صيدلية', clinic:'عيادة', lab:'معمل', radiology:'مركز أشعة' };
-        const statusMap = { active:'نشط', pending:'قيد الانتظار', rejected:'مرفوض' };
-        const div = document.createElement('div');
-        div.className = 'partner-item';
-        div.innerHTML = `
-            <div class="info">
-                <div class="name">${p.name || types[p.type]}</div>
-                <div class="type">${types[p.type]} | كود: ${p.code}</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-                <span class="status ${p.status}">${statusMap[p.status]}</span>
-                <button class="btn-remove" onclick="removePartner(${i})"><i class="fas fa-unlink"></i></button>
-            </div>
-        `;
-        container.appendChild(div);
-    });
-}
-
-function addPartner() {
-    const code = document.getElementById('partnerCode').value.trim().toUpperCase();
-    const type = document.getElementById('partnerType').value;
-    if (!code) { alert('❌ أدخل كود التعاون'); return; }
-    const validCodes = {
-        'PH-12345': { name: 'صيدلية النور', type: 'pharmacy' },
-        'CL-67890': { name: 'عيادة السلام', type: 'clinic' },
-        'LB-11111': { name: 'معمل المختبر', type: 'lab' }
-    };
-    if (!validCodes[code]) { alert('❌ كود غير صحيح'); return; }
-    const partner = validCodes[code];
-    if (partner.type !== type) { alert('❌ نوع الجهة غير صحيح'); return; }
-    if (partners.find(p => p.code === code)) { alert('⚠️ الجهة مرتبطة بالفعل'); return; }
-    partners.push({ code, name: partner.name, type: partner.type, status: 'active' });
-    localStorage.setItem('myNetwork', JSON.stringify(partners));
-    document.getElementById('partnerCode').value = '';
-    renderPartners();
-    alert('✅ تم ربط ' + partner.name);
-}
-
-function removePartner(index) {
-    if (!confirm('إلغاء ربط هذه الجهة؟')) return;
-    partners.splice(index, 1);
-    localStorage.setItem('myNetwork', JSON.stringify(partners));
-    renderPartners();
-}
-
-function copyCode() {
-    const code = document.getElementById('myCode').textContent;
-    if (navigator.clipboard) { navigator.clipboard.writeText(code).then(() => alert('✅ تم النسخ')); }
-    else { alert('🔑 كودك: ' + code); }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    let code = localStorage.getItem('myPatientCode');
-    if (!code) { code = 'DR-' + Math.floor(1000 + Math.random() * 9000); localStorage.setItem('myPatientCode', code); }
-    document.getElementById('myCode').textContent = code;
-    renderPartners();
-});
-</script>
 </body>
 </html>

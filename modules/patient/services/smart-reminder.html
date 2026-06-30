@@ -6,70 +6,39 @@
     <title>منبه العلاج الذكي - Doctor.ai</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../../../CSS/style.css" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; }
-        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; display:flex; align-items:center; justify-content:center; }
+        .app-container { max-width:480px; width:100%; background:#fff; border-radius:28px; padding:24px 20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
         .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
         .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
-        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
-        .form-group { margin-bottom:12px; }
-        .form-group label { display:block; font-weight:600; color:#1e293b; font-size:13px; margin-bottom:4px; }
-        .form-group input { width:100%; padding:10px; border:2px solid #e5e7eb; border-radius:12px; font-size:14px; background:#f9fafb; }
-        .btn-primary { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; }
-        .reminder-item { padding:8px 0; border-bottom:1px solid #f1f5f9; font-size:14px; }
+        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; display:flex; align-items:center; gap:8px; }
+        .header .title i { color:#0d9488; }
+        .service-box { background:#ecfdf5; border-radius:16px; padding:20px; text-align:center; border:2px dashed #0d9488; }
+        .service-box .icon { font-size:64px; color:#0d9488; display:block; margin-bottom:12px; }
+        .service-box h3 { color:#1e293b; margin-bottom:6px; }
+        .service-box p { color:#64748b; font-size:14px; line-height:1.8; }
+        .btn-action { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; margin-top:12px; }
+        .btn-action:active { transform:scale(0.98); }
+        .info-text { font-size:12px; color:#94a3b8; text-align:center; margin-top:12px; }
     </style>
 </head>
 <body>
 <div class="app-container">
     <div class="header">
         <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
-        <div class="title">⏰ منبه العلاج الذكي</div>
+        <div class="title"><i class="fas fa-bell"></i> منبه العلاج الذكي</div>
     </div>
-    <div class="form-group"><label><i class="fas fa-pills"></i> اسم الدواء</label><input type="text" id="medName" placeholder="باراسيتامول" /></div>
-    <div class="form-group"><label><i class="fas fa-clock"></i> وقت التذكير</label><input type="time" id="remindTime" /></div>
-    <div class="form-group"><label><i class="fas fa-repeat"></i> التكرار</label>
-        <select id="repeatType" style="width:100%;padding:10px;border:2px solid #e5e7eb;border-radius:12px;font-size:14px;">
-            <option value="daily">يومياً</option><option value="weekly">أسبوعياً</option><option value="custom">مخصص</option>
-        </select>
+    <div class="service-box">
+        <span class="icon"><i class="fas fa-bell"></i></span>
+        <h3>منبه العلاج الذكي</h3>
+        <p>هذه الخدمة جاهزة للتشغيل. سيتم ربطها بالسيرفر في الإصدار القادم.</p>
+        <button class="btn-action" onclick="alert('🔜 سيتم فتح منبه العلاج الذكي قريباً')">
+            <i class="fas fa-play"></i> تشغيل الخدمة
+        </button>
     </div>
-    <button class="btn-primary" onclick="addSmartReminder()"><i class="fas fa-bell"></i> إضافة تذكير</button>
-    <div style="margin-top:16px;"><div id="reminderList"></div></div>
+    <div class="info-text">🆔 smart-reminder | خدمة patient</div>
 </div>
-<script>
-function loadSmartReminders() {
-    const list = JSON.parse(localStorage.getItem('smartReminders') || '[]');
-    const container = document.getElementById('reminderList');
-    if (list.length === 0) { container.innerHTML = '<p style="color:#94a3b8;font-size:13px;text-align:center;">لا توجد تذكيرات</p>'; return; }
-    container.innerHTML = '';
-    list.forEach((item, idx) => {
-        const div = document.createElement('div');
-        div.className = 'reminder-item';
-        div.innerHTML = `<span>💊 ${item.name} - ⏰ ${item.time} (${item.repeat})</span><span style="color:#0d9488;cursor:pointer;" onclick="deleteReminder(${idx})"><i class="fas fa-trash"></i></span>`;
-        container.appendChild(div);
-    });
-}
-function addSmartReminder() {
-    const name = document.getElementById('medName').value.trim();
-    const time = document.getElementById('remindTime').value;
-    const repeat = document.getElementById('repeatType').value;
-    if (!name || !time) { alert('❌ أدخل اسم الدواء والوقت'); return; }
-    const list = JSON.parse(localStorage.getItem('smartReminders') || '[]');
-    list.push({ name, time, repeat });
-    localStorage.setItem('smartReminders', JSON.stringify(list));
-    document.getElementById('medName').value = ''; document.getElementById('remindTime').value = '';
-    loadSmartReminders();
-    if (Notification.permission === 'granted') new Notification('✅ تم إضافة تذكير', { body: `دواء ${name} في ${time}` });
-    else Notification.requestPermission();
-}
-function deleteReminder(index) {
-    const list = JSON.parse(localStorage.getItem('smartReminders') || '[]');
-    list.splice(index, 1);
-    localStorage.setItem('smartReminders', JSON.stringify(list));
-    loadSmartReminders();
-}
-document.addEventListener('DOMContentLoaded', loadSmartReminders);
-</script>
 </body>
 </html>

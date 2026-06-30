@@ -9,81 +9,136 @@
     <link rel="stylesheet" href="../../../CSS/style.css" />
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; padding-bottom:80px; min-height:100vh; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; }
         .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
         .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
         .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
         .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
-        .filter-btns { display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap; }
-        .filter-btns button { padding:4px 14px; border:2px solid #e5e7eb; border-radius:20px; background:#fff; font-size:12px; cursor:pointer; transition:0.2s; }
-        .filter-btns button.active { background:#0d9488; color:#fff; border-color:#0d9488; }
+        .filter-bar { display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap; }
+        .filter-bar button { padding:4px 14px; border:2px solid #e5e7eb; border-radius:20px; background:#fff; font-size:12px; cursor:pointer; transition:0.2s; }
+        .filter-bar button.active { background:#0d9488; color:#fff; border-color:#0d9488; }
         .order-item { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #f1f5f9; }
         .order-item .info .patient { font-weight:700; font-size:15px; }
         .order-item .info .meds { font-size:12px; color:#64748b; }
         .order-item .info .time { font-size:11px; color:#94a3b8; }
         .order-status { font-size:12px; padding:2px 12px; border-radius:12px; font-weight:600; }
         .order-status.pending { background:#fef3c7; color:#92400e; }
+        .order-status.processing { background:#dbeafe; color:#1e40af; }
         .order-status.ready { background:#d1fae5; color:#065f46; }
-        .order-status.delivered { background:#dbeafe; color:#1e40af; }
-        .order-actions { display:flex; gap:6px; }
-        .order-actions button { padding:2px 10px; border:none; border-radius:12px; font-size:11px; cursor:pointer; }
+        .order-status.delivered { background:#d1fae5; color:#065f46; }
+        .order-status.cancelled { background:#fecaca; color:#991b1b; }
+        .order-actions { display:flex; gap:6px; margin-top:4px; flex-wrap:wrap; }
+        .btn-sm { padding:2px 10px; border:none; border-radius:12px; font-size:11px; cursor:pointer; transition:0.2s; }
+        .btn-sm:active { transform:scale(0.95); }
         .btn-update { background:#0d9488; color:#fff; }
-        .btn-update:active { transform:scale(0.95); }
+        .btn-update:hover { background:#0f766e; }
         .empty-state { text-align:center; padding:30px 0; color:#94a3b8; }
         .empty-state i { font-size:40px; display:block; margin-bottom:8px; color:#cbd5e1; }
+        .loading { text-align:center; padding:20px; color:#0d9488; }
+        .badge-count { background:#0d9488; color:#fff; font-size:11px; padding:0 8px; border-radius:10px; }
     </style>
 </head>
 <body>
 <div class="app-container">
     <div class="header">
-        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
-        <div class="title">📋 إدارة الطلبات</div>
+        <button class="back" onclick="window.location.href='../services-hub.html'"><i class="fas fa-arrow-right"></i></button>
+        <div class="title">📋 إدارة الطلبات <span class="badge-count" id="orderCount">0</span></div>
     </div>
-    <div class="filter-btns">
+
+    <div class="filter-bar">
         <button class="active" onclick="filterOrders('all')">الكل</button>
         <button onclick="filterOrders('pending')">⏳ قيد التجهيز</button>
+        <button onclick="filterOrders('processing')">🔄 قيد المعالجة</button>
         <button onclick="filterOrders('ready')">✅ جاهز</button>
         <button onclick="filterOrders('delivered')">📦 تم التوصيل</button>
     </div>
-    <div id="ordersList"></div>
+
+    <div id="ordersList">
+        <div class="loading"><i class="fas fa-spinner fa-pulse"></i> جاري تحميل الطلبات...</div>
+    </div>
 </div>
+
+<script src="../../../JS/api.js"></script>
 <script>
-let orders = JSON.parse(localStorage.getItem('pharmacyOrders') || '[]');
+// ============================================================
+// ===== إدارة الطلبات - الصيدلي =====
+// ============================================================
+
+let allOrders = [];
 let currentFilter = 'all';
 
-if (orders.length === 0) {
-    orders = [
-        { id: 1, patient: 'محمد علي', meds: 'باراسيتامول 2 شريط', status: 'pending', time: '10:30 ص', date: '2026-06-29' },
-        { id: 2, patient: 'سارة حسن', meds: 'أموكسيسيلين 1 شريط', status: 'ready', time: '11:15 ص', date: '2026-06-29' },
-        { id: 3, patient: 'خالد محمود', meds: 'أنسولين 2 زجاجة', status: 'delivered', time: '09:45 ص', date: '2026-06-28' }
-    ];
-    localStorage.setItem('pharmacyOrders', JSON.stringify(orders));
+// ----- جلب الطلبات من السيرفر -----
+async function loadOrders() {
+    const container = document.getElementById('ordersList');
+    container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-pulse"></i> جاري تحميل الطلبات...</div>';
+
+    try {
+        const result = await apiGetPharmacyOrders();
+        if (result.success && result.data) {
+            allOrders = result.data;
+        } else {
+            console.error('❌ خطأ في جلب الطلبات:', result.message);
+            allOrders = [];
+        }
+    } catch (error) {
+        console.error('❌ خطأ:', error);
+        allOrders = [];
+    }
+
+    // تحديث العدد
+    document.getElementById('orderCount').textContent = allOrders.length;
+    renderOrders(currentFilter);
 }
 
-function renderOrders(filter = 'all') {
+// ----- عرض الطلبات -----
+function renderOrders(filter) {
     const container = document.getElementById('ordersList');
-    let filtered = filter === 'all' ? orders : orders.filter(o => o.status === filter);
+    const filtered = filter === 'all' ? allOrders : allOrders.filter(o => o.status === filter);
+
     if (filtered.length === 0) {
-        container.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i> لا توجد طلبات</div>`;
+        container.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-inbox"></i>
+                لا توجد طلبات ${filter !== 'all' ? 'بهذه الحالة' : ''}
+            </div>
+        `;
         return;
     }
+
     container.innerHTML = '';
-    filtered.forEach((o, idx) => {
+    filtered.forEach((o) => {
         const div = document.createElement('div');
         div.className = 'order-item';
-        const statusMap = { pending:'قيد التجهيز', ready:'جاهز', delivered:'تم التوصيل' };
+
+        const statusMap = {
+            pending: '⏳ قيد التجهيز',
+            processing: '🔄 قيد المعالجة',
+            ready: '✅ جاهز',
+            delivered: '📦 تم التوصيل',
+            cancelled: '❌ ملغي'
+        };
+        const statusClass = o.status || 'pending';
+
+        // استخراج أسماء الأدوية من items
+        let medsText = o.drug_name || 'طلب';
+        if (o.items && o.items.length > 0) {
+            medsText = o.items.map(i => i.drug_name || i.name).join('، ');
+        }
+
         div.innerHTML = `
             <div class="info">
-                <div class="patient">${o.patient}</div>
-                <div class="meds">${o.meds}</div>
-                <div class="time">🕒 ${o.time} | ${o.date}</div>
+                <div class="patient">👤 ${o.patient_name || 'مريض'}</div>
+                <div class="meds">💊 ${medsText}</div>
+                <div class="time">🕒 ${new Date(o.created_at).toLocaleString('ar-EG')}</div>
             </div>
-            <div style="display:flex;align-items:center;gap:8px;flex-direction:column;align-items:flex-end;">
-                <span class="order-status ${o.status}">${statusMap[o.status] || o.status}</span>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+                <span class="order-status ${statusClass}">${statusMap[statusClass] || statusClass}</span>
                 <div class="order-actions">
-                    ${o.status === 'pending' ? `<button class="btn-update" onclick="updateStatus(${idx},'ready')">تجهيز</button>` : ''}
-                    ${o.status === 'ready' ? `<button class="btn-update" onclick="updateStatus(${idx},'delivered')">توصيل</button>` : ''}
-                    ${o.status === 'delivered' ? `<span style="font-size:11px;color:#94a3b8;">✅ مكتمل</span>` : ''}
+                    ${o.status === 'pending' ? `<button class="btn-sm btn-update" onclick="updateStatus(${o.id},'processing')">تجهيز</button>` : ''}
+                    ${o.status === 'processing' ? `<button class="btn-sm btn-update" onclick="updateStatus(${o.id},'ready')">جاهز</button>` : ''}
+                    ${o.status === 'ready' ? `<button class="btn-sm btn-update" onclick="updateStatus(${o.id},'delivered')">توصيل</button>` : ''}
+                    ${o.status === 'delivered' ? '<span style="font-size:12px;color:#94a3b8;">✅ مكتمل</span>' : ''}
+                    ${o.status === 'cancelled' ? '<span style="font-size:12px;color:#94a3b8;">❌ ملغي</span>' : ''}
                 </div>
             </div>
         `;
@@ -91,22 +146,37 @@ function renderOrders(filter = 'all') {
     });
 }
 
-function updateStatus(index, newStatus) {
-    const actualIndex = orders.findIndex(o => o.id === orders[index].id);
-    if (actualIndex === -1) return;
-    orders[actualIndex].status = newStatus;
-    localStorage.setItem('pharmacyOrders', JSON.stringify(orders));
-    renderOrders(currentFilter);
-}
-
+// ----- فلترة الطلبات -----
 function filterOrders(filter) {
     currentFilter = filter;
-    document.querySelectorAll('.filter-btns button').forEach(b => b.classList.remove('active'));
-    document.querySelector(`.filter-btns button[onclick*="${filter}"]`).classList.add('active');
+    document.querySelectorAll('.filter-bar button').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.filter-bar button[onclick*="${filter}"]`).classList.add('active');
     renderOrders(filter);
 }
 
-document.addEventListener('DOMContentLoaded', () => { renderOrders('all'); console.log('✅ إدارة الطلبات جاهزة'); });
+// ----- تحديث حالة الطلب -----
+async function updateStatus(orderId, status) {
+    if (!confirm(`هل أنت متأكد من تغيير الحالة إلى "${status}"؟`)) return;
+
+    try {
+        const result = await apiUpdateOrderStatus(orderId, status);
+        if (result.success) {
+            alert('✅ تم تحديث حالة الطلب');
+            loadOrders(); // إعادة تحميل الطلبات
+        } else {
+            alert('❌ فشل التحديث: ' + (result.message || 'خطأ غير معروف'));
+        }
+    } catch (error) {
+        alert('❌ حدث خطأ في الاتصال بالسيرفر');
+        console.error(error);
+    }
+}
+
+// ----- تحميل الصفحة -----
+document.addEventListener('DOMContentLoaded', function() {
+    loadOrders();
+    console.log('✅ إدارة الطلبات (مربوطة بالسيرفر) جاهزة');
+});
 </script>
 </body>
 </html>
