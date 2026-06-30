@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>تسجيل الدخول - Doctor.ai</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -48,17 +48,21 @@
     </style>
 </head>
 <body>
+
 <div class="auth-container">
     <div class="auth-header">
         <div class="logo"><i class="fas fa-heartbeat"></i> Doctor.<span style="color:#fbbf24;">ai</span></div>
         <a href="../index.html" class="back"><i class="fas fa-arrow-right"></i> الرئيسية</a>
     </div>
+
     <div class="auth-title">
         <h2>مرحباً بعودتك</h2>
         <p>سجل الدخول لمتابعة رحلتك الصحية</p>
     </div>
+
     <div id="errorMsg" class="auth-msg error"></div>
     <div id="successMsg" class="auth-msg success"></div>
+
     <form id="loginForm">
         <div class="form-group">
             <label><i class="fas fa-user"></i> البريد الإلكتروني أو رقم الهاتف</label>
@@ -73,6 +77,7 @@
                 </button>
             </div>
         </div>
+
         <div class="auth-options">
             <label class="remember-me">
                 <input type="checkbox" id="rememberMe" checked />
@@ -80,69 +85,132 @@
             </label>
             <a href="forgot-password.html" class="forgot-password">نسيت كلمة السر؟</a>
         </div>
+
         <button type="submit" class="btn-primary-full"><i class="fas fa-sign-in-alt"></i> تسجيل الدخول</button>
     </form>
+
     <div class="divider"><span>أو</span></div>
+
     <button class="btn-google" onclick="alert('🔐 سيتم تفعيل الدخول بجوجل قريباً')">
         <i class="fab fa-google"></i> الدخول بحساب Google
     </button>
+
     <p class="auth-footer">ليس لديك حساب؟ <a href="signup.html">إنشاء حساب جديد</a></p>
 </div>
+
 <script src="../JS/api.js"></script>
 <script>
 function togglePassword(inputId, button) {
     const input = document.getElementById(inputId);
     if (!input) return;
     const icon = button.querySelector('i');
-    if (input.type === 'password') { input.type = 'text'; icon.className = 'fas fa-eye-slash'; }
-    else { input.type = 'password'; icon.className = 'fas fa-eye'; }
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+    } else {
+        input.type = 'password';
+        icon.className = 'fas fa-eye';
+    }
 }
 
+// ===== دالة التوجيه المضمونة =====
+function redirectToDashboard(userData) {
+    if (!userData || !userData.role) {
+        window.location.href = '../index.html';
+        return;
+    }
+
+    const roleMap = {
+        'patient': '../modules/patient/index.html',
+        'pharmacy': '../modules/pharmacy/index.html',
+        'clinic': '../modules/clinic/index.html',
+        'lab': '../modules/lab/index.html',
+        'radiology': '../modules/radiology/index.html',
+        'supplier': '../modules/supplier/index.html',
+        'admin': '../modules/admin/index.html'
+    };
+
+    const url = roleMap[userData.role];
+    if (url) {
+        window.location.href = url;
+    } else {
+        window.location.href = '../index.html';
+    }
+}
+
+// ===== معالج تسجيل الدخول =====
 async function handleLogin(e) {
     e.preventDefault();
+
     const identifier = document.getElementById('loginField').value.trim();
     const password = document.getElementById('password').value.trim();
     const rememberMe = document.getElementById('rememberMe').checked;
+
     const errorMsg = document.getElementById('errorMsg');
     const successMsg = document.getElementById('successMsg');
+
     errorMsg.style.display = 'none';
     successMsg.style.display = 'none';
+
     if (!identifier || !password) {
         errorMsg.textContent = '❌ يرجى ملء جميع الحقول';
         errorMsg.style.display = 'block';
         return;
     }
-    const result = await apiLogin(identifier, password);
+
+    // ✅ الاتصال بالسيرفر
+    const result = await apiLogin(identifier, password, rememberMe);
+
     if (result.success) {
         successMsg.textContent = '✅ ' + result.message;
         successMsg.style.display = 'block';
-        if (!rememberMe) {
-            const user = localStorage.getItem('currentUser');
-            const token = localStorage.getItem('token');
-            if (user) sessionStorage.setItem('currentUser', user);
-            if (token) sessionStorage.setItem('token', token);
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('token');
-        }
+
+        // ✅ استخراج البيانات من التخزين
         setTimeout(() => {
-            const user = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser'));
-            if (user && user.role) {
-                redirectToRoleDashboard(user.role);
-            } else {
-                window.location.href = '../index.html';
+            let userStr = localStorage.getItem('currentUser');
+            if (!userStr) userStr = sessionStorage.getItem('currentUser');
+
+            if (userStr) {
+                try {
+                    const user = JSON.parse(userStr);
+                    console.log('✅ المستخدم:', user);
+                    redirectToDashboard(user);
+                    return;
+                } catch (e) {
+                    console.error('❌ خطأ في قراءة بيانات المستخدم:', e);
+                }
             }
-        }, 1200);
+
+            // لو حصل أي خطأ
+            window.location.href = '../index.html';
+        }, 1500);
+
     } else {
         errorMsg.textContent = '❌ ' + (result.message || 'بيانات الدخول غير صحيحة');
         errorMsg.style.display = 'block';
     }
 }
+
+// ===== ربط الفورم =====
 document.getElementById('loginForm').addEventListener('submit', handleLogin);
+
+// ===== لو المستخدم مسجل دخول مسبقاً =====
 document.addEventListener('DOMContentLoaded', function() {
-    if (localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser')) {
-        const user = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser'));
-        if (user && user.role) redirectToRoleDashboard(user.role);
+    let userStr = localStorage.getItem('currentUser');
+    if (!userStr) userStr = sessionStorage.getItem('currentUser');
+
+    if (userStr) {
+        try {
+            const user = JSON.parse(userStr);
+            if (user && user.role) {
+                redirectToDashboard(user);
+                return;
+            }
+        } catch (e) {
+            console.error('❌ خطأ في قراءة بيانات المستخدم:', e);
+        }
     }
+    console.log('✅ صفحة تسجيل الدخول جاهزة');
 });
 </script>
 </body>

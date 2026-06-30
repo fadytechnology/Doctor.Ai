@@ -14,10 +14,11 @@
         .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
         .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
         .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
+        .pharmacy-name { font-size:13px; color:#64748b; margin-bottom:12px; }
         .product-item { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #f1f5f9; }
         .product-item .info .name { font-weight:700; }
         .product-item .info .price { color:#0d9488; font-weight:600; font-size:14px; }
-        .product-item .btn-add { background:#0d9488; color:#fff; border:none; padding:4px 16px; border-radius:20px; cursor:pointer; font-size:13px; }
+        .btn-add { background:#0d9488; color:#fff; border:none; padding:4px 16px; border-radius:20px; cursor:pointer; font-size:13px; }
         .cart-box { background:#ecfdf5; border-radius:16px; padding:16px; margin-top:16px; border:2px dashed #0d9488; }
         .cart-box .item { display:flex; justify-content:space-between; padding:4px 0; font-size:14px; }
         .btn-checkout { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; margin-top:8px; }
@@ -28,14 +29,14 @@
 <div class="app-container">
     <div class="header">
         <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
-        <div class="title">🛒 الطلب السريع</div>
+        <div class="title">🛒 المتجر</div>
     </div>
-    <div style="font-size:13px;color:#64748b;margin-bottom:12px;">📍 صيدليتك المرتبطة: <strong id="pharmacyName">صيدلية النور</strong></div>
+    <div class="pharmacy-name" id="pharmacyName">📍 صيدليتك المرتبطة: <strong>صيدلية النور</strong></div>
     <div id="productList"></div>
     <div class="cart-box" id="cartBox">
         <h4 style="color:#0d9488;"><i class="fas fa-shopping-cart"></i> السلة</h4>
         <div id="cartItems"><p style="font-size:13px;color:#94a3b8;">السلة فارغة</p></div>
-        <div style="display:flex;justify-content:space-between;font-weight:700;margin-top:8px;border-top:1px solid #d1fae5;padding-top:8px;">
+        <div style="display:flex;justify-content:space-between;font-weight:700;padding-top:8px;border-top:1px solid #d1fae5;">
             <span>الإجمالي</span>
             <span id="cartTotal">0 ج.م</span>
         </div>
@@ -43,47 +44,36 @@
     </div>
 </div>
 <script>
-// بيانات وهمية للمتجر
 const products = [
-    { id:1, name:'باراسيتامول', price:15, stock:50, image:'💊' },
-    { id:2, name:'أموكسيسيلين', price:40, stock:20, image:'💊' },
-    { id:3, name:'فيتامين C', price:25, stock:100, image:'💊' },
-    { id:4, name:'أنسولين', price:120, stock:5, image:'💉' },
-    { id:5, name:'مضاد حيوي', price:60, stock:0, image:'💊' }
+    { id:1, name:'باراسيتامول', price:15, stock:50 },
+    { id:2, name:'أموكسيسيلين', price:40, stock:20 },
+    { id:3, name:'فيتامين C', price:25, stock:100 }
 ];
 let cart = JSON.parse(localStorage.getItem('myCart') || '[]');
 
 function renderProducts() {
     const container = document.getElementById('productList');
     container.innerHTML = '';
-    const hasPharmacy = true; // نفترض إنه مرتبط
-    if (!hasPharmacy) {
-        container.innerHTML = '<div class="empty-state"><i class="fas fa-store"></i> يرجى ربط صيدلية أولاً من "شبكتي الصحية".</div>';
-        return;
-    }
     products.forEach(p => {
         const div = document.createElement('div');
         div.className = 'product-item';
         div.innerHTML = `
             <div class="info">
-                <div class="name">${p.image} ${p.name}</div>
-                <div class="price">${p.price} ج.م | <span style="font-size:12px;color:#94a3b8;">المتبقي: ${p.stock}</span></div>
+                <div class="name">💊 ${p.name}</div>
+                <div class="price">${p.price} ج.م | متبقي: ${p.stock}</div>
             </div>
-            <button class="btn-add" onclick="addToCart(${p.id})" ${p.stock === 0 ? 'disabled style="opacity:0.5;"' : ''}>${p.stock === 0 ? 'غير متوفر' : 'إضافة'}</button>
+            <button class="btn-add" onclick="addToCart(${p.id})" ${p.stock===0?'disabled style="opacity:0.5;"':''}>${p.stock===0?'غير متوفر':'إضافة'}</button>
         `;
         container.appendChild(div);
     });
 }
 
-function addToCart(productId) {
-    const product = products.find(p => p.id === productId);
+function addToCart(id) {
+    const product = products.find(p => p.id === id);
     if (!product || product.stock === 0) return;
-    const existing = cart.find(c => c.id === productId);
-    if (existing) {
-        existing.qty += 1;
-    } else {
-        cart.push({ ...product, qty: 1 });
-    }
+    const existing = cart.find(c => c.id === id);
+    if (existing) existing.qty += 1;
+    else cart.push({ ...product, qty: 1 });
     localStorage.setItem('myCart', JSON.stringify(cart));
     renderCart();
 }
@@ -91,14 +81,10 @@ function addToCart(productId) {
 function renderCart() {
     const container = document.getElementById('cartItems');
     const totalEl = document.getElementById('cartTotal');
-    if (cart.length === 0) {
-        container.innerHTML = '<p style="font-size:13px;color:#94a3b8;">السلة فارغة</p>';
-        totalEl.textContent = '0 ج.م';
-        return;
-    }
+    if (cart.length === 0) { container.innerHTML = '<p style="font-size:13px;color:#94a3b8;">السلة فارغة</p>'; totalEl.textContent = '0 ج.م'; return; }
     let total = 0;
     container.innerHTML = '';
-    cart.forEach((item, index) => {
+    cart.forEach((item, i) => {
         total += item.price * item.qty;
         const div = document.createElement('div');
         div.className = 'item';
@@ -110,7 +96,6 @@ function renderCart() {
 
 function checkout() {
     if (cart.length === 0) { alert('❌ السلة فارغة'); return; }
-    // محاكاة إرسال الطلب
     alert('✅ تم إرسال الطلب إلى الصيدلية بنجاح!');
     cart = [];
     localStorage.setItem('myCart', JSON.stringify(cart));
@@ -120,10 +105,9 @@ function checkout() {
 document.addEventListener('DOMContentLoaded', function() {
     renderProducts();
     renderCart();
-    // محاولة جلب اسم الصيدلية المرتبطة
     const partners = JSON.parse(localStorage.getItem('myNetwork') || '[]');
     const pharmacy = partners.find(p => p.type === 'pharmacy' && p.status === 'active');
-    if (pharmacy) document.getElementById('pharmacyName').textContent = pharmacy.name || 'صيدلية النور';
+    if (pharmacy) document.getElementById('pharmacyName').innerHTML = '📍 صيدليتك المرتبطة: <strong>' + pharmacy.name + '</strong>';
 });
 </script>
 </body>
