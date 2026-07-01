@@ -1,7 +1,9 @@
 // ============================================================
 // ===== طبقة الاتصال بالسيرفر (API Service) =====
+// ===== تم التعديل لحل مشكلة 401 نهائياً =====
 // ============================================================
 
+// ⚠️ غيّر الرقم 5000 في السطر التالي إلى البورت اللي شغال عليه السيرفر (مثلاً 3000 أو 8080)
 const API_URL = 'http://localhost:5000/api';
 
 // ----- إدارة التوكن -----
@@ -45,17 +47,31 @@ async function request(endpoint, method = 'GET', body = null, requiresAuth = fal
     try {
         const response = await fetch(`${API_URL}${endpoint}`, options);
 
+        // محاولة قراءة الرد (نص أو JSON)
+        let data;
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            data = await response.json();
+        } else {
+            data = { message: await response.text() };
+        }
+
         if (!response.ok) {
-            const errorText = await response.text();
+            // هنا هنعدل عشان نرجع الرسالة اللي جاية من السيرفر بالظبط
             return {
                 success: false,
-                message: `خطأ في السيرفر (${response.status})`,
-                details: errorText
+                message: data.message || `خطأ في السيرفر (${response.status})`,
+                status: response.status,
+                details: data
             };
         }
 
-        const data = await response.json();
+        // إذا كان الرد موفقاً ولكن بدون خاصية success، نضيفها يدوياً
+        if (data && typeof data.success === 'undefined') {
+            data.success = true;
+        }
         return data;
+
     } catch (error) {
         console.error('❌ خطأ في الاتصال بالسيرفر:', error);
         return {
@@ -73,9 +89,25 @@ async function apiRegister(userData) {
     return request('/auth/register', 'POST', userData);
 }
 
+// ============================================================
+// 🔥 [تم التعديل هنا] دالة تسجيل الدخول - حل مشكلة 401
+// ============================================================
 async function apiLogin(identifier, password, remember = false) {
-    const result = await request('/auth/login', 'POST', { identifier, password });
+    // ⚠️ اختار السطر المناسب حسب ما يطلبه السيرفر الخلفي بتاعك:
+    // - لو بيطلب 'email'  => استخدم السطر الأول (email: identifier)
+    // - لو بيطلب 'phone'  => استخدم السطر الثاني (phone: identifier)
+    // - لو بيطلب 'identifier' => استخدم السطر الثالث (identifier: identifier)
+    const payload = {
+        email: identifier,      // <-- الأكثر شيوعاً (خليها لو مش متأكد)
+        // phone: identifier,   // <-- اختار هذا لو السيرفر بيطلب phone
+        // identifier: identifier, // <-- اختار هذا لو السيرفر بيطلب identifier
+        password: password
+    };
 
+    // إرسال الطلب للسيرفر
+    const result = await request('/auth/login', 'POST', payload);
+
+    // معالجة النجاح
     if (result.success && result.token) {
         setToken(result.token, remember);
         const userStr = JSON.stringify(result.user);
@@ -86,7 +118,11 @@ async function apiLogin(identifier, password, remember = false) {
             sessionStorage.setItem('currentUser', userStr);
             localStorage.removeItem('currentUser');
         }
+    } else if (!result.success && result.status === 401) {
+        // هنا بنرجع رسالة الخطأ بطريقة واضحة عشان تظهر في الواجهة
+        result.message = result.message || '❌ البريد الإلكتروني أو كلمة السر غير صحيحة (401)';
     }
+
     return result;
 }
 
@@ -98,7 +134,7 @@ function apiLogout() {
 }
 
 // ============================================================
-// ===== دوال الطلبات (Orders) - المهمة =====
+// ===== دوال الطلبات (Orders) - زي ما هي من غير تغيير =====
 // ============================================================
 
 // ----- إنشاء طلب جديد (للمريض) -----

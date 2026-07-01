@@ -6,12 +6,59 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+// ===== دالة مساعدة لإنشاء مستخدم افتراضي =====
+async function seedDefaultUsers() {
+    try {
+        const count = await User.count();
+        if (count === 0) {
+            console.log('🌱 لا يوجد مستخدمين، جاري إنشاء مستخدمين افتراضيين...');
+
+            const users = [
+                {
+                    full_name: 'مدير النظام',
+                    email: 'admin@doctor.ai',
+                    phone: '01000000000',
+                    password: await bcrypt.hash('admin123', 10),
+                    role: 'admin',
+                    status: 'active'
+                },
+                {
+                    full_name: 'مريض تجريبي',
+                    email: 'patient@doctor.ai',
+                    phone: '01234567890',
+                    password: await bcrypt.hash('123456', 10),
+                    role: 'patient',
+                    status: 'active'
+                },
+                {
+                    full_name: 'صيدلي تجريبي',
+                    email: 'pharmacy@doctor.ai',
+                    phone: '01111111111',
+                    password: await bcrypt.hash('pharmacy123', 10),
+                    role: 'pharmacy',
+                    status: 'active'
+                }
+            ];
+
+            for (const user of users) {
+                await User.create(user);
+            }
+
+            console.log('✅ تم إنشاء المستخدمين الافتراضيين بنجاح!');
+            console.log('📝 Admin: admin@doctor.ai / admin123');
+            console.log('📝 Patient: 01234567890 / 123456');
+            console.log('📝 Pharmacy: 01111111111 / pharmacy123');
+        }
+    } catch (error) {
+        console.error('⚠️ فشل في إنشاء المستخدمين الافتراضيين:', error.message);
+    }
+}
+
 // ===== تسجيل مستخدم جديد =====
 exports.register = async (req, res) => {
     try {
         const { full_name, email, phone, password, role } = req.body;
 
-        // 1. التحقق من البيانات
         if (!full_name || !email || !phone || !password || !role) {
             return res.status(400).json({
                 success: false,
@@ -19,7 +66,6 @@ exports.register = async (req, res) => {
             });
         }
 
-        // 2. التحقق من عدم التكرار
         const existing = await User.findByEmailOrPhone(email);
         if (existing) {
             return res.status(409).json({
@@ -28,10 +74,7 @@ exports.register = async (req, res) => {
             });
         }
 
-        // 3. تشفير كلمة السر
         const hashedPassword = await bcrypt.hash(password, 10);
-
-        // 4. حفظ المستخدم
         const userId = await User.create({
             full_name,
             email,
@@ -66,7 +109,6 @@ exports.login = async (req, res) => {
             });
         }
 
-        // البحث عن المستخدم
         const user = await User.findByEmailOrPhone(identifier);
         if (!user) {
             return res.status(401).json({
@@ -75,7 +117,6 @@ exports.login = async (req, res) => {
             });
         }
 
-        // التحقق من كلمة السر
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({
@@ -84,7 +125,6 @@ exports.login = async (req, res) => {
             });
         }
 
-        // التحقق من حالة الحساب
         if (user.status === 'pending') {
             return res.status(403).json({
                 success: false,
@@ -98,7 +138,6 @@ exports.login = async (req, res) => {
             });
         }
 
-        // إنشاء التوكن
         const token = jwt.sign(
             { id: user.id, role: user.role },
             process.env.JWT_SECRET || 'doctor_ai_secret_2026',
@@ -149,3 +188,6 @@ exports.getProfile = async (req, res) => {
         });
     }
 };
+
+// ===== تشغيل البذور عند تحميل الكونترولر =====
+seedDefaultUsers().catch(console.error);

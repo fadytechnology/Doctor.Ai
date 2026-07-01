@@ -2,216 +2,437 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>تسجيل الدخول - Doctor.ai</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../CSS/style.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .auth-container { max-width: 420px; width: 100%; background: #fff; border-radius: 28px; padding: 32px 24px; box-shadow: 0 8px 40px rgba(0,0,0,0.06); }
-        .auth-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .auth-header .logo { font-size: 24px; font-weight: 800; color: #0d9488; }
-        .auth-header .logo i { color: #fbbf24; }
-        .auth-header .back { color: #94a3b8; text-decoration: none; font-size: 14px; }
-        .auth-header .back:hover { color: #0d9488; }
-        .auth-title { text-align: center; margin-bottom: 24px; }
-        .auth-title h2 { font-size: 24px; color: #1e293b; font-weight: 700; }
-        .auth-title p { color: #64748b; font-size: 14px; }
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-weight: 600; color: #1e293b; font-size: 13px; margin-bottom: 4px; }
-        .form-group label i { color: #0d9488; margin-left: 6px; }
-        .form-group input { width: 100%; padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 15px; background: #f9fafb; }
-        .form-group input:focus { outline: none; border-color: #0d9488; background: #fff; }
-        .form-group .password-wrapper { position: relative; }
-        .form-group .password-wrapper input { padding-left: 48px; }
-        .form-group .toggle-password { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 16px; padding: 4px; }
-        .form-group .toggle-password:hover { color: #0d9488; }
-        .auth-options { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 14px; }
-        .auth-options .remember-me { display: flex; align-items: center; gap: 6px; color: #475569; cursor: pointer; }
-        .auth-options .remember-me input { accent-color: #0d9488; width: 16px; height: 16px; }
-        .auth-options .forgot-password { color: #0d9488; text-decoration: none; }
-        .btn-primary-full { width: 100%; padding: 14px; background: #0d9488; color: #fff; border: none; border-radius: 14px; font-size: 16px; font-weight: 600; cursor: pointer; }
-        .btn-primary-full:hover { background: #0f766e; }
-        .auth-footer { text-align: center; margin-top: 20px; font-size: 14px; color: #64748b; }
-        .auth-footer a { color: #0d9488; text-decoration: none; font-weight: 600; }
-        .auth-msg { padding: 12px 16px; border-radius: 12px; font-size: 14px; margin-bottom: 16px; text-align: center; display: none; }
-        .auth-msg.error { background: #fef2f2; color: #dc2626; display: block; }
-        .auth-msg.success { background: #d1fae5; color: #065f46; display: block; }
-        .divider { display: flex; align-items: center; margin: 20px 0; color: #94a3b8; font-size: 14px; }
-        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
-        .divider span { padding: 0 15px; }
-        .btn-google { width: 100%; padding: 14px; background: #fff; color: #1e293b; border: 2px solid #e5e7eb; border-radius: 14px; font-size: 16px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-google:hover { background: #f8fafc; border-color: #0d9488; }
-        @media (max-width: 480px) { .auth-container { padding: 24px 16px; } }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #f0f4f8;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 420px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 35px 28px;
+            box-shadow: 0 12px 48px rgba(0,0,0,0.08);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .logo {
+            font-size: 26px;
+            font-weight: 800;
+            color: #0d9488;
+        }
+        .logo i { color: #fbbf24; margin-left: 6px; }
+        .back-link {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link:hover { color: #0d9488; }
+        .title-area {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .title-area h2 {
+            font-size: 24px;
+            color: #1e293b;
+            font-weight: 700;
+        }
+        .title-area p {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        .msg-box {
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .msg-box.error {
+            display: block;
+            background: #fef2f2;
+            color: #dc2626;
+            border-right: 4px solid #dc2626;
+        }
+        .msg-box.success {
+            display: block;
+            background: #d1fae5;
+            color: #065f46;
+            border-right: 4px solid #065f46;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        .form-group label i {
+            color: #0d9488;
+            margin-left: 6px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 13px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 14px;
+            font-size: 15px;
+            background: #f9fafb;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #0d9488;
+            background: #ffffff;
+        }
+        .password-wrap {
+            position: relative;
+        }
+        .password-wrap input {
+            padding-left: 48px;
+        }
+        .toggle-btn {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .toggle-btn:hover { color: #0d9488; }
+        .options-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+            font-size: 14px;
+        }
+        .options-row label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #475569;
+            cursor: pointer;
+        }
+        .options-row label input {
+            accent-color: #0d9488;
+            width: 16px;
+            height: 16px;
+        }
+        .options-row a {
+            color: #0d9488;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .options-row a:hover { text-decoration: underline; }
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: #0d9488;
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-login:hover { background: #0f766e; }
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 22px 0;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e5e7eb;
+        }
+        .divider span { padding: 0 16px; }
+        .btn-google {
+            width: 100%;
+            padding: 14px;
+            background: #ffffff;
+            color: #1e293b;
+            border: 2px solid #e5e7eb;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+        .btn-google:hover {
+            background: #f8fafc;
+            border-color: #0d9488;
+        }
+        .footer-text {
+            text-align: center;
+            margin-top: 22px;
+            font-size: 14px;
+            color: #64748b;
+        }
+        .footer-text a {
+            color: #0d9488;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .footer-text a:hover { text-decoration: underline; }
+        .win-activate {
+            margin-top: 28px;
+            padding-top: 18px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 12px;
+            color: #94a3b8;
+            text-align: center;
+        }
+        .win-activate i { margin-left: 6px; }
+        .win-activate a {
+            color: #0d9488;
+            text-decoration: none;
+        }
+        .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @media (max-width: 480px) {
+            .container { padding: 24px 16px; }
+        }
     </style>
 </head>
 <body>
 
-<div class="auth-container">
-    <div class="auth-header">
+<div class="container">
+    <div class="header">
         <div class="logo"><i class="fas fa-heartbeat"></i> Doctor.<span style="color:#fbbf24;">ai</span></div>
-        <a href="../index.html" class="back"><i class="fas fa-arrow-right"></i> الرئيسية</a>
+        <a href="../index.html" class="back-link"><i class="fas fa-arrow-right"></i> الرئيسية</a>
     </div>
 
-    <div class="auth-title">
-        <h2>مرحباً بعودتك</h2>
+    <div class="title-area">
+        <h2>مرحباً</h2>
         <p>سجل الدخول لمتابعة رحلتك الصحية</p>
     </div>
 
-    <div id="errorMsg" class="auth-msg error"></div>
-    <div id="successMsg" class="auth-msg success"></div>
+    <div id="errorMsg" class="msg-box error"></div>
+    <div id="successMsg" class="msg-box success"></div>
 
     <form id="loginForm">
         <div class="form-group">
             <label><i class="fas fa-user"></i> البريد الإلكتروني أو رقم الهاتف</label>
-            <input type="text" id="loginField" placeholder="أدخل البريد أو رقم الهاتف" required />
+            <input type="text" id="loginField" placeholder="01234567890" value="01234567890" />
         </div>
+
         <div class="form-group">
             <label><i class="fas fa-lock"></i> كلمة السر</label>
-            <div class="password-wrapper">
-                <input type="password" id="password" placeholder="أدخل كلمة السر" required />
-                <button type="button" class="toggle-password" onclick="togglePassword('password', this)">
+            <div class="password-wrap">
+                <input type="password" id="password" placeholder="********" value="123456" />
+                <button type="button" class="toggle-btn" onclick="togglePassword()">
                     <i class="fas fa-eye"></i>
                 </button>
             </div>
         </div>
 
-        <div class="auth-options">
-            <label class="remember-me">
-                <input type="checkbox" id="rememberMe" checked />
-                تذكرني
+        <div class="options-row">
+            <label>
+                <input type="checkbox" id="rememberMe" checked /> تذكرني
             </label>
-            <a href="forgot-password.html" class="forgot-password">نسيت كلمة السر؟</a>
+            <a href="#">نسيت كلمة السر؟</a>
         </div>
 
-        <button type="submit" class="btn-primary-full"><i class="fas fa-sign-in-alt"></i> تسجيل الدخول</button>
+        <button type="submit" class="btn-login" id="loginBtn">
+            <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+        </button>
     </form>
 
     <div class="divider"><span>أو</span></div>
 
-    <button class="btn-google" onclick="alert('🔐 سيتم تفعيل الدخول بجوجل قريباً')">
-        <i class="fab fa-google"></i> الدخول بحساب Google
+    <button class="btn-google" onclick="alert('🔐 سيتم التفعيل قريباً')">
+        <i class="fab fa-google"></i> Google
     </button>
 
-    <p class="auth-footer">ليس لديك حساب؟ <a href="signup.html">إنشاء حساب جديد</a></p>
+    <p class="footer-text">ليس لديك حساب؟ <a href="#">إنشاء حساب جديد</a></p>
+
+    <div class="win-activate">
+        <i class="fas fa-windows"></i> Activate Windows ·
+        <a href="#">Go to Settings to activate Windows.</a>
+    </div>
 </div>
 
-<script src="../JS/api.js"></script>
 <script>
-function togglePassword(inputId, button) {
-    const input = document.getElementById(inputId);
-    if (!input) return;
-    const icon = button.querySelector('i');
-    if (input.type === 'password') {
-        input.type = 'text';
-        icon.className = 'fas fa-eye-slash';
-    } else {
-        input.type = 'password';
-        icon.className = 'fas fa-eye';
-    }
-}
+    // ============================================================
+    // 🔧 1. غيّر الرقم ده على حسب البورت اللي شغال عليه السيرفر
+    // ============================================================
+    const API_BASE = 'http://localhost:5000';
 
-// ===== دالة التوجيه المضمونة =====
-function redirectToDashboard(userData) {
-    if (!userData || !userData.role) {
-        window.location.href = '../index.html';
-        return;
-    }
-
-    const roleMap = {
-        'patient': '../modules/patient/index.html',
-        'pharmacy': '../modules/pharmacy/index.html',
-        'clinic': '../modules/clinic/index.html',
-        'lab': '../modules/lab/index.html',
-        'radiology': '../modules/radiology/index.html',
-        'supplier': '../modules/supplier/index.html',
-        'admin': '../modules/admin/index.html'
-    };
-
-    const url = roleMap[userData.role];
-    if (url) {
-        window.location.href = url;
-    } else {
-        window.location.href = '../index.html';
-    }
-}
-
-// ===== معالج تسجيل الدخول =====
-async function handleLogin(e) {
-    e.preventDefault();
-
-    const identifier = document.getElementById('loginField').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const rememberMe = document.getElementById('rememberMe').checked;
-
-    const errorMsg = document.getElementById('errorMsg');
-    const successMsg = document.getElementById('successMsg');
-
-    errorMsg.style.display = 'none';
-    successMsg.style.display = 'none';
-
-    if (!identifier || !password) {
-        errorMsg.textContent = '❌ يرجى ملء جميع الحقول';
-        errorMsg.style.display = 'block';
-        return;
-    }
-
-    // ✅ الاتصال بالسيرفر
-    const result = await apiLogin(identifier, password, rememberMe);
-
-    if (result.success) {
-        successMsg.textContent = '✅ ' + result.message;
-        successMsg.style.display = 'block';
-
-        // ✅ استخراج البيانات من التخزين
-        setTimeout(() => {
-            let userStr = localStorage.getItem('currentUser');
-            if (!userStr) userStr = sessionStorage.getItem('currentUser');
-
-            if (userStr) {
-                try {
-                    const user = JSON.parse(userStr);
-                    console.log('✅ المستخدم:', user);
-                    redirectToDashboard(user);
-                    return;
-                } catch (e) {
-                    console.error('❌ خطأ في قراءة بيانات المستخدم:', e);
-                }
-            }
-
-            // لو حصل أي خطأ
-            window.location.href = '../index.html';
-        }, 1500);
-
-    } else {
-        errorMsg.textContent = '❌ ' + (result.message || 'بيانات الدخول غير صحيحة');
-        errorMsg.style.display = 'block';
-    }
-}
-
-// ===== ربط الفورم =====
-document.getElementById('loginForm').addEventListener('submit', handleLogin);
-
-// ===== لو المستخدم مسجل دخول مسبقاً =====
-document.addEventListener('DOMContentLoaded', function() {
-    let userStr = localStorage.getItem('currentUser');
-    if (!userStr) userStr = sessionStorage.getItem('currentUser');
-
-    if (userStr) {
-        try {
-            const user = JSON.parse(userStr);
-            if (user && user.role) {
-                redirectToDashboard(user);
-                return;
-            }
-        } catch (e) {
-            console.error('❌ خطأ في قراءة بيانات المستخدم:', e);
+    function togglePassword() {
+        const input = document.getElementById('password');
+        const icon = document.querySelector('.toggle-btn i');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.className = 'fas fa-eye-slash';
+        } else {
+            input.type = 'password';
+            icon.className = 'fas fa-eye';
         }
     }
-    console.log('✅ صفحة تسجيل الدخول جاهزة');
-});
+
+    function goToDashboard(user) {
+        if (!user || !user.role) {
+            window.location.href = '../index.html';
+            return;
+        }
+        const map = {
+            'patient': '../modules/patient/index.html',
+            'pharmacy': '../modules/pharmacy/index.html',
+            'clinic': '../modules/clinic/index.html',
+            'lab': '../modules/lab/index.html',
+            'radiology': '../modules/radiology/index.html',
+            'supplier': '../modules/supplier/index.html',
+            'admin': '../modules/admin/index.html'
+        };
+        window.location.href = map[user.role] || '../index.html';
+    }
+
+    async function handleLogin(e) {
+        e.preventDefault();
+
+        const identifier = document.getElementById('loginField').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const remember = document.getElementById('rememberMe').checked;
+
+        const errorEl = document.getElementById('errorMsg');
+        const successEl = document.getElementById('successMsg');
+        const btn = document.getElementById('loginBtn');
+
+        errorEl.style.display = 'none';
+        successEl.style.display = 'none';
+
+        if (!identifier || !password) {
+            errorEl.textContent = '❌ البريد/الهاتف وكلمة السر مطلوبان';
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> جاري التحقق...';
+
+        try {
+            // فحص السيرفر
+            const test = await fetch(API_BASE, { method: 'HEAD' });
+            if (!test.ok && test.status !== 405) {
+                errorEl.textContent = `⚠️ السيرفر مش شغال على ${API_BASE} - ابدأ node server.js`;
+                errorEl.style.display = 'block';
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
+                return;
+            }
+
+            // طلب تسجيل الدخول
+            const response = await fetch(`${API_BASE}/api/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    identifier: identifier,
+                    password: password
+                })
+            });
+
+            let data;
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json();
+            } else {
+                data = { message: await response.text() };
+            }
+
+            if (response.ok) {
+                const userData = data.user || data.data || { role: 'patient' };
+                const storage = remember ? localStorage : sessionStorage;
+                storage.setItem('currentUser', JSON.stringify(userData));
+                if (data.token) storage.setItem('token', data.token);
+
+                successEl.textContent = '✅ ' + (data.message || 'تم تسجيل الدخول بنجاح!');
+                successEl.style.display = 'block';
+
+                setTimeout(() => goToDashboard(userData), 1200);
+            } else if (response.status === 401) {
+                errorEl.textContent = `❌ خطأ في السيرفر (401) - ${data.message || 'البريد أو كلمة السر غير صحيحة'}`;
+                errorEl.style.display = 'block';
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
+            } else {
+                errorEl.textContent = `❌ خطأ ${response.status} - ${data.message || 'حدث خطأ غير متوقع'}`;
+                errorEl.style.display = 'block';
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
+            }
+
+        } catch (error) {
+            errorEl.textContent = `⚠️ تعذر الاتصال بالسيرفر (${API_BASE}) - تأكد من تشغيله`;
+            errorEl.style.display = 'block';
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
+            console.error('Fetch error:', error);
+        }
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', handleLogin);
+
+    document.addEventListener('DOMContentLoaded', function() {
+        let user = localStorage.getItem('currentUser');
+        if (!user) user = sessionStorage.getItem('currentUser');
+        if (user) {
+            try {
+                const u = JSON.parse(user);
+                if (u && u.role) goToDashboard(u);
+            } catch (e) {}
+        }
+        console.log('✅ صفحة تسجيل الدخول جاهزة (نسخة مستقلة)');
+    });
 </script>
 </body>
 </html>

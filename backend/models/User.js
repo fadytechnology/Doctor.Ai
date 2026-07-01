@@ -75,6 +75,12 @@ const User = {
         if (fields.length === 0) return;
         values.push(id);
         await db.query(`UPDATE users SET ${fields.join(', ')} WHERE id = ?`, values);
+    },
+
+    // دالة مساعدة للتحقق من وجود مستخدمين
+    count: async () => {
+        const [rows] = await db.query('SELECT COUNT(*) as total FROM users');
+        return rows[0].total;
     }
 };
 
