@@ -36,3 +36,8 @@ const b2bRoutes = require('./routes/b2bRoutes');
 // بعد app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/b2b', b2bRoutes);
+const profileRoutes = require('./routes/profileRoutes');
+const passwordRoutes = require('./routes/passwordRoutes');
+
+app.use('/api/profile', profileRoutes);
+app.use('/api/password', passwordRoutes);
