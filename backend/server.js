@@ -29,3 +29,10 @@ app.listen(PORT, async () => {
         console.error('❌ Database connection failed:', err.message);
     }
 });
+// بعد authRoutes
+const orderRoutes = require('./routes/orderRoutes');
+const b2bRoutes = require('./routes/b2bRoutes');
+
+// بعد app.use('/api/auth', authRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/b2b', b2bRoutes);
