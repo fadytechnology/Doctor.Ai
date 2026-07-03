@@ -11,91 +11,32 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
         .app-container { max-width: 480px; margin: 0 auto; }
-        
-        .page-header { 
-            background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); 
-            margin-bottom: 16px; display: flex; align-items: center; gap: 12px; 
-        }
-        .page-header .back-btn { 
-            background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; 
-            font-size: 18px; color: #1e293b; cursor: pointer; 
-        }
-        .page-header h1 { 
-            font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; flex: 1; 
-        }
-        .page-header h1 i {
-            color: var(--gateway-commerce);
-        }
-
-        .gateway-intro { 
-            background: #fff; border-radius: 16px; padding: 16px; margin-bottom: 16px; 
-            box-shadow: 0 1px 4px rgba(0,0,0,0.04); display: flex; align-items: center; gap: 14px;
-            border-right: 6px solid var(--gateway-color, var(--gateway-commerce));
-        }
-        .gateway-intro .info h2 { 
-            font-size: 18px; font-weight: 700; color: #1e293b; margin: 0; 
-        }
-        .gateway-intro .info p { 
-            font-size: 13px; color: #64748b; margin: 4px 0 0; 
-        }
-        .gateway-intro .count-badge { 
-            margin-right: auto; 
-            background: color-mix(in srgb, var(--gateway-color, var(--gateway-commerce)) 10%, transparent); 
-            color: var(--gateway-color, var(--gateway-commerce)); 
-            padding: 4px 16px; border-radius: 30px; font-size: 13px; font-weight: 700; 
-        }
-
-        .services-grid { 
-            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; 
-        }
-        .service-card { 
-            background: #fff; padding: 16px 10px; border-radius: 16px; text-align: center; 
-            box-shadow: 0 1px 4px rgba(0,0,0,0.04); transition: 0.2s; cursor: pointer; 
-            border: 1px solid transparent; 
-        }
-        .service-card:active { 
-            transform: scale(0.95); background: #f8fafc; 
-            border-color: var(--gateway-color, var(--gateway-commerce)); 
-        }
-        .service-card .icon { 
-            width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; 
-            justify-content: center; margin: 0 auto 8px; font-size: 20px; 
-            background: var(--gateway-bg, color-mix(in srgb, var(--gateway-commerce) 10%, transparent));
-            color: var(--gateway-color, var(--gateway-commerce));
-        }
-        .service-card h4 { 
-            font-size: 13px; font-weight: 700; color: #1e293b; margin: 0 0 4px; 
-        }
-        .service-card p { 
-            font-size: 10px; color: #94a3b8; margin: 0; line-height: 1.3; 
-        }
-
-        .bottom-nav { 
-            display: flex; justify-content: space-around; align-items: center; background: #fff; 
-            padding: 10px 0; border-radius: 30px; box-shadow: 0 -2px 12px rgba(0,0,0,0.04); margin-top: 8px; 
-        }
-        .bottom-nav a { 
-            color: #94a3b8; font-size: 22px; text-decoration: none; padding: 8px 16px; border-radius: 30px; 
-            transition: 0.2s; 
-        }
-        .bottom-nav a.active { 
-            color: var(--gateway-commerce); 
-            background: color-mix(in srgb, var(--gateway-commerce) 10%, transparent); 
-        }
-
+        .page-header { background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+        .page-header .back-btn { background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; }
+        .page-header h1 { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; flex: 1; }
+        .gateway-intro { background: #fff; border-radius: 16px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); display: flex; align-items: center; gap: 14px; border-right: 6px solid var(--gateway-color, var(--gateway-commerce)); }
+        .gateway-intro .info h2 { font-size: 18px; font-weight: 700; color: #1e293b; margin: 0; }
+        .gateway-intro .info p { font-size: 13px; color: #64748b; margin: 4px 0 0; }
+        .gateway-intro .count-badge { margin-right: auto; background: rgba(13,148,136,0.1); color: var(--gateway-commerce); padding: 4px 16px; border-radius: 30px; font-size: 13px; font-weight: 700; }
+        .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+        .service-card { background: #fff; padding: 16px 10px; border-radius: 16px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.04); transition: 0.2s; cursor: pointer; border: 1px solid transparent; }
+        .service-card:active { transform: scale(0.95); background: #f8fafc; border-color: var(--gateway-color, var(--gateway-commerce)); }
+        .service-card .icon { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-size: 20px; background: var(--gateway-bg, rgba(13,148,136,0.1)); color: var(--gateway-color, var(--gateway-commerce)); }
+        .service-card h4 { font-size: 13px; font-weight: 700; color: #1e293b; margin: 0 0 4px; }
+        .service-card p { font-size: 10px; color: #94a3b8; margin: 0; line-height: 1.3; }
+        .bottom-nav { display: flex; justify-content: space-around; align-items: center; background: #fff; padding: 10px 0; border-radius: 30px; box-shadow: 0 -2px 12px rgba(0,0,0,0.04); margin-top: 8px; }
+        .bottom-nav a { color: #94a3b8; font-size: 22px; text-decoration: none; padding: 8px 16px; border-radius: 30px; transition: 0.2s; }
+        .bottom-nav a.active { color: var(--gateway-commerce); background: rgba(13,148,136,0.1); }
         @media (max-width: 480px) { .services-grid { grid-template-columns: 1fr 1fr; } }
         @media (max-width: 380px) { .services-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- الهيدر -->
         <div class="page-header">
             <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
             <h1 id="gatewayTitle"><i class="fas fa-th-large"></i> خدمات البوابة</h1>
         </div>
-
-        <!-- تعريف البوابة -->
         <div class="gateway-intro" id="gatewayIntro">
             <div class="info">
                 <h2 id="gatewayName">البوابة</h2>
@@ -103,11 +44,7 @@
             </div>
             <span class="count-badge" id="serviceCount">0 خدمات</span>
         </div>
-
-        <!-- شبكة الخدمات -->
         <div class="services-grid" id="servicesContainer"></div>
-
-        <!-- القائمة السفلية -->
         <nav class="bottom-nav">
             <a href="index.html"><i class="fas fa-home"></i></a>
             <a href="map.html"><i class="fas fa-map"></i></a>
@@ -115,11 +52,7 @@
             <a href="gateway-details.html?gateway=communication"><i class="fas fa-share-alt"></i></a>
         </nav>
     </div>
-
     <script>
-        // ============================================================
-        // 1. تعريف البوابات والخدمات
-        // ============================================================
         const GATEWAYS = {
             biometric: {
                 name: 'البوابة الحيوية',
@@ -272,15 +205,10 @@
                 ]
             }
         };
-
-        // ============================================================
-        // 2. دوال العرض
-        // ============================================================
         function getGatewayId() {
             const params = new URLSearchParams(window.location.search);
             return params.get('gateway') || 'biometric';
         }
-
         function renderGateway() {
             const id = getGatewayId();
             const gateway = GATEWAYS[id];
@@ -288,19 +216,13 @@
                 document.getElementById('gatewayTitle').innerHTML = '<i class="fas fa-th-large"></i> بوابة غير موجودة';
                 return;
             }
-
-            // تحديث الهيدر
             document.getElementById('gatewayTitle').innerHTML = `<i class="fas fa-th-large"></i> خدمات ${gateway.name}`;
-
-            // تحديث مقدمة البوابة
             const intro = document.getElementById('gatewayIntro');
             intro.style.setProperty('--gateway-color', gateway.color);
             intro.style.setProperty('--gateway-bg', gateway.bg);
             document.getElementById('gatewayName').textContent = gateway.name;
             document.getElementById('gatewayDesc').textContent = gateway.desc;
             document.getElementById('serviceCount').textContent = `${gateway.services.length} خدمات`;
-
-            // تحديث شبكة الخدمات
             const container = document.getElementById('servicesContainer');
             container.innerHTML = '';
             gateway.services.forEach(service => {
@@ -308,19 +230,12 @@
                 card.className = 'service-card';
                 card.style.setProperty('--gateway-color', gateway.color);
                 card.style.setProperty('--gateway-bg', gateway.bg);
-                card.onclick = () => {
-                    window.location.href = `services/${service.file}`;
-                };
-                card.innerHTML = `
-                    <div class="icon"><i class="fas ${service.icon}"></i></div>
-                    <h4>${service.name}</h4>
-                    <p>${service.file.replace('.html','').replace(/-/g,' ')}</p>
-                `;
+                card.onclick = () => { window.location.href = `services/${service.file}`; };
+                card.innerHTML = `<div class="icon"><i class="fas ${service.icon}"></i></div><h4>${service.name}</h4><p>${service.file.replace('.html','').replace(/-/g,' ')}</p>`;
                 container.appendChild(card);
             });
         }
-
         document.addEventListener('DOMContentLoaded', renderGateway);
     </script>
 </body>
-</html> 
+</html>

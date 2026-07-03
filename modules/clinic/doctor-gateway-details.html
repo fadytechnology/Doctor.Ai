@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>خدمات البوابة - الصيدلي</title>
+    <title>خدمات البوابة - الطبيب</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="../../CSS/style.css" />
@@ -15,20 +15,20 @@
         .page-header .back-btn { background: #fff; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
         .page-header .back-btn:active { transform: scale(0.9); }
         .page-header h1 { font-size: 20px; font-weight: 800; color: #0f172a; margin: 0; flex: 1; }
-        .gateway-intro { background: #fff; border-radius: 24px; padding: 16px 20px; margin-bottom: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; align-items: center; gap: 14px; border-right: 6px solid var(--gateway-color, var(--gateway-commerce)); }
+        .gateway-intro { background: #fff; border-radius: 24px; padding: 16px 20px; margin-bottom: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.04); display: flex; align-items: center; gap: 14px; border-right: 6px solid var(--gateway-color, var(--gateway-doctor)); }
         .gateway-intro .info h2 { font-size: 18px; font-weight: 700; color: #0f172a; margin: 0; }
         .gateway-intro .info p { font-size: 13px; color: #64748b; margin: 4px 0 0; }
         .gateway-intro .count-badge { margin-right: auto; background: #f1f5f9; color: #1e293b; padding: 4px 16px; border-radius: 30px; font-size: 13px; font-weight: 700; }
         .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
         .service-card { background: #fff; padding: 18px 10px; border-radius: 20px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.03); transition: all 0.3s cubic-bezier(0.4,0,0.2,1); cursor: pointer; border: 1px solid transparent; }
-        .service-card:active { transform: scale(0.95); background: #f8fafc; border-color: var(--gateway-color, var(--gateway-commerce)); }
-        .service-card .icon { width: 52px; height: 52px; border-radius: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 22px; background: var(--gateway-bg, rgba(13,148,136,0.1)); color: var(--gateway-color, var(--gateway-commerce)); }
+        .service-card:active { transform: scale(0.95); background: #f8fafc; border-color: var(--gateway-color, var(--gateway-doctor)); }
+        .service-card .icon { width: 52px; height: 52px; border-radius: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 22px; background: var(--gateway-bg, rgba(26,86,219,0.1)); color: var(--gateway-color, var(--gateway-doctor)); }
         .service-card h4 { font-size: 13px; font-weight: 700; color: #1e293b; margin: 0 0 4px; }
         .service-card p { font-size: 10px; color: #94a3b8; margin: 0; line-height: 1.3; }
         .bottom-nav { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 480px; background: rgba(255,255,255,0.8); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.3); display: flex; justify-content: space-around; align-items: center; padding: 6px 0 10px; border-radius: 40px; box-shadow: 0 8px 32px rgba(0,0,0,0.08); z-index: 100; }
         .bottom-nav a { color: #94a3b8; font-size: 20px; text-decoration: none; padding: 6px 12px; border-radius: 30px; transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 2px; }
         .bottom-nav a span { font-size: 10px; font-weight: 600; }
-        .bottom-nav a.active { color: var(--gateway-commerce); background: rgba(13,148,136,0.1); }
+        .bottom-nav a.active { color: var(--gateway-doctor); background: rgba(26,86,219,0.1); }
         @media (max-width: 480px) { .services-grid { grid-template-columns: 1fr 1fr; gap: 10px; } .service-card { padding: 14px 8px; } .service-card .icon { width: 44px; height: 44px; font-size: 18px; } }
         @media (max-width: 380px) { .services-grid { grid-template-columns: 1fr; } }
     </style>
@@ -50,75 +50,70 @@
         <div style="height: 90px;"></div>
         <nav class="bottom-nav">
             <a href="index.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
-            <a href="services/ph-orders.html"><i class="fas fa-shopping-cart"></i><span>الطلبات</span></a>
-            <a href="services/ph-inventory.html"><i class="fas fa-boxes"></i><span>المخزون</span></a>
-            <a href="services/ph-customers.html"><i class="fas fa-users"></i><span>العملاء</span></a>
-            <a href="pharmacy-services-app.html" class="active"><i class="fas fa-th-large"></i><span>البوابات</span></a>
+            <a href="services/doctor-patients.html"><i class="fas fa-users"></i><span>المرضى</span></a>
+            <a href="services/doctor-prescriptions.html"><i class="fas fa-prescription"></i><span>الروشتات</span></a>
+            <a href="services/doctor-appointments.html"><i class="fas fa-calendar"></i><span>المواعيد</span></a>
+            <a href="doctor-services-app.html" class="active"><i class="fas fa-th-large"></i><span>البوابات</span></a>
         </nav>
     </div>
     <script>
         const GATEWAYS = {
-            commerce: {
-                name: 'التجارة والمخزون',
-                color: '#2563eb',
-                bg: 'rgba(37,99,235,0.08)',
-                desc: 'إدارة المخزون، المتجر الإلكتروني، وتبادل الأدوية مع الصيادلة',
+            appointments: {
+                name: 'المواعيد والمرضى',
+                color: '#1a56db',
+                bg: 'rgba(26,86,219,0.08)',
+                desc: 'إدارة جدول المواعيد وقائمة المرضى',
                 services: [
-                    { name: 'المخزون الأساسي', file: 'ph-inventory.html', icon: 'fa-boxes-stacked' },
-                    { name: 'المتجر الإلكتروني', file: 'ph-store.html', icon: 'fa-store' },
-                    { name: 'سوق التبادل (B2B)', file: 'ph-b2b.html', icon: 'fa-arrow-right-arrow-left' },
-                    { name: 'الطلبات الواردة', file: 'ph-orders.html', icon: 'fa-truck-fast' },
-                    { name: 'تتبع الأدوية', file: 'ph-track-meds.html', icon: 'fa-location-dot' },
-                    { name: 'تنبيهات النقص', file: 'ph-shortage-alerts.html', icon: 'fa-triangle-exclamation' }
+                    { name: 'قائمة المرضى', file: 'doctor-patients.html', icon: 'fa-users' },
+                    { name: 'جدول المواعيد', file: 'doctor-appointments.html', icon: 'fa-calendar-check' },
+                    { name: 'إضافة مريض', file: 'doctor-add-patient.html', icon: 'fa-user-plus' }
                 ]
             },
             prescriptions: {
-                name: 'الروشتات والخدمات',
+                name: 'الروشتات الإلكترونية',
                 color: '#7c3aed',
                 bg: 'rgba(124,58,237,0.08)',
-                desc: 'صرف الروشتات، الأنظمة الشهرية، وخدمات القراءة بالكاميرا',
+                desc: 'كتابة وإرسال الروشتات للصيدليات',
                 services: [
-                    { name: 'إدارة الروشتات', file: 'ph-prescriptions.html', icon: 'fa-prescription' },
-                    { name: 'الأنظمة الشهرية', file: 'ph-subscriptions.html', icon: 'fa-calendar-check' },
-                    { name: 'ماسح الروشتة', file: 'ph-ocr-scan.html', icon: 'fa-camera' }
+                    { name: 'إنشاء روشتة', file: 'doctor-create-prescription.html', icon: 'fa-prescription' },
+                    { name: 'أرشيف الروشتات', file: 'doctor-prescriptions-archive.html', icon: 'fa-archive' }
                 ]
             },
-            customers: {
-                name: 'العملاء والولاء',
-                color: '#ea580c',
-                bg: 'rgba(234,88,12,0.08)',
-                desc: 'إدارة العملاء، نقاط الولاء، وكود التعاون',
+            communication: {
+                name: 'التواصل الطبي',
+                color: '#0ea5e9',
+                bg: 'rgba(14,165,233,0.08)',
+                desc: 'التواصل مع الصيدلي والمختبر وطلب التحاليل',
                 services: [
-                    { name: 'قائمة العملاء', file: 'ph-customers.html', icon: 'fa-users' },
-                    { name: 'نظام الولاء', file: 'ph-loyalty.html', icon: 'fa-star' },
-                    { name: 'كود التعاون', file: 'ph-collab-code.html', icon: 'fa-link' }
+                    { name: 'طلب تحاليل', file: 'doctor-lab-orders.html', icon: 'fa-flask' },
+                    { name: 'طلب أشعة', file: 'doctor-radiology-orders.html', icon: 'fa-x-ray' },
+                    { name: 'شات مع الصيدلي', file: 'doctor-chat.html', icon: 'fa-comment-dots' }
                 ]
             },
             analytics: {
-                name: 'التحليلات والإعدادات',
+                name: 'التحليلات والتقارير',
                 color: '#059669',
                 bg: 'rgba(5,150,105,0.08)',
-                desc: 'تقارير المبيعات، ولوحة التحكم، وإعدادات الصيدلية',
+                desc: 'إحصائيات الحالات وتقارير الأدوية',
                 services: [
-                    { name: 'لوحة التحليلات', file: 'ph-analytics.html', icon: 'fa-chart-pie' },
-                    { name: 'التقارير المتقدمة', file: 'ph-dashboard.html', icon: 'fa-table' },
-                    { name: 'الإعدادات العامة', file: 'ph-settings.html', icon: 'fa-gear' },
-                    { name: 'التنبيهات', file: 'ph-alerts.html', icon: 'fa-bell' }
+                    { name: 'لوحة التحليلات', file: 'doctor-analytics.html', icon: 'fa-chart-pie' },
+                    { name: 'تقارير الأدوية', file: 'doctor-drug-reports.html', icon: 'fa-file-medical' }
                 ]
             },
-            launcher: {
-                name: 'التشغيل السريع',
-                color: '#ec4899',
-                bg: 'rgba(236,72,153,0.08)',
-                desc: 'مشغل سريع للخدمات الأكثر استخداماً',
+            settings: {
+                name: 'الإعدادات والملف الشخصي',
+                color: '#475569',
+                bg: 'rgba(71,85,105,0.08)',
+                desc: 'تعديل بيانات الطبيب وإعدادات التطبيق',
                 services: [
-                    { name: 'مشغل الخدمات', file: 'service-launcher.html', icon: 'fa-rocket' }
+                    { name: 'الملف الشخصي', file: 'doctor-profile.html', icon: 'fa-user-md' },
+                    { name: 'الإعدادات', file: 'doctor-settings.html', icon: 'fa-cog' }
                 ]
             }
         };
         function getGatewayId() {
             const params = new URLSearchParams(window.location.search);
-            return params.get('gateway') || 'commerce';
+            return params.get('gateway') || 'appointments';
         }
         function renderGateway() {
             const id = getGatewayId();

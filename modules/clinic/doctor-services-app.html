@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>البوابات الذكية - الصيدلي</title>
+    <title>البوابات الذكية - الطبيب</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="../../CSS/style.css" />
@@ -15,8 +15,8 @@
         .page-header .back-btn { background: #fff; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
         .page-header .back-btn:active { transform: scale(0.9); }
         .page-header h1 { font-size: 20px; font-weight: 800; color: #0f172a; margin: 0; flex: 1; }
-        .page-header h1 i { color: var(--gateway-commerce); margin-left: 8px; }
-        .page-header .badge-header { background: var(--gateway-commerce); color: #fff; font-size: 11px; padding: 4px 14px; border-radius: 30px; font-weight: 700; }
+        .page-header h1 i { color: var(--gateway-doctor); margin-left: 8px; }
+        .page-header .badge-header { background: var(--gateway-doctor); color: #fff; font-size: 11px; padding: 4px 14px; border-radius: 30px; font-weight: 700; }
         .gateways-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .gateway-card { background: #fff; padding: 20px 12px 18px; border-radius: 24px; text-align: center; text-decoration: none; color: #1e293b; box-shadow: 0 4px 16px rgba(0,0,0,0.04); transition: all 0.3s cubic-bezier(0.4,0,0.2,1); border: 1px solid rgba(255,255,255,0.5); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 140px; position: relative; overflow: hidden; }
         .gateway-card::before { content: ''; position: absolute; top: 0; right: 0; left: 0; height: 4px; background: var(--card-color); opacity: 0.6; transition: 0.3s; }
@@ -29,7 +29,7 @@
         .bottom-nav { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 480px; background: rgba(255,255,255,0.8); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.3); display: flex; justify-content: space-around; align-items: center; padding: 6px 0 10px; border-radius: 40px; box-shadow: 0 8px 32px rgba(0,0,0,0.08); z-index: 100; }
         .bottom-nav a { color: #94a3b8; font-size: 20px; text-decoration: none; padding: 6px 12px; border-radius: 30px; transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 2px; }
         .bottom-nav a span { font-size: 10px; font-weight: 600; }
-        .bottom-nav a.active { color: var(--gateway-commerce); background: rgba(13,148,136,0.1); }
+        .bottom-nav a.active { color: var(--gateway-doctor); background: rgba(26,86,219,0.1); }
         @media (max-width: 480px) { .gateways-grid { grid-template-columns: 1fr 1fr; gap: 10px; } .gateway-card { min-height: 120px; padding: 16px 8px; } .gateway-card .icon { width: 48px; height: 48px; font-size: 22px; } }
         @media (max-width: 380px) { .gateways-grid { grid-template-columns: 1fr; } }
     </style>
@@ -42,49 +42,49 @@
             <span class="badge-header">5 أقسام</span>
         </div>
         <div class="gateways-grid">
-            <a href="pharmacy-gateway-details.html?gateway=commerce" class="gateway-card" style="--card-color:var(--gateway-commerce); --card-bg:rgba(37,99,235,0.1);">
+            <a href="doctor-gateway-details.html?gateway=appointments" class="gateway-card" style="--card-color:var(--gateway-doctor); --card-bg:rgba(26,86,219,0.1);">
                 <div class="glow"></div>
-                <div class="icon"><i class="fas fa-store-alt"></i></div>
-                <h3>التجارة والمخزون</h3>
-                <p>المخزون، المتجر، التبادل</p>
-                <span class="badge-count">6 خدمات</span>
-            </a>
-            <a href="pharmacy-gateway-details.html?gateway=prescriptions" class="gateway-card" style="--card-color:var(--gateway-prescriptions); --card-bg:rgba(124,58,237,0.1);">
-                <div class="glow"></div>
-                <div class="icon"><i class="fas fa-prescription-bottle"></i></div>
-                <h3>الروشتات والخدمات</h3>
-                <p>صرف الروشتات والأنظمة</p>
+                <div class="icon"><i class="fas fa-calendar-check"></i></div>
+                <h3>المواعيد والمرضى</h3>
+                <p>إدارة جدول المواعيد</p>
                 <span class="badge-count">3 خدمات</span>
             </a>
-            <a href="pharmacy-gateway-details.html?gateway=customers" class="gateway-card" style="--card-color:var(--gateway-customers); --card-bg:rgba(234,88,12,0.1);">
+            <a href="doctor-gateway-details.html?gateway=prescriptions" class="gateway-card" style="--card-color:var(--gateway-prescriptions); --card-bg:rgba(124,58,237,0.1);">
                 <div class="glow"></div>
-                <div class="icon"><i class="fas fa-users-rays"></i></div>
-                <h3>العملاء والولاء</h3>
-                <p>إدارة العملاء والنقاط</p>
+                <div class="icon"><i class="fas fa-prescription"></i></div>
+                <h3>الروشتات الإلكترونية</h3>
+                <p>كتابة وإرسال الروشتات</p>
+                <span class="badge-count">2 خدمات</span>
+            </a>
+            <a href="doctor-gateway-details.html?gateway=communication" class="gateway-card" style="--card-color:var(--gateway-communication); --card-bg:rgba(14,165,233,0.1);">
+                <div class="glow"></div>
+                <div class="icon"><i class="fas fa-comments-medical"></i></div>
+                <h3>التواصل الطبي</h3>
+                <p>تواصل مع الصيدلي والمختبر</p>
                 <span class="badge-count">3 خدمات</span>
             </a>
-            <a href="pharmacy-gateway-details.html?gateway=analytics" class="gateway-card" style="--card-color:var(--gateway-analytics); --card-bg:rgba(5,150,105,0.1);">
+            <a href="doctor-gateway-details.html?gateway=analytics" class="gateway-card" style="--card-color:var(--gateway-analytics); --card-bg:rgba(5,150,105,0.1);">
                 <div class="glow"></div>
-                <div class="icon"><i class="fas fa-chart-simple"></i></div>
-                <h3>التحليلات والإعدادات</h3>
-                <p>تقارير وضبط الإعدادات</p>
-                <span class="badge-count">4 خدمات</span>
+                <div class="icon"><i class="fas fa-chart-pie"></i></div>
+                <h3>التحليلات والتقارير</h3>
+                <p>إحصائيات وتقارير</p>
+                <span class="badge-count">2 خدمات</span>
             </a>
-            <a href="pharmacy-gateway-details.html?gateway=launcher" class="gateway-card" style="--card-color:var(--gateway-launcher); --card-bg:rgba(236,72,153,0.1);">
+            <a href="doctor-gateway-details.html?gateway=settings" class="gateway-card" style="--card-color:var(--gateway-settings); --card-bg:rgba(71,85,105,0.1);">
                 <div class="glow"></div>
-                <div class="icon"><i class="fas fa-rocket"></i></div>
-                <h3>التشغيل السريع</h3>
-                <p>مشغل الخدمات</p>
-                <span class="badge-count">1 خدمة</span>
+                <div class="icon"><i class="fas fa-cog"></i></div>
+                <h3>الإعدادات والملف الشخصي</h3>
+                <p>تعديل بيانات الطبيب</p>
+                <span class="badge-count">2 خدمات</span>
             </a>
         </div>
         <div style="height: 90px;"></div>
         <nav class="bottom-nav">
             <a href="index.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
-            <a href="services/ph-orders.html"><i class="fas fa-shopping-cart"></i><span>الطلبات</span></a>
-            <a href="services/ph-inventory.html"><i class="fas fa-boxes"></i><span>المخزون</span></a>
-            <a href="services/ph-customers.html"><i class="fas fa-users"></i><span>العملاء</span></a>
-            <a href="pharmacy-services-app.html" class="active"><i class="fas fa-th-large"></i><span>البوابات</span></a>
+            <a href="services/doctor-patients.html"><i class="fas fa-users"></i><span>المرضى</span></a>
+            <a href="services/doctor-prescriptions.html"><i class="fas fa-prescription"></i><span>الروشتات</span></a>
+            <a href="services/doctor-appointments.html"><i class="fas fa-calendar"></i><span>المواعيد</span></a>
+            <a href="doctor-services-app.html" class="active"><i class="fas fa-th-large"></i><span>البوابات</span></a>
         </nav>
     </div>
 </body>

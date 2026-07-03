@@ -38,6 +38,12 @@
     --status-active-text: #065f46;
     --status-expired-bg: #fee2e2;
     --status-expired-text: #991b1b;
+    --gateway-doctor: #1a56db;   /* أزرق غامق مخصص للطبيب */
+    --gateway-lab: #059669;          /* أخضر زمردي للمختبر */
+--gateway-radiology: #8b5cf6;    /* بنفسجي فاتح للأشعة */
+--gateway-supplier: #ea580c;     /* برتقالي للمورد */
+--gateway-radiology: #8b5cf6;
+--gateway-supplier: #ea580c;
 }
 
 /* ===== كلاسات الحالات الجاهزة (استخدمها في أي صفحة) ===== */

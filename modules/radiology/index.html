@@ -11,144 +11,120 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; padding-bottom: 80px; min-height: 100vh; }
         .app-container { max-width: 480px; margin: 0 auto; }
-        .rad-header { background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 16px; }
+        .radio-header { background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 16px; }
         .header-top { display: flex; justify-content: space-between; align-items: center; }
         .user-info { display: flex; align-items: center; gap: 12px; }
-        .avatar { width: 48px; height: 48px; border-radius: 50%; background: #0d9488; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; }
+        .avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--gateway-radiology); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; }
         .user-details h3 { font-size: 16px; color: #1e293b; font-weight: 700; }
         .user-details .sub { font-size: 12px; color: #94a3b8; }
         .header-actions { display: flex; gap: 10px; }
         .btn-notification { background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; position: relative; }
         .btn-notification .badge { position: absolute; top: -2px; right: -2px; background: #ef4444; color: #fff; font-size: 10px; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
-        .btn-logout { background: transparent; border: none; font-size: 20px; color: #94a3b8; cursor: pointer; padding: 8px; border-radius: 50%; }
-        .link-status { display: flex; justify-content: space-between; align-items: center; background: #d1fae5; padding: 10px 14px; border-radius: 14px; margin-bottom: 16px; cursor: pointer; }
-        .link-status-content { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #065f46; flex-wrap: wrap; }
-        .link-status-content i { color: #0d9488; }
-        .link-status-content .code { font-weight: 800; background: rgba(13,148,136,0.15); padding: 2px 10px; border-radius: 12px; }
-        .btn-link { background: #0d9488; color: #fff; border: none; padding: 4px 14px; border-radius: 16px; font-size: 12px; cursor: pointer; }
+        .btn-logout { background: transparent; border: none; font-size: 20px; color: #94a3b8; cursor: pointer; padding: 8px; border-radius: 50%; transition: 0.2s; }
+        .btn-logout:active { background: #f1f5f9; }
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
         .stat-card { background: #fff; padding: 14px 8px; border-radius: 16px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
-        .stat-card .num { font-size: 22px; font-weight: 800; color: #0d9488; }
+        .stat-card .num { font-size: 22px; font-weight: 800; color: var(--gateway-radiology); }
         .stat-card .label { font-size: 11px; color: #94a3b8; }
-        .services-hub-btn { display: block; background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); color: #fff; padding: 16px; border-radius: 16px; text-decoration: none; text-align: center; margin-bottom: 16px; box-shadow: 0 4px 20px rgba(13,148,136,0.25); }
+        .services-hub-btn { display: block; background: linear-gradient(135deg, var(--gateway-radiology) 0%, #6d28d9 100%); color: #fff; padding: 16px; border-radius: 16px; text-decoration: none; text-align: center; margin-bottom: 16px; box-shadow: 0 4px 20px rgba(139,92,246,0.25); transition: 0.3s; }
+        .services-hub-btn:active { transform: scale(0.98); }
         .services-hub-btn i { font-size: 24px; display: block; margin-bottom: 4px; }
         .services-hub-btn span { font-size: 18px; font-weight: 700; }
         .services-hub-btn small { font-size: 13px; opacity: 0.85; display: block; margin-top: 2px; }
-        .bookings-section { background: #fff; border-radius: 16px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); margin-bottom: 16px; }
-        .bookings-section .title { font-size: 15px; font-weight: 700; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-        .bookings-section .title i { color: #0d9488; }
-        .booking-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f3f4f6; }
-        .booking-item:last-child { border-bottom: none; }
-        .booking-info .patient { font-weight: 600; color: #1e293b; font-size: 14px; }
-        .booking-info .type { font-size: 12px; color: #64748b; display: block; }
-        .booking-status { font-size: 11px; padding: 2px 12px; border-radius: 12px; font-weight: 600; }
-        .booking-status.pending { background: #fef3c7; color: #92400e; }
-        .booking-status.done { background: #d1fae5; color: #065f46; }
-        .booking-status.ready { background: #dbeafe; color: #1e40af; }
+        .orders-section { background: #fff; border-radius: 16px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); margin-bottom: 16px; }
+        .orders-section .title { font-size: 15px; font-weight: 700; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .orders-section .title i { color: var(--gateway-radiology); }
+        .order-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f3f4f6; }
+        .order-item:last-child { border-bottom: none; }
+        .order-info .patient { font-weight: 600; color: #1e293b; font-size: 14px; }
+        .order-info .exam { font-size: 12px; color: #64748b; display: block; }
+        .order-status { font-size: 11px; padding: 2px 12px; border-radius: 12px; font-weight: 600; }
+        .order-status.pending { background: #fef3c7; color: #92400e; }
+        .order-status.completed { background: #d1fae5; color: #065f46; }
         .quick-services { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
-        .quick-service { background: #fff; padding: 10px 4px; border-radius: 12px; text-align: center; text-decoration: none; color: #1e293b; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
-        .quick-service:active { transform: scale(0.95); }
-        .quick-service i { font-size: 20px; color: #0d9488; display: block; margin-bottom: 2px; }
+        .quick-service { background: #fff; padding: 10px 4px; border-radius: 12px; text-align: center; text-decoration: none; color: #1e293b; box-shadow: 0 1px 4px rgba(0,0,0,0.04); transition: 0.2s; border: 1px solid transparent; }
+        .quick-service:active { transform: scale(0.95); background: #f8fafc; border-color: var(--gateway-radiology); }
+        .quick-service i { font-size: 20px; color: var(--gateway-radiology); display: block; margin-bottom: 2px; }
         .quick-service span { font-size: 10px; font-weight: 600; }
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; display: flex; justify-content: space-around; align-items: center; padding: 6px 0 10px; box-shadow: 0 -4px 20px rgba(0,0,0,0.04); z-index: 100; border-top: 1px solid #f1f5f9; max-width: 480px; margin: 0 auto; }
         .nav-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; color: #94a3b8; transition: 0.3s; padding: 4px 12px; border: none; background: transparent; font-family: inherit; }
         .nav-item i { font-size: 20px; }
         .nav-item span { font-size: 10px; margin-top: 2px; }
-        .nav-item.active { color: #0d9488; }
+        .nav-item.active { color: var(--gateway-radiology); }
         .nav-item.active i { transform: scale(1.1); }
+        .nav-item:active { transform: scale(0.92); }
         @media (max-width: 480px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .quick-services { grid-template-columns: repeat(3, 1fr); } }
-        @media (min-width: 481px) { .bottom-nav { border-left: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb; } }
     </style>
 </head>
 <body>
-<div class="app-container">
-    <header class="rad-header">
-        <div class="header-top">
-            <div class="user-info">
-                <div class="avatar" id="userAvatar">ش</div>
-                <div class="user-details">
-                    <h3 id="userName">مركز <span style="color:#0d9488;">الأشعة</span></h3>
-                    <span class="sub" id="userId"><i class="fas fa-id-card"></i> #RAD-2024</span>
+    <div class="app-container">
+        <header class="radio-header">
+            <div class="header-top">
+                <div class="user-info">
+                    <div class="avatar" id="userAvatar">أ</div>
+                    <div class="user-details">
+                        <h3 id="userName">مركز <span style="color:var(--gateway-radiology);">الأشعة المتطور</span></h3>
+                        <span class="sub" id="userId"><i class="fas fa-id-card"></i> #RAD-2024</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-notification" onclick="alert('📬 لديك 2 إشعارات جديدة')">
+                        <i class="fas fa-bell"></i><span class="badge">2</span>
+                    </button>
+                    <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
                 </div>
             </div>
-            <div class="header-actions">
-                <button class="btn-notification" onclick="alert('📬 لديك 3 إشعارات جديدة')"><i class="fas fa-bell"></i><span class="badge">3</span></button>
-                <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
+        </header>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="num">9</div><div class="label">طلبات اليوم</div></div>
+            <div class="stat-card"><div class="num">4</div><div class="label">قيد التنفيذ</div></div>
+            <div class="stat-card"><div class="num">5</div><div class="label">منتهية</div></div>
+            <div class="stat-card"><div class="num">28</div><div class="label">عملاء</div></div>
+        </div>
+        <a href="radiology-services-app.html" class="services-hub-btn">
+            <i class="fas fa-th-large"></i>
+            <span>📡 البوابات الذكية</span>
+            <small>4 أقسام (خدمات الأشعة)</small>
+        </a>
+        <div class="quick-services">
+            <a href="services/radiology-orders.html" class="quick-service"><i class="fas fa-x-ray"></i><span>الطلبات</span></a>
+            <a href="services/radiology-upload.html" class="quick-service"><i class="fas fa-image"></i><span>رفع الصور</span></a>
+            <a href="services/radiology-reports.html" class="quick-service"><i class="fas fa-file-medical"></i><span>التقارير</span></a>
+            <a href="services/radiology-settings.html" class="quick-service"><i class="fas fa-cog"></i><span>الإعدادات</span></a>
+        </div>
+        <div class="orders-section">
+            <div class="title"><i class="fas fa-x-ray"></i> آخر الطلبات</div>
+            <div id="recentOrders">
+                <div class="order-item"><div class="order-info"><span class="patient">محمد علي</span><span class="exam">أشعة مقطعية على الصدر</span></div><span class="order-status pending">قيد التنفيذ</span></div>
+                <div class="order-item"><div class="order-info"><span class="patient">سارة حسن</span><span class="exam">أشعة سونار على البطن</span></div><span class="order-status completed">منتهي</span></div>
+                <div class="order-item"><div class="order-info"><span class="patient">خالد محمود</span><span class="exam">أشعة رنين مغناطيسي</span></div><span class="order-status pending">قيد التنفيذ</span></div>
             </div>
         </div>
-    </header>
-
-    <div class="link-status" onclick="copyCode()">
-        <div class="link-status-content"><i class="fas fa-link"></i><span>كود التعاون: <span class="code" id="radCode">RAD-2024-001</span></span></div>
-        <button class="btn-link"><i class="fas fa-copy"></i> نسخ</button>
+        <nav class="bottom-nav">
+            <div class="nav-item active" onclick="navigateTo('home')"><i class="fas fa-home"></i><span>الرئيسية</span></div>
+            <div class="nav-item" onclick="navigateTo('orders')"><i class="fas fa-x-ray"></i><span>الطلبات</span></div>
+            <div class="nav-item" onclick="navigateTo('upload')"><i class="fas fa-image"></i><span>رفع</span></div>
+            <div class="nav-item" onclick="navigateTo('reports')"><i class="fas fa-file-medical"></i><span>التقارير</span></div>
+            <div class="nav-item" onclick="navigateTo('more')"><i class="fas fa-th-large"></i><span>البوابات</span></div>
+        </nav>
     </div>
-
-    <div class="stats-grid">
-        <div class="stat-card"><div class="num" id="bookingsToday">8</div><div class="label">حجوزات اليوم</div></div>
-        <div class="stat-card"><div class="num" id="pendingBookings">5</div><div class="label">قيد التنفيذ</div></div>
-        <div class="stat-card"><div class="num" id="readyReports">3</div><div class="label">تقارير جاهزة</div></div>
-        <div class="stat-card"><div class="num" id="archivedImages">12</div><div class="label">صور مؤرشفة</div></div>
-    </div>
-
-    <a href="services-hub.html" class="services-hub-btn">
-        <i class="fas fa-th-large"></i>
-        <span>📷 مركز خدمات الأشعة</span>
-        <small>11 خدمة (تطبيقية + ربط)</small>
-    </a>
-
-    <div class="quick-services">
-        <a href="services/rad-bookings.html" class="quick-service"><i class="fas fa-calendar-check"></i><span>الحجوزات</span></a>
-        <a href="services/rad-images.html" class="quick-service"><i class="fas fa-image"></i><span>الصور</span></a>
-        <a href="services/rad-reports.html" class="quick-service"><i class="fas fa-file-alt"></i><span>التقارير</span></a>
-        <a href="services/rad-send.html" class="quick-service"><i class="fas fa-paper-plane"></i><span>إرسال</span></a>
-    </div>
-
-    <div class="bookings-section">
-        <div class="title"><i class="fas fa-calendar-alt"></i> آخر الحجوزات</div>
-        <div class="booking-item">
-            <div class="booking-info"><span class="patient">محمد علي</span><span class="type">أشعة مقطعية</span></div>
-            <span class="booking-status pending">قيد التنفيذ</span>
-        </div>
-        <div class="booking-item">
-            <div class="booking-info"><span class="patient">سارة حسن</span><span class="type">أشعة عادية</span></div>
-            <span class="booking-status ready">جاهز</span>
-        </div>
-        <div class="booking-item">
-            <div class="booking-info"><span class="patient">خالد محمود</span><span class="type">رنين مغناطيسي</span></div>
-            <span class="booking-status done">مرسل</span>
-        </div>
-    </div>
-
-    <nav class="bottom-nav">
-        <div class="nav-item active" onclick="navigateTo('home')"><i class="fas fa-home"></i><span>الرئيسية</span></div>
-        <div class="nav-item" onclick="navigateTo('bookings')"><i class="fas fa-calendar-check"></i><span>الحجوزات</span></div>
-        <div class="nav-item" onclick="navigateTo('images')"><i class="fas fa-image"></i><span>الصور</span></div>
-        <div class="nav-item" onclick="navigateTo('reports')"><i class="fas fa-file-alt"></i><span>التقارير</span></div>
-        <div class="nav-item" onclick="navigateTo('more')"><i class="fas fa-ellipsis-h"></i><span>المزيد</span></div>
-    </nav>
-</div>
-<script>
-function loadRadData() {
-    let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (!user.fullName) user = { fullName: 'مركز الأشعة', id: 'RAD-2024', avatar: 'ش' };
-    document.getElementById('userName').innerHTML = 'مركز <span style="color:#0d9488;">' + user.fullName.replace('مركز ', '') + '</span>';
-    document.getElementById('userId').innerHTML = '<i class="fas fa-id-card"></i> ' + (user.id || 'RAD-2024');
-    document.getElementById('userAvatar').textContent = user.fullName.charAt(0) || 'ش';
-    let code = localStorage.getItem('radCode');
-    if (!code) { code = 'RAD-' + Math.floor(1000 + Math.random() * 9000); localStorage.setItem('radCode', code); }
-    document.getElementById('radCode').textContent = code;
-}
-function copyCode() { const code = document.getElementById('radCode').textContent; if(navigator.clipboard) navigator.clipboard.writeText(code).then(() => alert('✅ تم نسخ الكود: ' + code)); else alert('🔑 كود التعاون: ' + code); }
-function logout() { if(confirm('هل أنت متأكد من الخروج؟')) { localStorage.clear(); sessionStorage.clear(); window.location.href = '../../auth/login.html'; } }
-function navigateTo(page) {
-    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-    const pages = ['home', 'bookings', 'images', 'reports', 'more'];
-    const index = pages.indexOf(page);
-    if (index !== -1) document.querySelectorAll('.nav-item')[index].classList.add('active');
-    const pageMap = { 'home': 'index.html', 'bookings': 'services/rad-bookings.html', 'images': 'services/rad-images.html', 'reports': 'services/rad-reports.html', 'more': 'services-hub.html' };
-    if (pageMap[page]) window.location.href = pageMap[page];
-}
-document.addEventListener('DOMContentLoaded', function() { loadRadData(); console.log('✅ لوحة الأشعة جاهزة!'); });
-</script>
+    <script>
+        function loadRadioData() {
+            let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (!user.fullName) { user = { fullName: 'مركز الأشعة المتطور', id: 'RAD-2024', avatar: 'أ' }; }
+            document.getElementById('userName').innerHTML = 'مركز <span style="color:var(--gateway-radiology);">' + user.fullName.replace('مركز ', '') + '</span>';
+            document.getElementById('userId').innerHTML = '<i class="fas fa-id-card"></i> ' + (user.id || 'RAD-2024');
+            document.getElementById('userAvatar').textContent = user.fullName.charAt(0) || 'أ';
+        }
+        function logout() { if (confirm('هل أنت متأكد من الخروج؟')) { localStorage.clear(); sessionStorage.clear(); window.location.href = '../../auth/login.html'; } }
+        function navigateTo(page) {
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            const pages = ['home', 'orders', 'upload', 'reports', 'more'];
+            const index = pages.indexOf(page); if (index !== -1) document.querySelectorAll('.nav-item')[index].classList.add('active');
+            const map = { 'home': 'index.html', 'orders': 'services/radiology-orders.html', 'upload': 'services/radiology-upload.html', 'reports': 'services/radiology-reports.html', 'more': 'radiology-services-app.html' };
+            if (map[page]) window.location.href = map[page];
+        }
+        document.addEventListener('DOMContentLoaded', function() { loadRadioData(); console.log('✅ لوحة الأشعة جاهزة!'); });
+    </script>
 </body>
 </html>
