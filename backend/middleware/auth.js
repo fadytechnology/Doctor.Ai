@@ -1,28 +1,20 @@
-// ============================================================
-// ===== ميدل وير المصادقة (التحقق من JWT) =====
-// ============================================================
-
+// backend/middleware/auth.js
 const jwt = require('jsonwebtoken');
 
-module.exports = (req, res, next) => {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ error: 'Access denied. No token provided.' });
+  }
 
-    if (!token) {
-        return res.status(401).json({
-            success: false,
-            message: 'غير مصرح، يرجى تسجيل الدخول'
-        });
+  jwt.verify(token, process.env.JWT_SECRET || 'default_secret', (err, user) => {
+    if (err) {
+      return res.status(403).json({ error: 'Invalid or expired token.' });
     }
+    req.user = user;
+    next();
+  });
+}
 
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'doctor_ai_secret_2026');
-        req.userId = decoded.id;
-        req.userRole = decoded.role;
-        next();
-    } catch (error) {
-        return res.status(401).json({
-            success: false,
-            message: 'توكن غير صالح أو منتهي الصلاحية'
-        });
-    }
-};
+module.exports = { authenticateToken };

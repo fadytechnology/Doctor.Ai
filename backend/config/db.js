@@ -1,33 +1,27 @@
-// ============================================================
-// ===== اتصال قاعدة البيانات =====
-// ============================================================
+// backend/config/db.js
+const mysql = require('mysql2/promise');
+require('dotenv').config();
 
-const mysql = require('mysql2');
-const dotenv = require('dotenv');
-
-dotenv.config();
-
+// إنشاء تجمع اتصالات (Connection Pool) لقاعدة البيانات
 const pool = mysql.createPool({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'doctor_ai_db',
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
-    charset: 'utf8mb4'
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'doctor_ai_db',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
 
-const promisePool = pool.promise();
-
-// اختبار الاتصال
+// اختبار الاتصال (اختياري ولكن مفيد)
 (async function testConnection() {
-    try {
-        await promisePool.query('SELECT 1');
-        console.log('✅ MySQL متصل بنجاح');
-    } catch (error) {
-        console.error('❌ فشل الاتصال بـ MySQL:', error.message);
-    }
+  try {
+    const connection = await pool.getConnection();
+    console.log('✅ Database connected successfully!');
+    connection.release();
+  } catch (error) {
+    console.error('❌ Database connection failed:', error.message);
+  }
 })();
 
-module.exports = promisePool;
+module.exports = pool;
