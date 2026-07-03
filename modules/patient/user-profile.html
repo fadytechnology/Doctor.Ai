@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>الملف الشخصي - Doctor.ai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
+        .app-container { max-width: 480px; margin: 0 auto; }
+        
+        .page-header { background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+        .page-header .back-btn { background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; }
+        .page-header h1 { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; flex: 1; }
+        
+        .profile-card { background: #fff; border-radius: 20px; padding: 24px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.04); margin-bottom: 16px; }
+        .profile-avatar { width: 96px; height: 96px; border-radius: 50%; background: #0d9488; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 700; margin: 0 auto 12px; }
+        .profile-card h2 { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; }
+        .profile-card p { font-size: 14px; color: #94a3b8; margin: 0; }
+        .profile-card .badge { display: inline-block; background: #e6f7f5; color: #0d9488; padding: 4px 16px; border-radius: 30px; font-size: 12px; font-weight: 600; margin-top: 8px; }
+        
+        .info-group { background: #fff; border-radius: 16px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+        .info-row:last-child { border-bottom: none; }
+        .info-row .label { font-size: 14px; color: #94a3b8; }
+        .info-row .value { font-size: 14px; font-weight: 600; color: #1e293b; }
+        
+        .btn-edit { width: 100%; padding: 12px; background: #0d9488; color: #fff; border: none; border-radius: 14px; font-size: 15px; font-weight: 600; cursor: pointer; }
+        .btn-edit:active { transform: scale(0.98); }
+        
+        .bottom-nav { display: flex; justify-content: space-around; align-items: center; background: #fff; padding: 10px 0; border-radius: 30px; box-shadow: 0 -2px 12px rgba(0,0,0,0.04); margin-top: 8px; }
+        .bottom-nav a { color: #94a3b8; font-size: 22px; text-decoration: none; padding: 8px 16px; border-radius: 30px; transition: 0.2s; }
+        .bottom-nav a.active { color: #0d9488; background: #e6f7f5; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="page-header">
+        <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
+        <h1><i class="fas fa-user" style="color:#0d9488;"></i> الملف الشخصي</h1>
+    </div>
+
+    <div class="profile-card">
+        <div class="profile-avatar" id="profileAvatar">أ</div>
+        <h2 id="profileName">أحمد محمد</h2>
+        <p id="profileEmail">ahmed@test.com</p>
+        <span class="badge" id="profileRole">🩺 مريض</span>
+    </div>
+
+    <div class="info-group">
+        <div class="info-row"><span class="label">رقم الهاتف</span><span class="value" id="profilePhone">01001234567</span></div>
+        <div class="info-row"><span class="label">العنوان</span><span class="value" id="profileAddress">القاهرة، مصر</span></div>
+        <div class="info-row"><span class="label">تاريخ الميلاد</span><span class="value" id="profileBirth">01/01/1990</span></div>
+        <div class="info-row"><span class="label">الحالة</span><span class="value" style="color:#0d9488;">نشط</span></div>
+    </div>
+
+    <button class="btn-edit" onclick="alert('✏️ جاري فتح صفحة التعديل...')"><i class="fas fa-edit"></i> تعديل الملف الشخصي</button>
+
+    <nav class="bottom-nav">
+        <a href="index.html"><i class="fas fa-home"></i></a>
+        <a href="map.html"><i class="fas fa-map"></i></a>
+        <a href="settings.html" class="active"><i class="fas fa-cog"></i></a>
+<a href="gateway-details.html?gateway=communication"><i class="fas fa-share-alt"></i></a>
+    </nav>
+</div>
+
+<script>
+    // جلب البيانات من localStorage
+    document.addEventListener('DOMContentLoaded', function() {
+        const name = localStorage.getItem('user_name') || 'أحمد محمد';
+        const email = localStorage.getItem('user_email') || 'ahmed@test.com';
+        const role = localStorage.getItem('user_role') || 'patient';
+        const phone = localStorage.getItem('user_phone') || '01001234567';
+        
+        document.getElementById('profileName').textContent = name;
+        document.getElementById('profileEmail').textContent = email;
+        document.getElementById('profilePhone').textContent = phone;
+        document.getElementById('profileAvatar').textContent = name.charAt(0);
+        
+        const roleMap = { 'patient': '🩺 مريض', 'doctor': '👨‍⚕️ طبيب', 'pharmacy': '💊 صيدلي', 'lab': '🧪 مختبر', 'admin': '🛠️ مشرف' };
+        document.getElementById('profileRole').textContent = roleMap[role] || '🩺 مريض';
+    });
+</script>
+
+</body>
+</html> 

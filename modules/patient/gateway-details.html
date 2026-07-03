@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>خدمات البوابة - Doctor.ai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
+        .app-container { max-width: 480px; margin: 0 auto; }
+        
+        .page-header { 
+            background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); 
+            margin-bottom: 16px; display: flex; align-items: center; gap: 12px; 
+        }
+        .page-header .back-btn { 
+            background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; 
+            font-size: 18px; color: #1e293b; cursor: pointer; 
+        }
+        .page-header h1 { 
+            font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; flex: 1; 
+        }
+        .page-header h1 i {
+            color: var(--gateway-commerce);
+        }
+
+        .gateway-intro { 
+            background: #fff; border-radius: 16px; padding: 16px; margin-bottom: 16px; 
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04); display: flex; align-items: center; gap: 14px;
+            border-right: 6px solid var(--gateway-color, var(--gateway-commerce));
+        }
+        .gateway-intro .info h2 { 
+            font-size: 18px; font-weight: 700; color: #1e293b; margin: 0; 
+        }
+        .gateway-intro .info p { 
+            font-size: 13px; color: #64748b; margin: 4px 0 0; 
+        }
+        .gateway-intro .count-badge { 
+            margin-right: auto; 
+            background: color-mix(in srgb, var(--gateway-color, var(--gateway-commerce)) 10%, transparent); 
+            color: var(--gateway-color, var(--gateway-commerce)); 
+            padding: 4px 16px; border-radius: 30px; font-size: 13px; font-weight: 700; 
+        }
+
+        .services-grid { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; 
+        }
+        .service-card { 
+            background: #fff; padding: 16px 10px; border-radius: 16px; text-align: center; 
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04); transition: 0.2s; cursor: pointer; 
+            border: 1px solid transparent; 
+        }
+        .service-card:active { 
+            transform: scale(0.95); background: #f8fafc; 
+            border-color: var(--gateway-color, var(--gateway-commerce)); 
+        }
+        .service-card .icon { 
+            width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; 
+            justify-content: center; margin: 0 auto 8px; font-size: 20px; 
+            background: var(--gateway-bg, color-mix(in srgb, var(--gateway-commerce) 10%, transparent));
+            color: var(--gateway-color, var(--gateway-commerce));
+        }
+        .service-card h4 { 
+            font-size: 13px; font-weight: 700; color: #1e293b; margin: 0 0 4px; 
+        }
+        .service-card p { 
+            font-size: 10px; color: #94a3b8; margin: 0; line-height: 1.3; 
+        }
+
+        .bottom-nav { 
+            display: flex; justify-content: space-around; align-items: center; background: #fff; 
+            padding: 10px 0; border-radius: 30px; box-shadow: 0 -2px 12px rgba(0,0,0,0.04); margin-top: 8px; 
+        }
+        .bottom-nav a { 
+            color: #94a3b8; font-size: 22px; text-decoration: none; padding: 8px 16px; border-radius: 30px; 
+            transition: 0.2s; 
+        }
+        .bottom-nav a.active { 
+            color: var(--gateway-commerce); 
+            background: color-mix(in srgb, var(--gateway-commerce) 10%, transparent); 
+        }
+
+        @media (max-width: 480px) { .services-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 380px) { .services-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- الهيدر -->
+        <div class="page-header">
+            <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
+            <h1 id="gatewayTitle"><i class="fas fa-th-large"></i> خدمات البوابة</h1>
+        </div>
+
+        <!-- تعريف البوابة -->
+        <div class="gateway-intro" id="gatewayIntro">
+            <div class="info">
+                <h2 id="gatewayName">البوابة</h2>
+                <p id="gatewayDesc">وصف البوابة</p>
+            </div>
+            <span class="count-badge" id="serviceCount">0 خدمات</span>
+        </div>
+
+        <!-- شبكة الخدمات -->
+        <div class="services-grid" id="servicesContainer"></div>
+
+        <!-- القائمة السفلية -->
+        <nav class="bottom-nav">
+            <a href="index.html"><i class="fas fa-home"></i></a>
+            <a href="map.html"><i class="fas fa-map"></i></a>
+            <a href="settings.html" class="active"><i class="fas fa-cog"></i></a>
+            <a href="gateway-details.html?gateway=communication"><i class="fas fa-share-alt"></i></a>
+        </nav>
+    </div>
+
+    <script>
+        // ============================================================
+        // 1. تعريف البوابات والخدمات
+        // ============================================================
+        const GATEWAYS = {
+            biometric: {
+                name: 'البوابة الحيوية',
+                icon: 'fa-heartbeat',
+                color: '#0d9488',
+                bg: 'rgba(13,148,136,0.1)',
+                desc: 'القياسات والتحاليل الذاتية',
+                services: [
+                    { name: 'الملف البيومتري', file: 'biometric-profile.html', icon: 'fa-user-md' },
+                    { name: 'تسجيل الأعراض', file: 'symptom-logger.html', icon: 'fa-notes-medical' },
+                    { name: 'تتبع الماء', file: 'water-tracker.html', icon: 'fa-tint' },
+                    { name: 'عداد الخطوات', file: 'step-counter.html', icon: 'fa-shoe-prints' },
+                    { name: 'حاسبة السعرات', file: 'calorie-counter.html', icon: 'fa-calculator' },
+                    { name: 'مؤقت الصيام', file: 'fasting-timer.html', icon: 'fa-clock' },
+                    { name: 'تحليل النوم', file: 'smart-sleep.html', icon: 'fa-moon' }
+                ]
+            },
+            medication: {
+                name: 'الالتزام العلاجي',
+                icon: 'fa-pills',
+                color: '#6366f1',
+                bg: 'rgba(99,102,241,0.1)',
+                desc: 'تنظيم الأدوية والجرعات',
+                services: [
+                    { name: 'تذكير الأدوية', file: 'medication-reminder.html', icon: 'fa-bell' },
+                    { name: 'حاسبة الجرعات', file: 'dosage-calculator.html', icon: 'fa-calculator' },
+                    { name: 'كاشف التفاعلات', file: 'interaction-scanner.html', icon: 'fa-exclamation-triangle' },
+                    { name: 'متابعة العلاج', file: 'treatment-monitor.html', icon: 'fa-chart-line' },
+                    { name: 'تتبع التطعيمات', file: 'vaccination-tracker.html', icon: 'fa-syringe' },
+                    { name: 'دليل الأدوية', file: 'medication-guide.html', icon: 'fa-book-medical' },
+                    { name: 'تذكير ذكي', file: 'smart-reminder.html', icon: 'fa-robot' },
+                    { name: 'طلب تحاليل', file: 'lab-order.html', icon: 'fa-flask' }
+                ]
+            },
+            mental: {
+                name: 'الصحة النفسية',
+                icon: 'fa-brain',
+                color: '#8b5cf6',
+                bg: 'rgba(139,92,246,0.1)',
+                desc: 'المزاج والتأمل',
+                services: [
+                    { name: 'تتبع المزاج', file: 'mood-tracker.html', icon: 'fa-smile' },
+                    { name: 'تمارين التنفس', file: 'breathing-exercises.html', icon: 'fa-wind' },
+                    { name: 'تحليل النوم', file: 'smart-sleep.html', icon: 'fa-moon' },
+                    { name: 'تقليل السكر', file: 'sugar-detox.html', icon: 'fa-candy-cane' },
+                    { name: 'مشغل الخدمات', file: 'service-launcher.html', icon: 'fa-play' },
+                    { name: 'مشاركة الملف', file: 'share-ehr.html', icon: 'fa-share-alt' }
+                ]
+            },
+            nutrition: {
+                name: 'التغذية واللياقة',
+                icon: 'fa-utensils',
+                color: '#f59e0b',
+                bg: 'rgba(245,158,11,0.1)',
+                desc: 'السعرات والتمارين',
+                services: [
+                    { name: 'حاسبة السعرات', file: 'calorie-counter.html', icon: 'fa-calculator' },
+                    { name: 'مخطط الوجبات', file: 'meal-planner.html', icon: 'fa-utensils' },
+                    { name: 'تتبع الماء', file: 'water-tracker.html', icon: 'fa-tint' },
+                    { name: 'عداد الخطوات', file: 'step-counter.html', icon: 'fa-shoe-prints' },
+                    { name: 'تقليل السكر', file: 'sugar-detox.html', icon: 'fa-candy-cane' },
+                    { name: 'مؤقت الصيام', file: 'fasting-timer.html', icon: 'fa-clock' }
+                ]
+            },
+            emergency: {
+                name: 'الطوارئ والسلامة',
+                icon: 'fa-ambulance',
+                color: '#ef4444',
+                bg: 'rgba(239,68,68,0.1)',
+                desc: 'حماية واستجابة سريعة',
+                services: [
+                    { name: 'كارت الطوارئ', file: 'ice-card.html', icon: 'fa-id-card' },
+                    { name: 'مشاركة الملف', file: 'share-ehr.html', icon: 'fa-share-alt' },
+                    { name: 'تذكير ذكي', file: 'smart-reminder.html', icon: 'fa-robot' },
+                    { name: 'متابعة العلاج', file: 'treatment-monitor.html', icon: 'fa-chart-line' },
+                    { name: 'طلب تحاليل', file: 'lab-order.html', icon: 'fa-flask' },
+                    { name: 'طلب أشعة', file: 'radiology-order.html', icon: 'fa-x-ray' }
+                ]
+            },
+            communication: {
+                name: 'التواصل الطبي',
+                icon: 'fa-comments-medical',
+                color: '#0ea5e9',
+                bg: 'rgba(14,165,233,0.1)',
+                desc: 'شات ومواعيد',
+                services: [
+                    { name: 'مشاركة الملف', file: 'share-ehr.html', icon: 'fa-share-alt' },
+                    { name: 'مشغل الخدمات', file: 'service-launcher.html', icon: 'fa-play' },
+                    { name: 'طلب تحاليل', file: 'lab-order.html', icon: 'fa-flask' },
+                    { name: 'طلب أشعة', file: 'radiology-order.html', icon: 'fa-x-ray' },
+                    { name: 'تذكير ذكي', file: 'smart-reminder.html', icon: 'fa-robot' },
+                    { name: 'كارت الطوارئ', file: 'ice-card.html', icon: 'fa-id-card' }
+                ]
+            },
+            wallet: {
+                name: 'المحفظة والمدفوعات',
+                icon: 'fa-wallet',
+                color: '#22c55e',
+                bg: 'rgba(34,197,94,0.1)',
+                desc: 'رصيد وفواتير',
+                services: [
+                    { name: 'المحفظة', file: 'wallet.html', icon: 'fa-wallet' },
+                    { name: 'حاسبة التكاليف', file: 'cost-calculator.html', icon: 'fa-coins' },
+                    { name: 'مشغل الخدمات', file: 'service-launcher.html', icon: 'fa-play' },
+                    { name: 'مشاركة الملف', file: 'share-ehr.html', icon: 'fa-share-alt' },
+                    { name: 'تذكير ذكي', file: 'smart-reminder.html', icon: 'fa-robot' }
+                ]
+            },
+            education: {
+                name: 'البحث والتوعية',
+                icon: 'fa-book-medical',
+                color: '#a855f7',
+                bg: 'rgba(168,85,247,0.1)',
+                desc: 'موسوعة وأخبار',
+                services: [
+                    { name: 'دليل الأدوية', file: 'medication-guide.html', icon: 'fa-book-medical' },
+                    { name: 'تسجيل الأعراض', file: 'symptom-logger.html', icon: 'fa-notes-medical' },
+                    { name: 'مشغل الخدمات', file: 'service-launcher.html', icon: 'fa-play' },
+                    { name: 'مشاركة الملف', file: 'share-ehr.html', icon: 'fa-share-alt' },
+                    { name: 'تذكير ذكي', file: 'smart-reminder.html', icon: 'fa-robot' }
+                ]
+            },
+            settings: {
+                name: 'الخصوصية والإعدادات',
+                icon: 'fa-sliders-h',
+                color: '#475569',
+                bg: 'rgba(100,116,139,0.1)',
+                desc: 'تحكم كامل',
+                services: [
+                    { name: 'الإعدادات', file: 'settings.html', icon: 'fa-cog' },
+                    { name: 'مشغل الخدمات', file: 'service-launcher.html', icon: 'fa-play' },
+                    { name: 'مشاركة الملف', file: 'share-ehr.html', icon: 'fa-share-alt' },
+                    { name: 'تذكير ذكي', file: 'smart-reminder.html', icon: 'fa-robot' },
+                    { name: 'كارت الطوارئ', file: 'ice-card.html', icon: 'fa-id-card' }
+                ]
+            },
+            integration: {
+                name: 'التكامل الذكي',
+                icon: 'fa-robot',
+                color: '#ec4899',
+                bg: 'rgba(236,72,153,0.1)',
+                desc: 'AI وتوقعات',
+                services: [
+                    { name: 'مشاركة الملف', file: 'share-ehr.html', icon: 'fa-share-alt' },
+                    { name: 'مشغل الخدمات', file: 'service-launcher.html', icon: 'fa-play' },
+                    { name: 'تذكير ذكي', file: 'smart-reminder.html', icon: 'fa-robot' },
+                    { name: 'عداد الخطوات', file: 'step-counter.html', icon: 'fa-shoe-prints' },
+                    { name: 'تتبع الماء', file: 'water-tracker.html', icon: 'fa-tint' },
+                    { name: 'حاسبة السعرات', file: 'calorie-counter.html', icon: 'fa-calculator' }
+                ]
+            }
+        };
+
+        // ============================================================
+        // 2. دوال العرض
+        // ============================================================
+        function getGatewayId() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('gateway') || 'biometric';
+        }
+
+        function renderGateway() {
+            const id = getGatewayId();
+            const gateway = GATEWAYS[id];
+            if (!gateway) {
+                document.getElementById('gatewayTitle').innerHTML = '<i class="fas fa-th-large"></i> بوابة غير موجودة';
+                return;
+            }
+
+            // تحديث الهيدر
+            document.getElementById('gatewayTitle').innerHTML = `<i class="fas fa-th-large"></i> خدمات ${gateway.name}`;
+
+            // تحديث مقدمة البوابة
+            const intro = document.getElementById('gatewayIntro');
+            intro.style.setProperty('--gateway-color', gateway.color);
+            intro.style.setProperty('--gateway-bg', gateway.bg);
+            document.getElementById('gatewayName').textContent = gateway.name;
+            document.getElementById('gatewayDesc').textContent = gateway.desc;
+            document.getElementById('serviceCount').textContent = `${gateway.services.length} خدمات`;
+
+            // تحديث شبكة الخدمات
+            const container = document.getElementById('servicesContainer');
+            container.innerHTML = '';
+            gateway.services.forEach(service => {
+                const card = document.createElement('div');
+                card.className = 'service-card';
+                card.style.setProperty('--gateway-color', gateway.color);
+                card.style.setProperty('--gateway-bg', gateway.bg);
+                card.onclick = () => {
+                    window.location.href = `services/${service.file}`;
+                };
+                card.innerHTML = `
+                    <div class="icon"><i class="fas ${service.icon}"></i></div>
+                    <h4>${service.name}</h4>
+                    <p>${service.file.replace('.html','').replace(/-/g,' ')}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', renderGateway);
+    </script>
+</body>
+</html> 

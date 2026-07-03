@@ -3,165 +3,860 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>لوحة المريض - Doctor.ai</title>
+    <title>الرئيسية - Doctor.ai</title>
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="../../manifest.json" />
+    <meta name="theme-color" content="#0d9488" />
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Styles -->
     <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="style.css" />
+
     <style>
-        /* ===== تنسيقات صفحة المريض الرئيسية ===== */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
-        .app-container { max-width: 480px; margin: 0 auto; }
+        /* ===== تنسيقات الصفحة الرئيسية (تعتمد على المتغيرات المركزية) ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        /* الهيدر */
-        .patient-header { background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 16px; }
-        .header-top { display: flex; justify-content: space-between; align-items: center; }
-        .user-info { display: flex; align-items: center; gap: 12px; }
-        .avatar { width: 48px; height: 48px; border-radius: 50%; background: #0d9488; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; }
-        .user-details h3 { font-size: 16px; color: #1e293b; font-weight: 700; }
-        .user-details .sub { font-size: 12px; color: #94a3b8; }
-        .header-actions { display: flex; gap: 10px; }
-        .btn-notification { background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; position: relative; }
-        .btn-notification .badge { position: absolute; top: -2px; right: -2px; background: #ef4444; color: #fff; font-size: 10px; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
-        .btn-logout { background: transparent; border: none; font-size: 20px; color: #94a3b8; cursor: pointer; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #f2f4f8;
+            direction: rtl;
+            padding: 16px;
+            min-height: 100vh;
+        }
 
-        /* الإحصائيات */
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
-        .stat-card { background: #fff; padding: 14px 8px; border-radius: 16px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
-        .stat-card .num { font-size: 22px; font-weight: 800; color: #0d9488; }
-        .stat-card .label { font-size: 11px; color: #94a3b8; }
+        .patient-dashboard {
+            max-width: 480px;
+            margin: 0 auto;
+        }
 
-        /* زر مركز الخدمات (النجمة) */
-        .services-hub-btn { display: block; background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); color: #fff; padding: 16px; border-radius: 16px; text-decoration: none; text-align: center; margin-bottom: 16px; box-shadow: 0 4px 20px rgba(13,148,136,0.25); transition: 0.3s; }
-        .services-hub-btn:active { transform: scale(0.98); }
-        .services-hub-btn i { font-size: 24px; display: block; margin-bottom: 4px; }
-        .services-hub-btn span { font-size: 18px; font-weight: 700; }
-        .services-hub-btn small { font-size: 13px; opacity: 0.85; display: block; margin-top: 2px; }
+        /* ===== الهيدر ===== */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 16px;
+            border-radius: 20px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            margin-bottom: 16px;
+        }
 
-        /* وصلات سريعة (خدمات ربط) */
-        .quick-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
-        .quick-link { background: #fff; padding: 14px 6px; border-radius: 16px; text-align: center; text-decoration: none; color: #1e293b; box-shadow: 0 1px 4px rgba(0,0,0,0.04); transition: 0.2s; }
-        .quick-link:active { transform: scale(0.95); background: #f8fafc; }
-        .quick-link i { font-size: 24px; color: #0d9488; display: block; margin-bottom: 4px; }
-        .quick-link span { font-size: 11px; font-weight: 600; }
+        .greeting h2 {
+            font-size: 14px;
+            font-weight: 400;
+            color: #94a3b8;
+            margin: 0;
+        }
 
-        /* خروج */
-        .logout-btn { width: 100%; padding: 12px; background: #fef2f2; color: #dc2626; border: none; border-radius: 14px; font-size: 15px; font-weight: 600; cursor: pointer; border: 1px solid #fecaca; }
-        .logout-btn:active { transform: scale(0.98); }
+        .greeting .user-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0;
+        }
 
-        @media (max-width: 480px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .quick-links { grid-template-columns: repeat(3, 1fr); } }
+        .greeting .user-id-display {
+            font-size: 12px;
+            color: #94a3b8;
+            margin: 0;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .icon-btn {
+            position: relative;
+            background: #f1f5f9;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 18px;
+            color: #1e293b;
+            cursor: pointer;
+        }
+
+        .icon-btn .badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .avatar-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--gateway-biometric);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .avatar-circle:active {
+            transform: scale(0.95);
+        }
+
+        /* ===== الإحصائيات ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .stat-card {
+            background: #fff;
+            padding: 14px 8px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .stat-card .num {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--gateway-biometric);
+        }
+
+        .stat-card .label {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        /* ===== زر مركز الخدمات ===== */
+        .services-hub-btn {
+            display: block;
+            background: linear-gradient(135deg, var(--gateway-biometric) 0%, #0f766e 100%);
+            color: #fff;
+            padding: 16px;
+            border-radius: 16px;
+            text-decoration: none;
+            text-align: center;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 20px rgba(13, 148, 136, 0.25);
+            transition: 0.3s;
+        }
+
+        .services-hub-btn:active {
+            transform: scale(0.98);
+        }
+
+        .services-hub-btn i {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .services-hub-btn span {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .services-hub-btn small {
+            font-size: 13px;
+            opacity: 0.85;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* ===== الإعلانات ===== */
+        .main-ad-banner {
+            background: #fff;
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ad-content {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .ad-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(13, 148, 136, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--gateway-biometric);
+            flex-shrink: 0;
+        }
+
+        .ad-text h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0 0 2px;
+        }
+
+        .ad-text p {
+            font-size: 13px;
+            color: #64748b;
+            margin: 0;
+        }
+
+        .ad-cta {
+            margin-right: auto;
+            color: var(--gateway-biometric);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .ad-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: #f1f5f9;
+            font-size: 10px;
+            color: #64748b;
+            padding: 2px 10px;
+            border-radius: 30px;
+        }
+
+        .ads-widget {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .ads-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ads-content i {
+            font-size: 20px;
+            color: var(--gateway-biometric);
+        }
+
+        .ads-text h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .ads-text p {
+            font-size: 12px;
+            color: #64748b;
+            margin: 0;
+        }
+
+        .ads-link {
+            margin-right: auto;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gateway-biometric);
+            text-decoration: none;
+        }
+
+        /* ===== الأخبار ===== */
+        .news-widget {
+            background: #fff;
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .news-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .news-header i {
+            color: var(--gateway-biometric);
+        }
+
+        .news-header span {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1e293b;
+        }
+
+        .news-ticker {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-height: 60px;
+            overflow-y: auto;
+        }
+
+        .news-item {
+            font-size: 13px;
+            color: #475569;
+            padding: 4px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        /* ===== تقرير الذكاء الاصطناعي ===== */
+        #aiReportContainer {
+            margin-bottom: 16px;
+        }
+
+        /* ===== الحاويات الثلاث ===== */
+        .containers-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .container-card {
+            background: #fff;
+            padding: 16px 12px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .container-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 22px;
+        }
+
+        .container-card h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0 0 4px;
+        }
+
+        .container-card p {
+            font-size: 11px;
+            color: #64748b;
+            margin: 0 0 10px;
+            line-height: 1.4;
+        }
+
+        .btn-explore {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gateway-biometric);
+            text-decoration: none;
+        }
+
+        /* ===== القائمة السفلية ===== */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: #fff;
+            padding: 10px 0;
+            border-radius: 30px;
+            box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.04);
+            margin-top: 8px;
+        }
+
+        .bottom-nav a {
+            color: #94a3b8;
+            font-size: 22px;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            transition: 0.2s;
+        }
+
+        .bottom-nav a.active {
+            color: var(--gateway-biometric);
+            background: rgba(13, 148, 136, 0.1);
+        }
+
+        .bottom-nav a:active {
+            transform: scale(0.9);
+        }
+
+        /* ===== خروج ===== */
+        .logout-btn-container {
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 12px;
+            background: #fef2f2;
+            color: #dc2626;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid #fecaca;
+            transition: 0.2s;
+        }
+
+        .logout-btn:active {
+            transform: scale(0.98);
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 14px;
+        }
+
+        /* ===== استجابة ===== */
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .containers-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <!-- الهيدر -->
-    <header class="patient-header">
-        <div class="header-top">
-            <div class="user-info">
-                <div class="avatar" id="userAvatar">م</div>
-                <div class="user-details">
-                    <h3 id="userName">مرحباً، محمد</h3>
-                    <span class="sub" id="userId"><i class="fas fa-id-card"></i> #DR-1001</span>
+    <div class="patient-dashboard">
+
+        <!-- ============================================================ -->
+        <!-- 1. الهيدر -->
+        <!-- ============================================================ -->
+        <header class="dashboard-header">
+            <div class="greeting">
+                <h2>مرحباً</h2>
+                <p id="userNameDisplay" class="user-name">...</p>
+                <p id="userIdDisplay" class="user-id-display">🆔 ...</p>
+            </div>
+            <div class="actions">
+                <button class="icon-btn" onclick="alert('📬 لا توجد إشعارات جديدة')">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge" id="notifBadge">0</span>
+                </button>
+                <!-- ✅ الرابط هنا يودي على user-profile.html -->
+                <div class="avatar-circle" id="avatarCircle" onclick="window.location.href='user-profile.html'">
+                    <span id="avatarLetter">...</span>
                 </div>
             </div>
-            <div class="header-actions">
-                <button class="btn-notification" onclick="alert('📬 ليس لديك إشعارات جديدة')">
-                    <i class="fas fa-bell"></i>
-                    <span class="badge">0</span>
-                </button>
-                <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
+        </header>
+
+        <!-- ============================================================ -->
+        <!-- 2. الإحصائيات -->
+        <!-- ============================================================ -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card"><div class="num" id="statPrescriptions">0</div><div class="label">روشتات</div></div>
+            <div class="stat-card"><div class="num" id="statLoyalty">0</div><div class="label">نقاط الولاء</div></div>
+            <div class="stat-card"><div class="num" id="statAppointments">0</div><div class="label">مواعيد</div></div>
+            <div class="stat-card"><div class="num" id="statWallet">0</div><div class="label">رصيد المحفظة</div></div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 3. زر مركز الخدمات (تم تعديل الرابط للبوابة الجديدة) -->
+        <!-- ============================================================ -->
+        <a href="services-app.html" class="services-hub-btn">
+            <i class="fas fa-th-large"></i>
+            <span>🌟 مركز الخدمات</span>
+            <small>بوابات ذكية (10 أقسام)</small>
+        </a>
+
+        <!-- ============================================================ -->
+        <!-- 4. الإعلان الرئيسي -->
+        <!-- ============================================================ -->
+        <div class="main-ad-banner" id="mainAdBanner">
+            <div class="ad-content">
+                <div class="ad-icon"><i class="fas fa-gift"></i></div>
+                <div class="ad-text">
+                    <h3>مرحباً بك في Doctor.ai</h3>
+                    <p>منصتك الصحية المتكاملة</p>
+                </div>
+                <div class="ad-cta"><span>استكشف ←</span></div>
+            </div>
+            <div class="ad-badge">🩺 منصة صحية</div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 5. الإعلان الثانوي -->
+        <!-- ============================================================ -->
+        <div class="ads-widget" id="secondaryAdWidget">
+            <div class="ads-content">
+                <i class="fas fa-stethoscope"></i>
+                <div class="ads-text">
+                    <h4 id="secondaryAdTitle">🩺 استشارة طبية مجانية</h4>
+                    <p id="secondaryAdDesc">تحدث مع مساعدنا الذكي</p>
+                </div>
+                <a href="chat.html" class="ads-link" id="secondaryAdLink">اذهب للشات ←</a>
             </div>
         </div>
-    </header>
 
-    <!-- إحصائيات سريعة -->
-    <div class="stats-grid">
-        <div class="stat-card"><div class="num">3</div><div class="label">روشتات</div></div>
-        <div class="stat-card"><div class="num">8</div><div class="label">نقاط الولاء</div></div>
-        <div class="stat-card"><div class="num">2</div><div class="label">مواعيد</div></div>
-        <div class="stat-card"><div class="num">42</div><div class="label">أيام متابعة</div></div>
+        <!-- ============================================================ -->
+        <!-- 6. شريط الأخبار -->
+        <!-- ============================================================ -->
+        <div class="news-widget">
+            <div class="news-header">
+                <i class="fas fa-newspaper"></i>
+                <span>آخر الأخبار الصحية</span>
+            </div>
+            <div class="news-ticker" id="newsTicker">
+                <div class="news-item">📢 لا توجد أخبار حالياً</div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 7. تقرير الذكاء الاصطناعي -->
+        <!-- ============================================================ -->
+        <div id="aiReportContainer">
+            <div style="background:#f8fafc;padding:20px;border-radius:20px;text-align:center;color:#94a3b8;border:1px dashed #e2e8f0;">
+                <i class="fas fa-robot" style="font-size:40px;display:block;margin-bottom:10px;opacity:0.3;"></i>
+                ⚙️ جاري تحضير التقرير الذكي... سجّل بياناتك البيومترية أولاً.<br>
+                <a href="user-profile.html" style="color:var(--gateway-biometric);font-weight:600;">اذهب للملف البيومتري</a>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 8. الحاويات الثلاث -->
+        <!-- ============================================================ -->
+         <div class="containers-grid">
+        <div class="container-card">
+        <div class="container-icon" style="background: rgba(13, 148, 136, 0.1);">
+            <i class="fas fa-link" style="color: var(--gateway-biometric);"></i>
+            </div>
+            <h3>خدمات الربط</h3>
+            <p>استخدم كود التعاون للاستفادة من ولاء الصيدلية، الطلب السريع، والمحفظة الذكية.</p>
+            <a href="gateway-details.html?gateway=communication" class="btn-explore">استكشف ←</a>
+            </div>
+            <div class="container-card">
+            <div class="container-icon" style="background: rgba(99, 102, 241, 0.1);">
+            <i class="fas fa-brain" style="color: #6366f1;"></i>
+        </div>
+        <h3>خدمات الأبلكيشن</h3>
+        <p>أدوات صحية ذكية بدون ربط: الملف البيومتري، المساعد الطبي، منظم الأدوية، والمزيد.</p>
+        <a href="services-app.html" class="btn-explore">استكشف ←</a>
     </div>
-
-    <!-- ===== زر مركز الخدمات (الخدمة الأهم) ===== -->
-    <a href="services-hub.html" class="services-hub-btn">
-        <i class="fas fa-th-large"></i>
-        <span>🌟 مركز الخدمات</span>
-        <small>32 خدمة (ذاتية + ربط)</small>
-    </a>
-
-    <!-- وصلات سريعة لأهم خدمات الربط -->
-    <div class="quick-links">
-        <a href="services/network.html" class="quick-link">
-            <i class="fas fa-link"></i>
-            <span>شبكتي</span>
-        </a>
-        <a href="services/store.html" class="quick-link">
-            <i class="fas fa-store"></i>
-            <span>المتجر</span>
-        </a>
-        <a href="services/wallet.html" class="quick-link">
-            <i class="fas fa-wallet"></i>
-            <span>المحفظة</span>
-        </a>
-        <a href="services/appointment.html" class="quick-link">
-            <i class="fas fa-calendar-check"></i>
-            <span>حجز موعد</span>
-        </a>
-        <a href="services/chat-bot.html" class="quick-link">
-            <i class="fas fa-comment-medical"></i>
-            <span>المساعد</span>
-        </a>
-        <a href="services/ai-report.html" class="quick-link">
-            <i class="fas fa-robot"></i>
-            <span>التقرير</span>
-        </a>
+    <div class="container-card">
+        <div class="container-icon" style="background: rgba(239, 68, 68, 0.1);">
+            <i class="fas fa-shield-alt" style="color: #ef4444;"></i>
+        </div>
+        <h3>الخزنة الطبية</h3>
+        <p>ملفاتك المشفرة، التقارير، وكارت الطوارئ (ICE) في مكان آمن.</p>
+        <a href="gateway-details.html?gateway=emergency" class="btn-explore">استكشف ←</a>
     </div>
-
-    <!-- زر خروج -->
-    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
-
-    <p style="text-align:center;font-size:11px;color:#94a3b8;margin-top:20px;">Doctor.ai v3.0 — جميع الحقوق محفوظة</p>
 </div>
 
-<script>
-// ============================================================
-// ===== جافا سكريبت - لوحة المريض =====
-// ============================================================
+        <!-- ============================================================ -->
+        <!-- 9. القائمة السفلية -->
+        <!-- ============================================================ -->
+        <nav class="bottom-nav">
+        <a href="index.html" class="active" id="navHome"><i class="fas fa-home"></i></a>
+        <a href="map.html" id="navMap"><i class="fas fa-map"></i></a>
+        <a href="settings.html" id="navSettings"><i class="fas fa-cog"></i></a>
+        <a href="gateway-details.html?gateway=communication" id="navNetwork"><i class="fas fa-share-alt"></i></a>
+</nav>
 
-// ----- تحميل بيانات المستخدم -----
-function loadUser() {
-    // محاولة جلب البيانات من localStorage
-    let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (!user.fullName) {
-        // لو مش لاقي، نستخدم بيانات وهمية
-        user = { fullName: 'محمد علي', id: 'DR-1001', avatar: 'م' };
-    }
-    document.getElementById('userName').textContent = 'مرحباً، ' + user.fullName;
-    document.getElementById('userId').innerHTML = '<i class="fas fa-id-card"></i> ' + (user.id || 'DR-1001');
-    document.getElementById('userAvatar').textContent = user.fullName.charAt(0) || 'م';
+        <!-- ============================================================ -->
+        <!-- 10. زر الخروج -->
+        <!-- ============================================================ -->
+        <div class="logout-btn-container">
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
+        </div>
 
-    // تحديث رقم الإشعارات
-    const notifCount = JSON.parse(localStorage.getItem('notifications') || '[]').length;
-    document.querySelector('.btn-notification .badge').textContent = notifCount > 0 ? notifCount : '0';
-}
+        <p class="footer-note">Doctor.ai v3.0 — جميع الحقوق محفوظة</p>
+    </div>
 
-// ----- تسجيل الخروج -----
-function logout() {
-    if (confirm('هل أنت متأكد من الخروج من حسابك؟')) {
-        localStorage.clear();
-        sessionStorage.clear();
-        window.location.href = '../../auth/login.html';
-    }
-}
+    <!-- ============================================================ -->
+    <!-- ===== جافا سكريبت ===== -->
+    <!-- ============================================================ -->
+    <script>
+        // ============================================================
+        // 1. متغيرات عامة
+        // ============================================================
+        const API_BASE = 'http://localhost:5000/api';
 
-// ----- تحميل الصفحة -----
-document.addEventListener('DOMContentLoaded', function() {
-    loadUser();
-    console.log('✅ لوحة المريض (بوابة الخدمات) جاهزة!');
-});
-</script>
+        // ============================================================
+        // 2. دوال مساعدة
+        // ============================================================
+        function getToken() {
+            return localStorage.getItem('token');
+        }
+
+        function getUserId() {
+            return localStorage.getItem('user_id') || null;
+        }
+
+        function getHeaders() {
+            const token = getToken();
+            return {
+                'Content-Type': 'application/json',
+                'Authorization': token ? `Bearer ${token}` : ''
+            };
+        }
+
+        // ============================================================
+        // 3. جلب بيانات المستخدم من الـ API
+        // ============================================================
+        async function fetchUserData() {
+            try {
+                const token = getToken();
+                if (!token) {
+                    window.location.href = '../../auth/login.html';
+                    return null;
+                }
+
+                const response = await fetch(`${API_BASE}/auth/me`, {
+                    headers: getHeaders()
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401 || response.status === 403) {
+                        logout();
+                        return null;
+                    }
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const user = await response.json();
+                localStorage.setItem('user_name', user.full_name || 'مستخدم');
+                localStorage.setItem('user_id', user.id || '');
+                localStorage.setItem('user_role', user.role || 'patient');
+                return user;
+            } catch (error) {
+                console.error('❌ فشل جلب بيانات المستخدم:', error);
+                return null;
+            }
+        }
+
+        // ============================================================
+        // 4. جلب الإحصائيات
+        // ============================================================
+        async function fetchStats() {
+            try {
+                const token = getToken();
+                if (!token) return;
+
+                const [prescriptionsRes, appointmentsRes, walletRes] = await Promise.all([
+                    fetch(`${API_BASE}/prescriptions/patient/${getUserId()}`, { headers: getHeaders() })
+                        .then(r => r.ok ? r.json() : []),
+                    fetch(`${API_BASE}/appointments/patient/${getUserId()}`, { headers: getHeaders() })
+                        .then(r => r.ok ? r.json() : []),
+                    fetch(`${API_BASE}/wallet/balance`, { headers: getHeaders() })
+                        .then(r => r.ok ? r.json() : { balance: 0 })
+                ]);
+
+                document.getElementById('statPrescriptions').textContent = Array.isArray(prescriptionsRes) ? prescriptionsRes
+                    .length : 0;
+                document.getElementById('statAppointments').textContent = Array.isArray(appointmentsRes) ? appointmentsRes
+                    .length : 0;
+                document.getElementById('statWallet').textContent = (walletRes.balance || 0) + ' ج.م';
+                document.getElementById('statLoyalty').textContent = '0';
+
+            } catch (error) {
+                console.error('❌ فشل جلب الإحصائيات:', error);
+            }
+        }
+
+        // ============================================================
+        // 5. تحديث واجهة المستخدم
+        // ============================================================
+        function updateUI(user) {
+            const name = user?.full_name || localStorage.getItem('user_name') || 'مستخدم';
+            const userId = user?.id || localStorage.getItem('user_id') || 'DR-1001';
+
+            document.getElementById('userNameDisplay').textContent = name;
+            document.getElementById('userIdDisplay').textContent = '🆔 ' + userId;
+
+            const avatar = document.getElementById('avatarLetter');
+            avatar.textContent = name.charAt(0).toUpperCase();
+        }
+
+        // ============================================================
+        // 6. تحميل الإعلانات والأخبار (من localStorage مؤقتاً)
+        // ============================================================
+        function loadAds() {
+            const ads = JSON.parse(localStorage.getItem('ads_data') || '[]');
+            const activeAds = ads.filter(ad => ad.active !== false);
+
+            const mainBanner = document.getElementById('mainAdBanner');
+            if (activeAds.length === 0) return;
+
+            const ad = activeAds[0];
+            mainBanner.innerHTML = `
+                        <div class="ad-content" onclick="window.location.href='${ad.link || '#'}'">
+                            <div class="ad-icon"><i class="fas fa-bullhorn"></i></div>
+                            <div class="ad-text">
+                                <h3>${ad.title}</h3>
+                                <p>${ad.desc || ''}</p>
+                            </div>
+                            <div class="ad-cta"><span>اعرف أكثر ←</span></div>
+                        </div>
+                        <div class="ad-badge">📢 إعلان</div>
+                    `;
+
+            if (activeAds.length > 1) {
+                const secondAd = activeAds[1];
+                document.getElementById('secondaryAdTitle').textContent = secondAd.title || '🩺 استشارة طبية مجانية';
+                document.getElementById('secondaryAdDesc').textContent = secondAd.desc || 'تحدث مع مساعدنا الذكي';
+                document.getElementById('secondaryAdLink').href = secondAd.link || 'chat.html';
+            }
+        }
+
+        function loadNews() {
+            const news = JSON.parse(localStorage.getItem('news_data') || '[]');
+            const container = document.getElementById('newsTicker');
+            if (news.length === 0) {
+                container.innerHTML = `<div class="news-item">📢 لا توجد أخبار حالياً</div>`;
+                return;
+            }
+            container.innerHTML = news.map(item =>
+                `<div class="news-item">📌 ${item.title} - ${item.body}</div>`
+            ).join('');
+        }
+
+        // ============================================================
+        // 7. تقرير الذكاء الاصطناعي (محاكاة)
+        // ============================================================
+        async function loadAIReport() {
+            const container = document.getElementById('aiReportContainer');
+            try {
+                if (typeof HealthAI !== 'undefined' && HealthAI.run) {
+                    const ai = await HealthAI.run();
+                    container.innerHTML = ai.renderHTML ? ai.renderHTML() :
+                        `<div style="background:#f8fafc;padding:20px;border-radius:20px;color:#1e293b;border:1px solid #e2e8f0;">
+                            <i class="fas fa-robot" style="font-size:40px;display:block;margin-bottom:10px;color:var(--gateway-biometric);"></i>
+                            <h4 style="margin:0 0 8px;">تقريرك الصحي الذكي</h4>
+                            <p style="font-size:14px;color:#475569;">${ai.summary || 'لا توجد بيانات كافية لعرض التقرير.'}</p>
+                        </div>`;
+                } else {
+                    container.innerHTML = `
+                                <div style="background:#f8fafc;padding:20px;border-radius:20px;text-align:center;color:#94a3b8;border:1px dashed #e2e8f0;">
+                                    <i class="fas fa-robot" style="font-size:40px;display:block;margin-bottom:10px;opacity:0.3;"></i>
+                                    ⚙️ جاري تحضير التقرير الذكي... سجّل بياناتك البيومترية أولاً.<br>
+                                    <a href="user-profile.html" style="color:var(--gateway-biometric);font-weight:600;">اذهب للملف البيومتري</a>
+                                </div>
+                            `;
+                }
+            } catch (error) {
+                console.warn('⚠️ فشل تحميل التقرير الذكي:', error);
+                container.innerHTML = `
+                            <div style="background:#fef2f2;padding:20px;border-radius:20px;text-align:center;color:#dc2626;border:1px solid #fecaca;">
+                                <i class="fas fa-exclamation-triangle" style="font-size:40px;display:block;margin-bottom:10px;"></i>
+                                تعذر تحميل التقرير الذكي. حاول مرة أخرى لاحقاً.
+                            </div>
+                        `;
+            }
+        }
+
+        // ============================================================
+        // 8. تمييز القائمة السفلية
+        // ============================================================
+        function highlightNav() {
+            const current = window.location.pathname.split('/').pop() || 'index.html';
+            const map = {
+                'index.html': 'navHome',
+                'map.html': 'navMap',
+                'settings.html': 'navSettings',
+                'network.html': 'navNetwork'
+            };
+            const activeId = map[current];
+            if (activeId) {
+                document.querySelectorAll('.bottom-nav a').forEach(a => a.classList.remove('active'));
+                const el = document.getElementById(activeId);
+                if (el) el.classList.add('active');
+            }
+        }
+
+        // ============================================================
+        // 9. تسجيل الخروج
+        // ============================================================
+        function logout() {
+            if (confirm('هل أنت متأكد من الخروج من حسابك؟')) {
+                localStorage.clear();
+                sessionStorage.clear();
+                window.location.href = '../../auth/login.html';
+            }
+        }
+
+        // ============================================================
+        // 10. التهيئة عند تحميل الصفحة
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 جاري تحميل لوحة المريض...');
+
+            const user = await fetchUserData();
+            if (user) {
+                updateUI(user);
+            } else {
+                updateUI(null);
+                if (!getToken()) {
+                    window.location.href = '../../auth/login.html';
+                    return;
+                }
+            }
+
+            await fetchStats();
+            loadAds();
+            loadNews();
+            await loadAIReport();
+            highlightNav();
+
+            if ('serviceWorker' in navigator) {
+                try {
+                    await navigator.serviceWorker.register('../../sw.js');
+                    console.log('✅ Service Worker مسجل بنجاح');
+                } catch (err) {
+                    console.warn('⚠️ فشل تسجيل Service Worker:', err);
+                }
+            }
+
+            console.log('✅ لوحة المريض جاهزة!');
+        });
+
+        window.logout = logout;
+    </script>
+
+    <script src="../../JS/script.js"></script>
+    <script src="ai-interpreter.js" defer></script>
 
 </body>
 </html>
-

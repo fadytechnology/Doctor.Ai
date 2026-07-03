@@ -1,4 +1,71 @@
 /* ===== إخفاء شريط الحالة الوهمي من كل الفئات ===== */
 .status-icons {
     display: none !important;
+}/* ============================================================
+   🎨 نظام الألوان الدلالي الموحد (للمريض والصيدلي)
+   ============================================================ */
+
+:root {
+    /* ===== ألوان البوابات (Gateways) ===== */
+    --gateway-commerce: #2563eb;
+    --gateway-biometric: #0d9488;
+    --gateway-medication: #7c3aed;
+    --gateway-mental: #8b5cf6;
+    --gateway-nutrition: #f59e0b;
+    --gateway-emergency: #ef4444;
+    --gateway-communication: #0ea5e9;
+    --gateway-wallet: #22c55e;
+    --gateway-education: #a855f7;
+    --gateway-settings: #475569;
+    --gateway-launcher: #ec4899;
+    --gateway-analytics: #059669;
+    --gateway-customers: #ea580c;
+    --gateway-prescriptions: #7c3aed;
+    --gateway-inventory: #2563eb;
+
+    /* ===== ألوان الحالات (Status) ===== */
+    --status-pending-bg: #fef3c7;
+    --status-pending-text: #92400e;
+    --status-processing-bg: #dbeafe;
+    --status-processing-text: #1e40af;
+    --status-ready-bg: #d1fae5;
+    --status-ready-text: #065f46;
+    --status-delivered-bg: #d1fae5;
+    --status-delivered-text: #065f46;
+    --status-cancelled-bg: #fecaca;
+    --status-cancelled-text: #991b1b;
+    --status-active-bg: #d1fae5;
+    --status-active-text: #065f46;
+    --status-expired-bg: #fee2e2;
+    --status-expired-text: #991b1b;
+}
+
+/* ===== كلاسات الحالات الجاهزة (استخدمها في أي صفحة) ===== */
+.status-pending {
+    background: var(--status-pending-bg) !important;
+    color: var(--status-pending-text) !important;
+}
+.status-processing {
+    background: var(--status-processing-bg) !important;
+    color: var(--status-processing-text) !important;
+}
+.status-ready {
+    background: var(--status-ready-bg) !important;
+    color: var(--status-ready-text) !important;
+}
+.status-delivered {
+    background: var(--status-delivered-bg) !important;
+    color: var(--status-delivered-text) !important;
+}
+.status-cancelled {
+    background: var(--status-cancelled-bg) !important;
+    color: var(--status-cancelled-text) !important;
+}
+.status-active {
+    background: var(--status-active-bg) !important;
+    color: var(--status-active-text) !important;
+}
+.status-expired {
+    background: var(--status-expired-bg) !important;
+    color: var(--status-expired-text) !important;
 }

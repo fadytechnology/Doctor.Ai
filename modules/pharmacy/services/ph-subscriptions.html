@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>الأنظمة الشهرية - الصيدلي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: #f0f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
+        .app-container { max-width: 480px; margin: 0 auto; }
+        .page-header {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(12px);
+            padding: 16px;
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.04);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .page-header .back-btn { background: #fff; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+        .page-header h1 { font-size: 20px; font-weight: 800; color: #0f172a; margin: 0; flex: 1; }
+        .subscription-card { background: #fff; padding: 16px; border-radius: 20px; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); display: flex; align-items: center; gap: 14px; border-right: 4px solid #7c3aed; }
+        .subscription-card .info { flex: 1; }
+        .subscription-card .info h4 { font-size: 15px; font-weight: 700; color: #1e293b; margin: 0; }
+        .subscription-card .info p { font-size: 12px; color: #94a3b8; margin: 2px 0 0; }
+        .subscription-card .status { font-size: 11px; font-weight: 600; padding: 2px 12px; border-radius: 30px; }
+        .status.active { background: #dcfce7; color: #166534; }
+        .status.expired { background: #fee2e2; color: #991b1b; }
+        .btn-renew { background: #7c3aed; color: #fff; border: none; padding: 4px 16px; border-radius: 30px; font-size: 12px; cursor: pointer; }
+        .bottom-nav {
+            position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 32px); max-width: 480px;
+            background: rgba(255,255,255,0.8); backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.3);
+            display: flex; justify-content: space-around; align-items: center;
+            padding: 6px 0 10px; border-radius: 40px; box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            z-index: 100;
+        }
+        .bottom-nav a { color: #94a3b8; font-size: 20px; text-decoration: none; padding: 6px 12px; border-radius: 30px; transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+        .bottom-nav a span { font-size: 10px; font-weight: 600; }
+        .bottom-nav a.active { color: #0d9488; background: #e6f7f5; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="page-header">
+            <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
+            <h1><i class="fas fa-calendar-check" style="color:#7c3aed;"></i> الأنظمة الشهرية</h1>
+        </div>
+        <div class="subscription-card">
+            <div class="info"><h4>محمد علي</h4><p>أدوية الضغط - 30 يوم</p></div>
+            <span class="status active">نشط</span>
+            <button class="btn-renew">تجديد</button>
+        </div>
+        <div class="subscription-card">
+            <div class="info"><h4>سارة حسن</h4><p>أنسولين - 28 يوم</p></div>
+            <span class="status active">نشط</span>
+            <button class="btn-renew">تجديد</button>
+        </div>
+        <div class="subscription-card">
+            <div class="info"><h4>خالد محمود</h4><p>كوليسترول - 30 يوم</p></div>
+            <span class="status expired">منتهي</span>
+            <button class="btn-renew" style="background:#dc2626;">إعادة تفعيل</button>
+        </div>
+        <button onclick="alert('📅 إضافة نظام شهري جديد')" style="width:100%;padding:12px;background:#7c3aed;color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:600;cursor:pointer;">+ إضافة نظام جديد</button>
+        <div style="height:90px;"></div>
+        <nav class="bottom-nav">
+            <a href="../index.html"><i class="fas fa-home"></i><span>الرئيسية</span></a>
+            <a href="ph-orders.html"><i class="fas fa-shopping-cart"></i><span>الطلبات</span></a>
+            <a href="ph-inventory.html"><i class="fas fa-boxes"></i><span>المخزون</span></a>
+            <a href="ph-customers.html"><i class="fas fa-users"></i><span>العملاء</span></a>
+            <a href="../pharmacy-services-app.html" class="active"><i class="fas fa-th-large"></i><span>البوابات</span></a>
+        </nav>
+    </div>
+</body>
+</html>

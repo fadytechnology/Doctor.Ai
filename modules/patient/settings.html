@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>الإعدادات - Doctor.ai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
+        .app-container { max-width: 480px; margin: 0 auto; }
+        
+        .page-header { background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+        .page-header .back-btn { background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; }
+        .page-header h1 { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; flex: 1; }
+        
+        .settings-group { background: #fff; border-radius: 16px; padding: 8px 0; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+        .settings-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
+        .settings-item:last-child { border-bottom: none; }
+        .settings-item i { font-size: 20px; color: #0d9488; width: 28px; text-align: center; }
+        .settings-item .info { flex: 1; }
+        .settings-item .info h4 { font-size: 15px; font-weight: 600; color: #1e293b; margin: 0; }
+        .settings-item .info p { font-size: 12px; color: #94a3b8; margin: 0; }
+        .settings-item .arrow { color: #94a3b8; }
+        .settings-item .toggle { position: relative; width: 44px; height: 24px; background: #cbd5e1; border-radius: 30px; cursor: pointer; transition: 0.3s; }
+        .settings-item .toggle.active { background: #0d9488; }
+        .settings-item .toggle .thumb { position: absolute; top: 2px; right: 2px; width: 20px; height: 20px; background: #fff; border-radius: 50%; transition: 0.3s; }
+        .settings-item .toggle.active .thumb { right: 22px; }
+        
+        .bottom-nav { display: flex; justify-content: space-around; align-items: center; background: #fff; padding: 10px 0; border-radius: 30px; box-shadow: 0 -2px 12px rgba(0,0,0,0.04); margin-top: 8px; }
+        .bottom-nav a { color: #94a3b8; font-size: 22px; text-decoration: none; padding: 8px 16px; border-radius: 30px; transition: 0.2s; }
+        .bottom-nav a.active { color: #0d9488; background: #e6f7f5; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="page-header">
+        <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
+        <h1><i class="fas fa-cog" style="color:#0d9488;"></i> الإعدادات</h1>
+    </div>
+
+    <div class="settings-group">
+        <div class="settings-item" onclick="alert('🔔 جاري فتح إعدادات الإشعارات')">
+            <i class="fas fa-bell"></i>
+            <div class="info"><h4>الإشعارات</h4><p>تفعيل التنبيهات</p></div>
+            <div class="toggle active" onclick="event.stopPropagation();this.classList.toggle('active')"><div class="thumb"></div></div>
+        </div>
+        <div class="settings-item" onclick="alert('🔐 جاري فتح إعدادات الخصوصية')">
+            <i class="fas fa-lock"></i>
+            <div class="info"><h4>الخصوصية</h4><p>إدارة البيانات الشخصية</p></div>
+            <i class="fas fa-chevron-left arrow"></i>
+        </div>
+        <div class="settings-item" onclick="alert('🌙 جاري تبديل الوضع الليلي')">
+            <i class="fas fa-moon"></i>
+            <div class="info"><h4>الوضع الليلي</h4><p>تغيير مظهر التطبيق</p></div>
+            <div class="toggle" onclick="event.stopPropagation();this.classList.toggle('active')"><div class="thumb"></div></div>
+        </div>
+        <div class="settings-item" onclick="alert('🌐 جاري فتح إعدادات اللغة')">
+            <i class="fas fa-language"></i>
+            <div class="info"><h4>اللغة</h4><p>العربية (مصر)</p></div>
+            <i class="fas fa-chevron-left arrow"></i>
+        </div>
+    </div>
+
+    <div class="settings-group">
+        <div class="settings-item" onclick="alert('📞 جاري الاتصال بالدعم')">
+            <i class="fas fa-headset"></i>
+            <div class="info"><h4>الدعم الفني</h4><p>تواصل مع فريق الدعم</p></div>
+            <i class="fas fa-chevron-left arrow"></i>
+        </div>
+        <div class="settings-item" onclick="alert('📄 جاري فتح الشروط والأحكام')">
+            <i class="fas fa-file-alt"></i>
+            <div class="info"><h4>الشروط والأحكام</h4><p>سياسة الاستخدام</p></div>
+            <i class="fas fa-chevron-left arrow"></i>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html"><i class="fas fa-home"></i></a>
+        <a href="map.html"><i class="fas fa-map"></i></a>
+        <a href="settings.html" class="active"><i class="fas fa-cog"></i></a>
+<a href="gateway-details.html?gateway=communication"><i class="fas fa-share-alt"></i></a>
+    </nav>
+</div>
+
+</body>
+</html> 
