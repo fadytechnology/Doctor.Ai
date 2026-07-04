@@ -42,8 +42,6 @@
     --gateway-lab: #059669;          /* أخضر زمردي للمختبر */
 --gateway-radiology: #8b5cf6;    /* بنفسجي فاتح للأشعة */
 --gateway-supplier: #ea580c;     /* برتقالي للمورد */
---gateway-radiology: #8b5cf6;
---gateway-supplier: #ea580c;
 }
 
 /* ===== كلاسات الحالات الجاهزة (استخدمها في أي صفحة) ===== */
