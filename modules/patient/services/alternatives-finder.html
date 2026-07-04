@@ -3,42 +3,60 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>مكتشف البدائل - Doctor.ai</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <title>بدائل الأدوية - Doctor.ai</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; display:flex; align-items:center; justify-content:center; }
-        .app-container { max-width:480px; width:100%; background:#fff; border-radius:28px; padding:24px 20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
-        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
-        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
-        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; display:flex; align-items:center; gap:8px; }
-        .header .title i { color:#0d9488; }
-        .service-box { background:#ecfdf5; border-radius:16px; padding:20px; text-align:center; border:2px dashed #0d9488; }
-        .service-box .icon { font-size:64px; color:#0d9488; display:block; margin-bottom:12px; }
-        .service-box h3 { color:#1e293b; margin-bottom:6px; }
-        .service-box p { color:#64748b; font-size:14px; line-height:1.8; }
-        .btn-action { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; margin-top:12px; }
-        .btn-action:active { transform:scale(0.98); }
-        .info-text { font-size:12px; color:#94a3b8; text-align:center; margin-top:12px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
+        .app-container { max-width: 480px; margin: 0 auto; }
+        .page-header { background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+        .page-header .back-btn { background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; }
+        .page-header h1 { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; flex: 1; }
+        .page-header h1 i { color: #a855f7; }
+        .content-box { background: #fff; border-radius: 20px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+        .search-box { display: flex; gap: 10px; margin-bottom: 16px; }
+        .search-box input { flex: 1; padding: 12px; border: 1px solid #e2e8f0; border-radius: 12px; font-family: inherit; }
+        .search-box button { background: #a855f7; color: #fff; border: none; padding: 12px 24px; border-radius: 12px; cursor: pointer; font-weight: 600; }
+        .result-item { border: 1px solid #f1f5f9; border-radius: 12px; padding: 12px; margin-bottom: 10px; }
+        .result-item .drug-name { font-weight: 700; color: #1e293b; }
+        .result-item .alt { font-size: 13px; color: #64748b; }
+        .result-item .badge { background: #fef3c7; color: #92400e; font-size: 11px; padding: 2px 10px; border-radius: 30px; }
+        .bottom-nav { display: flex; justify-content: space-around; align-items: center; background: #fff; padding: 10px 0; border-radius: 30px; box-shadow: 0 -2px 12px rgba(0,0,0,0.04); margin-top: 16px; }
+        .bottom-nav a { color: #94a3b8; font-size: 22px; text-decoration: none; padding: 8px 16px; border-radius: 30px; transition: 0.2s; }
+        .bottom-nav a.active { color: #a855f7; background: rgba(168,85,247,0.1); }
     </style>
 </head>
 <body>
 <div class="app-container">
-    <div class="header">
-        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
-        <div class="title"><i class="fas fa-exchange-alt"></i> مكتشف البدائل</div>
+    <div class="page-header">
+        <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
+        <h1><i class="fas fa-exchange-alt"></i> بدائل الأدوية</h1>
     </div>
-    <div class="service-box">
-        <span class="icon"><i class="fas fa-exchange-alt"></i></span>
-        <h3>مكتشف البدائل</h3>
-        <p>هذه الخدمة جاهزة للتشغيل. سيتم ربطها بالسيرفر في الإصدار القادم.</p>
-        <button class="btn-action" onclick="alert('🔜 سيتم فتح مكتشف البدائل قريباً')">
-            <i class="fas fa-play"></i> تشغيل الخدمة
-        </button>
+    <div class="content-box">
+        <div class="search-box">
+            <input type="text" placeholder="ابحث عن دواء..." id="drugSearch" />
+            <button onclick="searchDrug()"><i class="fas fa-search"></i></button>
+        </div>
+        <div id="results">
+            <div class="result-item"><div class="drug-name">باراسيتامول 500mg</div><div class="alt">بديل: <strong>أسيتامينوفين</strong> (نفس المادة الفعالة)</div><span class="badge">متوفر</span></div>
+            <div class="result-item"><div class="drug-name">أموكسيسيلين 250mg</div><div class="alt">بديل: <strong>أوجمنتين</strong> (يحتوي على نفس المادة)</div><span class="badge">بديل متوفر</span></div>
+            <div class="result-item"><div class="drug-name">فيتامين C</div><div class="alt">بديل: <strong>حمض الأسكوربيك</strong> (نفس الفعالية)</div><span class="badge">متوفر</span></div>
+        </div>
     </div>
-    <div class="info-text">🆔 alternatives-finder | خدمة patient</div>
+    <nav class="bottom-nav">
+        <a href="../index.html"><i class="fas fa-home"></i></a>
+        <a href="#" class="active"><i class="fas fa-exchange-alt"></i></a>
+        <a href="../services-app.html"><i class="fas fa-th-large"></i></a>
+    </nav>
 </div>
+<script>
+    function searchDrug() {
+        const input = document.getElementById('drugSearch').value.trim();
+        if (!input) { alert('📝 يرجى إدخال اسم الدواء'); return; }
+        alert(`🔍 جاري البحث عن بدائل لـ "${input}"... (سيتم ربطه بالسيرفر في الإصدار القادم)`);
+    }
+</script>
 </body>
 </html>

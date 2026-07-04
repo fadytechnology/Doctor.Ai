@@ -4,41 +4,52 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>رعاية الطفل - Doctor.ai</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; display:flex; align-items:center; justify-content:center; }
-        .app-container { max-width:480px; width:100%; background:#fff; border-radius:28px; padding:24px 20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
-        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
-        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
-        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; display:flex; align-items:center; gap:8px; }
-        .header .title i { color:#0d9488; }
-        .service-box { background:#ecfdf5; border-radius:16px; padding:20px; text-align:center; border:2px dashed #0d9488; }
-        .service-box .icon { font-size:64px; color:#0d9488; display:block; margin-bottom:12px; }
-        .service-box h3 { color:#1e293b; margin-bottom:6px; }
-        .service-box p { color:#64748b; font-size:14px; line-height:1.8; }
-        .btn-action { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; margin-top:12px; }
-        .btn-action:active { transform:scale(0.98); }
-        .info-text { font-size:12px; color:#94a3b8; text-align:center; margin-top:12px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
+        .app-container { max-width: 480px; margin: 0 auto; }
+        .page-header { background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+        .page-header .back-btn { background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; }
+        .page-header h1 { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; flex: 1; }
+        .page-header h1 i { color: #0d9488; }
+        .content-box { background: #fff; border-radius: 20px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+        .vaccine-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
+        .vaccine-item:last-child { border-bottom: none; }
+        .vaccine-item .name { font-weight: 600; }
+        .vaccine-item .date { color: #94a3b8; font-size: 13px; }
+        .vaccine-item .status { font-size: 12px; padding: 2px 12px; border-radius: 30px; }
+        .status.done { background: #d1fae5; color: #065f46; }
+        .status.pending { background: #fef3c7; color: #92400e; }
+        .bottom-nav { display: flex; justify-content: space-around; align-items: center; background: #fff; padding: 10px 0; border-radius: 30px; box-shadow: 0 -2px 12px rgba(0,0,0,0.04); margin-top: 16px; }
+        .bottom-nav a { color: #94a3b8; font-size: 22px; text-decoration: none; padding: 8px 16px; border-radius: 30px; transition: 0.2s; }
+        .bottom-nav a.active { color: #0d9488; background: rgba(13,148,136,0.1); }
     </style>
 </head>
 <body>
 <div class="app-container">
-    <div class="header">
-        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
-        <div class="title"><i class="fas fa-baby"></i> رعاية الطفل</div>
+    <div class="page-header">
+        <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
+        <h1><i class="fas fa-baby"></i> رعاية الطفل</h1>
     </div>
-    <div class="service-box">
-        <span class="icon"><i class="fas fa-baby"></i></span>
-        <h3>رعاية الطفل</h3>
-        <p>هذه الخدمة جاهزة للتشغيل. سيتم ربطها بالسيرفر في الإصدار القادم.</p>
-        <button class="btn-action" onclick="alert('🔜 سيتم فتح رعاية الطفل قريباً')">
-            <i class="fas fa-play"></i> تشغيل الخدمة
-        </button>
+    <div class="content-box">
+        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:12px;margin-bottom:16px;color:#166534;">
+            <i class="fas fa-info-circle"></i> نصائح العناية اليومية: حمام دافئ، ترطيب البشرة، ومراقبة درجة الحرارة.
+        </div>
+        <h4 style="color:#475569;margin-bottom:8px;">📋 جدول التطعيمات</h4>
+        <div class="vaccine-item"><span class="name">BCG (السل)</span><span class="date">تم في 01/01/2026</span><span class="status done">تم</span></div>
+        <div class="vaccine-item"><span class="name">شلل الأطفال (الجرعة 1)</span><span class="date">تم في 15/02/2026</span><span class="status done">تم</span></div>
+        <div class="vaccine-item"><span class="name">الثلاثي البكتيري (الجرعة 2)</span><span class="date">متوقع 15/08/2026</span><span class="status pending">قيد الانتظار</span></div>
+        <div class="vaccine-item"><span class="name">MMR (الحصبة)</span><span class="date">متوقع 01/12/2026</span><span class="status pending">قيد الانتظار</span></div>
+        <button onclick="alert('📝 تم تسجيل تطعيم جديد')" style="width:100%;margin-top:16px;padding:10px;background:#0d9488;color:#fff;border:none;border-radius:12px;font-weight:600;cursor:pointer;">+ إضافة تطعيم</button>
     </div>
-    <div class="info-text">🆔 baby-care | خدمة patient</div>
+    <nav class="bottom-nav">
+        <a href="../index.html"><i class="fas fa-home"></i></a>
+        <a href="#" class="active"><i class="fas fa-baby"></i></a>
+        <a href="../services-app.html"><i class="fas fa-th-large"></i></a>
+    </nav>
 </div>
 </body>
 </html>
