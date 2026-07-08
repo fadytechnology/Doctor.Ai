@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Service launcher - pharmacy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; }
+        .app-container { max-width:480px; margin:0 auto; }
+        .page-header { background:#fff; padding:16px; border-radius:20px; box-shadow:0 2px 12px rgba(0,0,0,0.04); margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+        .page-header .back-btn { background:#f1f5f9; border:none; width:40px; height:40px; border-radius:50%; font-size:18px; color:#1e293b; cursor:pointer; }
+        .page-header h1 { font-size:20px; font-weight:700; color:#1e293b; margin:0; flex:1; }
+        .page-header h1 i { color:var(--gateway-commerce); }
+        .content-box { background:#fff; border-radius:20px; padding:20px; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+        .list-item { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #f1f5f9; }
+        .list-item:last-child { border-bottom:none; }
+        .placeholder { text-align:center; color:#94a3b8; padding:30px 0; }
+        .placeholder i { font-size:48px; display:block; margin-bottom:12px; color:#cbd5e1; }
+        .stat-box { padding:10px 0; border-bottom:1px solid #f1f5f9; font-weight:600; }
+        .stat-box:last-child { border-bottom:none; }
+        .chat-msg { padding:8px 0; border-bottom:1px solid #f1f5f9; }
+        .chat-msg .sender { font-weight:700; color:var(--gateway-commerce); }
+        .chat-input { display:flex; gap:10px; margin-top:12px; }
+        .chat-input input { flex:1; padding:10px; border:1px solid #e2e8f0; border-radius:12px; font-family:inherit; }
+        .chat-input button { background:var(--gateway-commerce); color:#fff; border:none; padding:10px 20px; border-radius:12px; cursor:pointer; }
+        .upload-area { border:2px dashed #cbd5e1; border-radius:16px; padding:30px; text-align:center; color:#94a3b8; margin-bottom:12px; cursor:pointer; }
+        .upload-area i { font-size:32px; display:block; margin-bottom:8px; }
+        .launcher-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+        .launcher-item { background:#f8fafc; padding:16px; border-radius:12px; text-align:center; cursor:pointer; transition:0.2s; }
+        .launcher-item:active { transform:scale(0.95); }
+        .launcher-item i { font-size:28px; display:block; margin-bottom:6px; color:var(--gateway-commerce); }
+        .bottom-nav { display:flex; justify-content:space-around; align-items:center; background:#fff; padding:10px 0; border-radius:30px; box-shadow:0 -2px 12px rgba(0,0,0,0.04); margin-top:16px; }
+        .bottom-nav a { color:#94a3b8; font-size:22px; text-decoration:none; padding:8px 16px; border-radius:30px; transition:0.2s; }
+        .bottom-nav a.active { color:var(--gateway-commerce); background:rgba(0,0,0,0.04); }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="page-header">
+        <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
+        <h1><i class="fa-pills"></i> Service launcher</h1>
+    </div>
+    <div class="content-box">
+        
+            <div class="launcher-grid">
+                <div class="launcher-item" onclick="alert('🚀 تشغيل الخدمة 1')"><i class="fas fa-prescription"></i> الروشتات</div>
+                <div class="launcher-item" onclick="alert('🚀 تشغيل الخدمة 2')"><i class="fas fa-users"></i> العملاء</div>
+                <div class="launcher-item" onclick="alert('🚀 تشغيل الخدمة 3')"><i class="fas fa-chart-line"></i> التقارير</div>
+                <div class="launcher-item" onclick="alert('🚀 تشغيل الخدمة 4')"><i class="fas fa-cog"></i> الإعدادات</div>
+            </div>
+        
+    </div>
+    <nav class="bottom-nav">
+        <a href="../index.html"><i class="fas fa-home"></i></a>
+        <a href="#" class="active"><i class="fa-pills"></i></a>
+        <a href="../pharmacy-services-app.html"><i class="fas fa-th-large"></i></a>
+    </nav>
+</div>
+</body>
+</html>
