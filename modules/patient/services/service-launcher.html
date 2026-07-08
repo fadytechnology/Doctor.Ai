@@ -3,158 +3,59 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>الخدمة - Doctor.ai</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <title>Service launcher - Doctor.ai</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .app-container { max-width: 480px; width: 100%; background: #fff; border-radius: 28px; padding: 24px 20px; box-shadow: 0 8px 40px rgba(0,0,0,0.06); }
-        .header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-        .header .back { background: none; border: none; font-size: 20px; color: #0d9488; cursor: pointer; }
-        .header .title { font-size: 20px; font-weight: 700; color: #1e293b; flex: 1; }
-        .header .title i { color: #0d9488; margin-left: 8px; }
-
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-weight: 600; color: #1e293b; font-size: 13px; margin-bottom: 4px; }
-        .form-group label i { color: #0d9488; margin-left: 6px; }
-        .form-group input, .form-group select { width: 100%; padding: 10px 14px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 14px; background: #f9fafb; }
-        .form-group input:focus { outline: none; border-color: #0d9488; }
-        .form-group .hint { font-size: 11px; color: #94a3b8; margin-top: 2px; }
-
-        .btn-primary { width: 100%; padding: 14px; background: #0d9488; color: #fff; border: none; border-radius: 14px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .btn-primary:active { transform: scale(0.98); }
-
-        .result-box { background: #ecfdf5; border-radius: 16px; padding: 16px; margin-top: 16px; border-right: 4px solid #0d9488; }
-        .result-box .result-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #d1fae5; font-size: 14px; }
-        .result-box .result-item:last-child { border-bottom: none; }
-        .result-box .label { color: #065f46; font-weight: 600; }
-        .result-box .value { color: #0d9488; font-weight: 700; }
-
-        .description { font-size: 13px; color: #64748b; margin-bottom: 16px; padding: 8px 12px; background: #f1f5f9; border-radius: 10px; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; }
+        .app-container { max-width:480px; margin:0 auto; }
+        .page-header { background:#fff; padding:16px; border-radius:20px; box-shadow:0 2px 12px rgba(0,0,0,0.04); margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+        .page-header .back-btn { background:#f1f5f9; border:none; width:40px; height:40px; border-radius:50%; font-size:18px; color:#1e293b; cursor:pointer; }
+        .page-header h1 { font-size:20px; font-weight:700; color:#1e293b; margin:0; flex:1; }
+        .page-header h1 i { color:#0d9488; }
+        .content-box { background:#fff; border-radius:20px; padding:20px; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+        .list-item { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #f1f5f9; }
+        .list-item:last-child { border-bottom:none; }
+        .placeholder { text-align:center; color:#94a3b8; padding:30px 0; }
+        .placeholder i { font-size:48px; display:block; margin-bottom:12px; color:#cbd5e1; }
+        .stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0; }
+        .stat-box { background:#f8fafc; padding:12px; border-radius:12px; text-align:center; }
+        .stat-box .num { font-size:24px; font-weight:800; color:#0d9488; display:block; }
+        .stat-box .lbl { font-size:12px; color:#94a3b8; }
+        .calc-input { margin-bottom:12px; }
+        .calc-input label { display:block; font-size:13px; font-weight:600; color:#475569; }
+        .calc-input input { width:100%; padding:10px; border:1px solid #e2e8f0; border-radius:12px; font-family:inherit; }
+        .result-box { background:#f0fdf4; padding:12px; border-radius:12px; text-align:center; color:#166534; margin:12px 0; }
+        .mood-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; font-size:32px; text-align:center; margin:12px 0; }
+        .mood-grid span { background:#f8fafc; padding:12px; border-radius:12px; cursor:pointer; }
+        .sleep-track { text-align:center; padding:12px; background:#f8fafc; border-radius:12px; }
+        .share-box { text-align:center; padding:20px; background:#f8fafc; border-radius:12px; font-size:18px; }
+        .balance { font-size:22px; font-weight:700; text-align:center; padding:16px; background:#f0fdf4; border-radius:12px; color:#0d9488; margin-bottom:12px; }
+        .bottom-nav { display:flex; justify-content:space-around; align-items:center; background:#fff; padding:10px 0; border-radius:30px; box-shadow:0 -2px 12px rgba(0,0,0,0.04); margin-top:16px; }
+        .bottom-nav a { color:#94a3b8; font-size:22px; text-decoration:none; padding:8px 16px; border-radius:30px; transition:0.2s; }
+        .bottom-nav a.active { color:#0d9488; background:rgba(13,148,136,0.1); }
+        @media (max-width:480px) { .stat-grid { grid-template-columns:1fr 1fr; } }
     </style>
 </head>
 <body>
 <div class="app-container">
-    <div class="header">
-        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
-        <div class="title" id="serviceTitle"><i class="fas fa-cog"></i> تحميل الخدمة...</div>
+    <div class="page-header">
+        <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
+        <h1><i class="fas fa-heartbeat"></i> Service launcher</h1>
     </div>
-    <div id="description" class="description"></div>
-    <form id="serviceForm"></form>
-    <div id="resultContainer"></div>
+    <div class="content-box">
+        
+            <div class="share-box"><i class="fas fa-share-alt"></i> مشاركة الملف الطبي</div>
+            <button onclick="alert('📤 تم المشاركة')" style="width:100%;margin-top:12px;padding:10px;background:#0d9488;color:#fff;border:none;border-radius:12px;font-weight:600;cursor:pointer;">مشاركة الآن</button>
+        
+    </div>
+    <nav class="bottom-nav">
+        <a href="../index.html"><i class="fas fa-home"></i></a>
+        <a href="#" class="active"><i class="fas fa-heartbeat"></i></a>
+        <a href="../services-app.html"><i class="fas fa-th-large"></i></a>
+    </nav>
 </div>
-<script>
-// ============================================================
-// ===== مشغل الخدمات (Service Launcher) =====
-// ============================================================
-
-// استيراد السجل (نفترض أنه موجود في نفس المجلد js/)
-// في البيئة العادية هنستخدم <script src="js/services-registry.js"></script>
-// لكن هنا هنضمنه مباشرة
-
-// (نحن نفترض أن SERVICES_REGISTRY معرف مسبقاً في السكربت)
-// لو مش موجود، هنحاول نجيب من localStorage مؤقت
-let registry = [];
-// محاولة جلب السجل من المتغير العام أو localStorage
-if (typeof SERVICES_REGISTRY !== 'undefined') {
-    registry = SERVICES_REGISTRY;
-} else {
-    // محاولة تحميل من localStorage لو مسجل
-    const stored = localStorage.getItem('servicesRegistry');
-    if (stored) {
-        try { registry = JSON.parse(stored); } catch(e) {}
-    }
-    // لو لسه مفيش، نضبط بيانات افتراضية للخدمة الحالية فقط
-    registry = [{
-        id: 'calorie-counter',
-        name: 'حاسبة السعرات',
-        icon: 'fa-utensils',
-        description: 'حساب السعرات اليومية',
-        fields: [
-            { key: 'weight', label: 'الوزن (كجم)', type: 'number', placeholder: '72.5' },
-            { key: 'height', label: 'الطول (سم)', type: 'number', placeholder: '175' },
-            { key: 'age', label: 'العمر', type: 'number', placeholder: '30' },
-            { key: 'gender', label: 'الجنس', type: 'select', options: ['ذكر', 'أنثى'] },
-            { key: 'goal', label: 'الهدف', type: 'select', options: ['تثبيت الوزن', 'تخسيس', 'زيادة وزن'] }
-        ],
-        compute: (data) => {
-            const w = parseFloat(data.weight) || 70; const h = parseFloat(data.height) || 175; const age = parseInt(data.age) || 30;
-            const isMale = data.gender === 'ذكر';
-            let bmr = isMale ? 66 + (13.7 * w) + (5 * h) - (6.8 * age) : 655 + (9.6 * w) + (1.8 * h) - (4.7 * age);
-            let calories = Math.round(bmr * 1.2);
-            if (data.goal === 'تخسيس') calories -= 300; else if (data.goal === 'زيادة وزن') calories += 300;
-            return { bmr: Math.round(bmr), calories, goal: data.goal };
-        }
-    }];
-}
-
-const params = new URLSearchParams(window.location.search);
-const serviceId = params.get('service');
-
-let service = registry.find(s => s.id === serviceId);
-if (!service) {
-    service = registry[0]; // افتراضي
-}
-
-// تحديث الواجهة
-document.getElementById('serviceTitle').innerHTML = `<i class="fas ${service.icon}"></i> ${service.name}`;
-document.getElementById('description').textContent = service.description || 'أدخل البيانات للحصول على النتيجة';
-
-// بناء الفورم
-const form = document.getElementById('serviceForm');
-form.innerHTML = '';
-service.fields.forEach(f => {
-    const div = document.createElement('div');
-    div.className = 'form-group';
-    let label = `<label><i class="fas fa-${f.type === 'number' ? 'hashtag' : f.type === 'date' ? 'calendar' : f.type === 'time' ? 'clock' : 'pencil-alt'}"></i> ${f.label}</label>`;
-    let input = '';
-    if (f.type === 'select') {
-        input = `<select id="${f.key}">${f.options.map(o => `<option value="${o}">${o}</option>`).join('')}</select>`;
-    } else if (f.type === 'time') {
-        input = `<input type="time" id="${f.key}" />`;
-    } else if (f.type === 'date') {
-        input = `<input type="date" id="${f.key}" />`;
-    } else {
-        input = `<input type="${f.type}" id="${f.key}" placeholder="${f.placeholder || ''}" step="${f.step || '1'}" />`;
-    }
-    div.innerHTML = label + input;
-    form.appendChild(div);
-});
-
-// زر الحساب
-const btn = document.createElement('button');
-btn.className = 'btn-primary';
-btn.type = 'button';
-btn.innerHTML = '<i class="fas fa-calculator"></i> حساب النتيجة';
-btn.onclick = function() {
-    const data = {};
-    service.fields.forEach(f => {
-        const el = document.getElementById(f.key);
-        if (el) data[f.key] = el.value;
-    });
-    const result = service.compute(data);
-    const container = document.getElementById('resultContainer');
-    container.innerHTML = `<div class="result-box">${Object.entries(result).map(([k,v]) => `<div class="result-item"><span class="label">${k}</span><span class="value">${v}</span></div>`).join('')}</div>`;
-    // حفظ آخر نتيجة
-    localStorage.setItem(`service_${serviceId}`, JSON.stringify({ data, result, date: new Date().toISOString() }));
-};
-form.appendChild(btn);
-
-// تحميل آخر بيانات محفوظة
-const saved = localStorage.getItem(`service_${serviceId}`);
-if (saved) {
-    try {
-        const parsed = JSON.parse(saved);
-        service.fields.forEach(f => {
-            const el = document.getElementById(f.key);
-            if (el && parsed.data[f.key] !== undefined) el.value = parsed.data[f.key];
-        });
-    } catch(e) {}
-}
-
-console.log(`✅ خدمة ${service.name} جاهزة`);
-</script>
 </body>
 </html>

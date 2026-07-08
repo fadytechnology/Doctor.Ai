@@ -3,67 +3,60 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>سجل التطعيمات - Doctor.ai</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <title>Vaccination tracker - Doctor.ai</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="../../../CSS/style.css" />
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; }
-        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
-        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
-        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
-        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
-        .form-group { margin-bottom:12px; }
-        .form-group label { display:block; font-weight:600; color:#1e293b; font-size:13px; margin-bottom:4px; }
-        .form-group input { width:100%; padding:10px; border:2px solid #e5e7eb; border-radius:12px; font-size:14px; background:#f9fafb; }
-        .btn-primary { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; }
-        .vaccine-item { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #f1f5f9; }
-        .vaccine-item .info { font-size:14px; }
-        .vaccine-item .badge { font-size:11px; padding:2px 10px; border-radius:12px; background:#d1fae5; color:#065f46; }
+        .app-container { max-width:480px; margin:0 auto; }
+        .page-header { background:#fff; padding:16px; border-radius:20px; box-shadow:0 2px 12px rgba(0,0,0,0.04); margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+        .page-header .back-btn { background:#f1f5f9; border:none; width:40px; height:40px; border-radius:50%; font-size:18px; color:#1e293b; cursor:pointer; }
+        .page-header h1 { font-size:20px; font-weight:700; color:#1e293b; margin:0; flex:1; }
+        .page-header h1 i { color:#0d9488; }
+        .content-box { background:#fff; border-radius:20px; padding:20px; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+        .list-item { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #f1f5f9; }
+        .list-item:last-child { border-bottom:none; }
+        .placeholder { text-align:center; color:#94a3b8; padding:30px 0; }
+        .placeholder i { font-size:48px; display:block; margin-bottom:12px; color:#cbd5e1; }
+        .stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0; }
+        .stat-box { background:#f8fafc; padding:12px; border-radius:12px; text-align:center; }
+        .stat-box .num { font-size:24px; font-weight:800; color:#0d9488; display:block; }
+        .stat-box .lbl { font-size:12px; color:#94a3b8; }
+        .calc-input { margin-bottom:12px; }
+        .calc-input label { display:block; font-size:13px; font-weight:600; color:#475569; }
+        .calc-input input { width:100%; padding:10px; border:1px solid #e2e8f0; border-radius:12px; font-family:inherit; }
+        .result-box { background:#f0fdf4; padding:12px; border-radius:12px; text-align:center; color:#166534; margin:12px 0; }
+        .mood-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; font-size:32px; text-align:center; margin:12px 0; }
+        .mood-grid span { background:#f8fafc; padding:12px; border-radius:12px; cursor:pointer; }
+        .sleep-track { text-align:center; padding:12px; background:#f8fafc; border-radius:12px; }
+        .share-box { text-align:center; padding:20px; background:#f8fafc; border-radius:12px; font-size:18px; }
+        .balance { font-size:22px; font-weight:700; text-align:center; padding:16px; background:#f0fdf4; border-radius:12px; color:#0d9488; margin-bottom:12px; }
+        .bottom-nav { display:flex; justify-content:space-around; align-items:center; background:#fff; padding:10px 0; border-radius:30px; box-shadow:0 -2px 12px rgba(0,0,0,0.04); margin-top:16px; }
+        .bottom-nav a { color:#94a3b8; font-size:22px; text-decoration:none; padding:8px 16px; border-radius:30px; transition:0.2s; }
+        .bottom-nav a.active { color:#0d9488; background:rgba(13,148,136,0.1); }
+        @media (max-width:480px) { .stat-grid { grid-template-columns:1fr 1fr; } }
     </style>
 </head>
 <body>
 <div class="app-container">
-    <div class="header">
-        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
-        <div class="title">💉 سجل التطعيمات</div>
+    <div class="page-header">
+        <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
+        <h1><i class="fas fa-heartbeat"></i> Vaccination tracker</h1>
     </div>
-    <div class="form-group"><label><i class="fas fa-syringe"></i> اسم التطعيم</label><input type="text" id="vacName" placeholder="BCG، شلل الأطفال، السداسي" /></div>
-    <div class="form-group"><label><i class="fas fa-calendar"></i> تاريخ التطعيم</label><input type="date" id="vacDate" /></div>
-    <div class="form-group"><label><i class="fas fa-calendar-plus"></i> الجرعة القادمة (اختياري)</label><input type="date" id="vacNext" /></div>
-    <button class="btn-primary" onclick="addVaccine()"><i class="fas fa-plus-circle"></i> إضافة تطعيم</button>
-    <div id="vaccineList" style="margin-top:16px;"></div>
+    <div class="content-box">
+        
+            <div class="stat-grid"><div class="stat-box"><span class="num">2,450</span><span class="lbl">خطوة</span></div><div class="stat-box"><span class="num">1.8</span><span class="lbl">كم</span></div></div>
+            <div class="stat-grid"><div class="stat-box"><span class="num">6</span><span class="lbl">أكواب ماء</span></div><div class="stat-box"><span class="num">85%</span><span class="lbl">الهدف</span></div></div>
+            <button onclick="alert('📝 تم تسجيل النشاط')" style="width:100%;margin-top:12px;padding:10px;background:#0d9488;color:#fff;border:none;border-radius:12px;font-weight:600;cursor:pointer;">+ إضافة نشاط</button>
+        
+    </div>
+    <nav class="bottom-nav">
+        <a href="../index.html"><i class="fas fa-home"></i></a>
+        <a href="#" class="active"><i class="fas fa-heartbeat"></i></a>
+        <a href="../services-app.html"><i class="fas fa-th-large"></i></a>
+    </nav>
 </div>
-<script>
-function loadVaccines() {
-    const list = JSON.parse(localStorage.getItem('vaccineList') || '[]');
-    const container = document.getElementById('vaccineList');
-    if (list.length === 0) { container.innerHTML = '<p style="color:#94a3b8;text-align:center;">لا توجد تطعيمات مسجلة</p>'; return; }
-    container.innerHTML = '';
-    list.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.className = 'vaccine-item';
-        const next = item.next ? ` | القادم: ${item.next}` : '';
-        div.innerHTML = `
-            <div class="info"><strong>${item.name}</strong> - ${item.date} ${next}</div>
-            <span class="badge">${item.date ? 'تم' : 'قيد الانتظار'}</span>
-        `;
-        container.appendChild(div);
-    });
-}
-function addVaccine() {
-    const name = document.getElementById('vacName').value.trim();
-    const date = document.getElementById('vacDate').value;
-    const next = document.getElementById('vacNext').value;
-    if (!name) { alert('❌ أدخل اسم التطعيم'); return; }
-    const list = JSON.parse(localStorage.getItem('vaccineList') || '[]');
-    list.push({ name, date: date || 'غير محدد', next: next || 'غير محدد' });
-    localStorage.setItem('vaccineList', JSON.stringify(list));
-    document.getElementById('vacName').value = ''; document.getElementById('vacDate').value = ''; document.getElementById('vacNext').value = '';
-    loadVaccines();
-}
-document.addEventListener('DOMContentLoaded', loadVaccines);
-</script>
 </body>
 </html>

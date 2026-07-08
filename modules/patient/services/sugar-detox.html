@@ -3,42 +3,56 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>تحدي السكريات - Doctor.ai</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <title>Sugar detox - Doctor.ai</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; display:flex; align-items:center; justify-content:center; }
-        .app-container { max-width:480px; width:100%; background:#fff; border-radius:28px; padding:24px 20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
-        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
-        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
-        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; display:flex; align-items:center; gap:8px; }
-        .header .title i { color:#0d9488; }
-        .service-box { background:#ecfdf5; border-radius:16px; padding:20px; text-align:center; border:2px dashed #0d9488; }
-        .service-box .icon { font-size:64px; color:#0d9488; display:block; margin-bottom:12px; }
-        .service-box h3 { color:#1e293b; margin-bottom:6px; }
-        .service-box p { color:#64748b; font-size:14px; line-height:1.8; }
-        .btn-action { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; margin-top:12px; }
-        .btn-action:active { transform:scale(0.98); }
-        .info-text { font-size:12px; color:#94a3b8; text-align:center; margin-top:12px; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; }
+        .app-container { max-width:480px; margin:0 auto; }
+        .page-header { background:#fff; padding:16px; border-radius:20px; box-shadow:0 2px 12px rgba(0,0,0,0.04); margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+        .page-header .back-btn { background:#f1f5f9; border:none; width:40px; height:40px; border-radius:50%; font-size:18px; color:#1e293b; cursor:pointer; }
+        .page-header h1 { font-size:20px; font-weight:700; color:#1e293b; margin:0; flex:1; }
+        .page-header h1 i { color:#0d9488; }
+        .content-box { background:#fff; border-radius:20px; padding:20px; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+        .list-item { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #f1f5f9; }
+        .list-item:last-child { border-bottom:none; }
+        .placeholder { text-align:center; color:#94a3b8; padding:30px 0; }
+        .placeholder i { font-size:48px; display:block; margin-bottom:12px; color:#cbd5e1; }
+        .stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0; }
+        .stat-box { background:#f8fafc; padding:12px; border-radius:12px; text-align:center; }
+        .stat-box .num { font-size:24px; font-weight:800; color:#0d9488; display:block; }
+        .stat-box .lbl { font-size:12px; color:#94a3b8; }
+        .calc-input { margin-bottom:12px; }
+        .calc-input label { display:block; font-size:13px; font-weight:600; color:#475569; }
+        .calc-input input { width:100%; padding:10px; border:1px solid #e2e8f0; border-radius:12px; font-family:inherit; }
+        .result-box { background:#f0fdf4; padding:12px; border-radius:12px; text-align:center; color:#166534; margin:12px 0; }
+        .mood-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; font-size:32px; text-align:center; margin:12px 0; }
+        .mood-grid span { background:#f8fafc; padding:12px; border-radius:12px; cursor:pointer; }
+        .sleep-track { text-align:center; padding:12px; background:#f8fafc; border-radius:12px; }
+        .share-box { text-align:center; padding:20px; background:#f8fafc; border-radius:12px; font-size:18px; }
+        .balance { font-size:22px; font-weight:700; text-align:center; padding:16px; background:#f0fdf4; border-radius:12px; color:#0d9488; margin-bottom:12px; }
+        .bottom-nav { display:flex; justify-content:space-around; align-items:center; background:#fff; padding:10px 0; border-radius:30px; box-shadow:0 -2px 12px rgba(0,0,0,0.04); margin-top:16px; }
+        .bottom-nav a { color:#94a3b8; font-size:22px; text-decoration:none; padding:8px 16px; border-radius:30px; transition:0.2s; }
+        .bottom-nav a.active { color:#0d9488; background:rgba(13,148,136,0.1); }
+        @media (max-width:480px) { .stat-grid { grid-template-columns:1fr 1fr; } }
     </style>
 </head>
 <body>
 <div class="app-container">
-    <div class="header">
-        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
-        <div class="title"><i class="fas fa-cookie-bite"></i> تحدي السكريات</div>
+    <div class="page-header">
+        <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
+        <h1><i class="fas fa-heartbeat"></i> Sugar detox</h1>
     </div>
-    <div class="service-box">
-        <span class="icon"><i class="fas fa-cookie-bite"></i></span>
-        <h3>تحدي السكريات</h3>
-        <p>هذه الخدمة جاهزة للتشغيل. سيتم ربطها بالسيرفر في الإصدار القادم.</p>
-        <button class="btn-action" onclick="alert('🔜 سيتم فتح تحدي السكريات قريباً')">
-            <i class="fas fa-play"></i> تشغيل الخدمة
-        </button>
+    <div class="content-box">
+        <div class="placeholder"><i class="fas fa-code"></i><p>هذه الخدمة قيد التطوير، ستكون جاهزة قريباً.</p></div>
     </div>
-    <div class="info-text">🆔 sugar-detox | خدمة patient</div>
+    <nav class="bottom-nav">
+        <a href="../index.html"><i class="fas fa-home"></i></a>
+        <a href="#" class="active"><i class="fas fa-heartbeat"></i></a>
+        <a href="../services-app.html"><i class="fas fa-th-large"></i></a>
+    </nav>
 </div>
 </body>
 </html>

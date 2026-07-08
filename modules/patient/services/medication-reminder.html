@@ -3,89 +3,61 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>منظم الأدوية - Doctor.ai</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <title>Medication reminder - Doctor.ai</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="../../../CSS/style.css" />
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; }
-        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
-        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
-        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
-        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
-        .form-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-        .form-group { margin-bottom:12px; }
-        .form-group label { display:block; font-weight:600; color:#1e293b; font-size:13px; margin-bottom:4px; }
-        .form-group input { width:100%; padding:10px; border:2px solid #e5e7eb; border-radius:12px; font-size:14px; background:#f9fafb; }
-        .btn-primary { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; }
-        .reminder-item { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #f1f5f9; }
-        .reminder-item .info { font-size:14px; }
-        .reminder-item .info strong { color:#0d9488; }
-        .reminder-item .delete { color:#ef4444; cursor:pointer; }
+        .app-container { max-width:480px; margin:0 auto; }
+        .page-header { background:#fff; padding:16px; border-radius:20px; box-shadow:0 2px 12px rgba(0,0,0,0.04); margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+        .page-header .back-btn { background:#f1f5f9; border:none; width:40px; height:40px; border-radius:50%; font-size:18px; color:#1e293b; cursor:pointer; }
+        .page-header h1 { font-size:20px; font-weight:700; color:#1e293b; margin:0; flex:1; }
+        .page-header h1 i { color:#0d9488; }
+        .content-box { background:#fff; border-radius:20px; padding:20px; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+        .list-item { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #f1f5f9; }
+        .list-item:last-child { border-bottom:none; }
+        .placeholder { text-align:center; color:#94a3b8; padding:30px 0; }
+        .placeholder i { font-size:48px; display:block; margin-bottom:12px; color:#cbd5e1; }
+        .stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0; }
+        .stat-box { background:#f8fafc; padding:12px; border-radius:12px; text-align:center; }
+        .stat-box .num { font-size:24px; font-weight:800; color:#0d9488; display:block; }
+        .stat-box .lbl { font-size:12px; color:#94a3b8; }
+        .calc-input { margin-bottom:12px; }
+        .calc-input label { display:block; font-size:13px; font-weight:600; color:#475569; }
+        .calc-input input { width:100%; padding:10px; border:1px solid #e2e8f0; border-radius:12px; font-family:inherit; }
+        .result-box { background:#f0fdf4; padding:12px; border-radius:12px; text-align:center; color:#166534; margin:12px 0; }
+        .mood-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; font-size:32px; text-align:center; margin:12px 0; }
+        .mood-grid span { background:#f8fafc; padding:12px; border-radius:12px; cursor:pointer; }
+        .sleep-track { text-align:center; padding:12px; background:#f8fafc; border-radius:12px; }
+        .share-box { text-align:center; padding:20px; background:#f8fafc; border-radius:12px; font-size:18px; }
+        .balance { font-size:22px; font-weight:700; text-align:center; padding:16px; background:#f0fdf4; border-radius:12px; color:#0d9488; margin-bottom:12px; }
+        .bottom-nav { display:flex; justify-content:space-around; align-items:center; background:#fff; padding:10px 0; border-radius:30px; box-shadow:0 -2px 12px rgba(0,0,0,0.04); margin-top:16px; }
+        .bottom-nav a { color:#94a3b8; font-size:22px; text-decoration:none; padding:8px 16px; border-radius:30px; transition:0.2s; }
+        .bottom-nav a.active { color:#0d9488; background:rgba(13,148,136,0.1); }
+        @media (max-width:480px) { .stat-grid { grid-template-columns:1fr 1fr; } }
     </style>
 </head>
 <body>
 <div class="app-container">
-    <div class="header">
-        <button class="back" onclick="window.history.back()"><i class="fas fa-arrow-right"></i></button>
-        <div class="title">💊 منظم الأدوية</div>
+    <div class="page-header">
+        <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
+        <h1><i class="fas fa-heartbeat"></i> Medication reminder</h1>
     </div>
-    <div class="form-row">
-        <div class="form-group"><label><i class="fas fa-pills"></i> الدواء</label><input type="text" id="medName" placeholder="ميتفورمين" /></div>
-        <div class="form-group"><label><i class="fas fa-syringe"></i> الجرعة</label><input type="text" id="medDose" placeholder="500 مجم" /></div>
+    <div class="content-box">
+        
+            <div class="list-item"><span>💊 باراسيتامول 500mg</span><span>⏰ 10:00 صباحاً</span></div>
+            <div class="list-item"><span>💊 فيتامين C</span><span>⏰ 2:00 مساءً</span></div>
+            <div class="list-item"><span>💊 أموكسيسيلين</span><span>⏰ 8:00 مساءً</span></div>
+            <button onclick="alert('✅ تم تأكيد الجرعة')" style="width:100%;margin-top:12px;padding:10px;background:#0d9488;color:#fff;border:none;border-radius:12px;font-weight:600;cursor:pointer;">تأكيد الجرعة</button>
+        
     </div>
-    <div class="form-row">
-        <div class="form-group"><label><i class="fas fa-clock"></i> الوقت</label><input type="time" id="medTime" /></div>
-        <div class="form-group"><label><i class="fas fa-calendar"></i> التكرار</label>
-            <select id="medRepeat" style="width:100%;padding:10px;border:2px solid #e5e7eb;border-radius:12px;font-size:14px;">
-                <option value="daily">يومياً</option>
-                <option value="twice">مرتين يومياً</option>
-                <option value="weekly">أسبوعياً</option>
-            </select>
-        </div>
-    </div>
-    <button class="btn-primary" onclick="addReminder()"><i class="fas fa-plus-circle"></i> إضافة تذكير</button>
-    <div id="reminderList" style="margin-top:16px;"></div>
+    <nav class="bottom-nav">
+        <a href="../index.html"><i class="fas fa-home"></i></a>
+        <a href="#" class="active"><i class="fas fa-heartbeat"></i></a>
+        <a href="../services-app.html"><i class="fas fa-th-large"></i></a>
+    </nav>
 </div>
-<script>
-function loadReminders() {
-    const list = JSON.parse(localStorage.getItem('medReminders') || '[]');
-    const container = document.getElementById('reminderList');
-    if (list.length === 0) { container.innerHTML = '<p style="color:#94a3b8;text-align:center;">لا توجد تذكيرات</p>'; return; }
-    container.innerHTML = '';
-    list.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.className = 'reminder-item';
-        div.innerHTML = `
-            <div class="info"><strong>${item.name}</strong> - ${item.dose} | ⏰ ${item.time} | 📆 ${item.repeat}</div>
-            <span class="delete" onclick="deleteReminder(${index})"><i class="fas fa-trash"></i></span>
-        `;
-        container.appendChild(div);
-    });
-}
-function addReminder() {
-    const name = document.getElementById('medName').value.trim();
-    const dose = document.getElementById('medDose').value.trim();
-    const time = document.getElementById('medTime').value;
-    const repeat = document.getElementById('medRepeat').value;
-    if (!name || !time) { alert('❌ أدخل اسم الدواء والوقت'); return; }
-    const list = JSON.parse(localStorage.getItem('medReminders') || '[]');
-    list.push({ name, dose: dose || 'غير محدد', time, repeat });
-    localStorage.setItem('medReminders', JSON.stringify(list));
-    document.getElementById('medName').value = ''; document.getElementById('medDose').value = ''; document.getElementById('medTime').value = '';
-    loadReminders();
-    // طلب إذن الإشعارات
-    if (Notification.permission === 'default') Notification.requestPermission();
-    if (Notification.permission === 'granted') new Notification('✅ تم إضافة تذكير', { body: `دواء ${name} في ${time}` });
-}
-function deleteReminder(index) {
-    const list = JSON.parse(localStorage.getItem('medReminders') || '[]');
-    list.splice(index, 1);
-    localStorage.setItem('medReminders', JSON.stringify(list));
-    loadReminders();
-}
-document.addEventListener('DOMContentLoaded', loadReminders);
-</script>
 </body>
 </html>
