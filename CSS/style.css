@@ -73,3 +73,46 @@
     background: var(--status-expired-bg) !important;
     color: var(--status-expired-text) !important;
 }
+
+/* ===== القائمة السفلية الثابتة (تطبق على كل الصفحات) ===== */
+.bottom-nav {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 480px;
+    background: #fff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px 0 10px;
+    border-radius: 40px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    z-index: 100;
+}
+.bottom-nav a {
+    color: #94a3b8;
+    font-size: 22px;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 30px;
+    transition: 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+.bottom-nav a span {
+    font-size: 10px;
+    font-weight: 600;
+}
+.bottom-nav a.active {
+    color: var(--gateway-commerce);
+    background: rgba(13,148,136,0.1);
+}
+
+/* إضافة مساحة أسفل الصفحة عشان المحتوى متدخلش تحت القائمة */
+body {
+    padding-bottom: 90px;
+}

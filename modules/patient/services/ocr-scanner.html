@@ -8,23 +8,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="../../../CSS/style.css" />
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
-        .app-container { max-width: 480px; margin: 0 auto; }
-        .page-header { background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
-        .page-header .back-btn { background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; }
-        .page-header h1 { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; flex: 1; }
-        .page-header h1 i { color: #7c3aed; }
-        .content-box { background: #fff; border-radius: 20px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
-        .scan-area { border: 2px dashed #cbd5e1; border-radius: 16px; padding: 30px; text-align: center; color: #94a3b8; margin-bottom: 16px; cursor: pointer; transition: 0.2s; }
-        .scan-area:active { transform: scale(0.98); background: #f8fafc; }
-        .scan-area i { font-size: 48px; display: block; margin-bottom: 12px; color: #7c3aed; }
-        .result-box { background: #f8fafc; border-radius: 12px; padding: 16px; margin-top: 12px; display: none; }
-        .result-box .drug { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e2e8f0; }
-        .result-box .drug:last-child { border-bottom: none; }
-        .bottom-nav { display: flex; justify-content: space-around; align-items: center; background: #fff; padding: 10px 0; border-radius: 30px; box-shadow: 0 -2px 12px rgba(0,0,0,0.04); margin-top: 16px; }
-        .bottom-nav a { color: #94a3b8; font-size: 22px; text-decoration: none; padding: 8px 16px; border-radius: 30px; transition: 0.2s; }
-        .bottom-nav a.active { color: #7c3aed; background: rgba(124,58,237,0.1); }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; }
+        .app-container { max-width:480px; margin:0 auto; }
+        .page-header { background:#fff; padding:16px; border-radius:20px; box-shadow:0 2px 12px rgba(0,0,0,0.04); margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+        .page-header .back-btn { background:#f1f5f9; border:none; width:40px; height:40px; border-radius:50%; font-size:18px; color:#1e293b; cursor:pointer; }
+        .page-header h1 { font-size:20px; font-weight:700; color:#1e293b; margin:0; flex:1; }
+        .page-header h1 i { color:#7c3aed; }
+        .content-box { background:#fff; border-radius:20px; padding:20px; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+        .scan-area { border:2px dashed #cbd5e1; border-radius:16px; padding:30px; text-align:center; color:#94a3b8; margin-bottom:16px; cursor:pointer; transition:0.2s; }
+        .scan-area:active { transform:scale(0.98); background:#f8fafc; }
+        .scan-area i { font-size:48px; display:block; margin-bottom:12px; color:#7c3aed; }
+        .result-box { background:#f8fafc; border-radius:12px; padding:16px; margin-top:12px; display:none; }
+        .result-box .drug { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #e2e8f0; }
+        .result-box .drug:last-child { border-bottom:none; }
+        .bottom-nav { display:flex; justify-content:space-around; align-items:center; background:#fff; padding:10px 0; border-radius:30px; box-shadow:0 -2px 12px rgba(0,0,0,0.04); margin-top:16px; }
+        .bottom-nav a { color:#94a3b8; font-size:22px; text-decoration:none; padding:8px 16px; border-radius:30px; transition:0.2s; }
+        .bottom-nav a.active { color:#7c3aed; background:rgba(124,58,237,0.1); }
     </style>
 </head>
 <body>
