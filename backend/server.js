@@ -50,6 +50,9 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
 
+const statsRoutes = require('./routes/statsRoutes');
+app.use('/api/stats', statsRoutes);
+
 app.listen(PORT, () => {
   console.log(`✅ Server is running on http://localhost:${PORT}`);
 });

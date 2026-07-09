@@ -169,14 +169,101 @@
     </div>
 
     <script>
-        function loadDoctorData() {
-            let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-            if (!user.fullName) { user = { fullName: 'د. أحمد سامي', id: 'DR-2024', avatar: 'ط' }; }
-            document.getElementById('userName').innerHTML = 'د. <span style="color:var(--gateway-doctor);">' + user.fullName.replace('د. ', '') + '</span>';
-            document.getElementById('userId').innerHTML = '<i class="fas fa-id-card"></i> ' + (user.id || 'DR-2024');
-            document.getElementById('userAvatar').textContent = user.fullName.charAt(0) || 'ط';
+        // ============================================================
+        // ===== التعديل الأساسي: جلب البيانات من السيرفر =====
+        // ============================================================
+
+        const API_BASE = 'http://localhost:5000/api';
+
+        // ----- جلب التوكن -----
+        function getToken() {
+            return localStorage.getItem('token');
         }
 
+        // ----- جلب بيانات الطبيب من السيرفر -----
+        async function fetchDoctorData() {
+            const token = getToken();
+            if (!token) {
+                window.location.href = '../../auth/login.html';
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/auth/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!res.ok) {
+                    if (res.status === 401 || res.status === 403) {
+                        logout();
+                    }
+                    throw new Error(`HTTP ${res.status}`);
+                }
+
+                const data = await res.json();
+                const user = data.user;
+                const profile = data.profile;
+
+                // تحديث الواجهة باسم الطبيب والعيادة
+                const doctorName = user.full_name || 'الطبيب';
+                const clinicName = profile?.clinic_name || '';
+                const specialty = profile?.specialty || '';
+                const licenseNumber = profile?.license_number || user.id || 'DR-2024';
+
+                document.getElementById('userName').innerHTML = 'د. <span style="color:var(--gateway-doctor);">' + doctorName.replace('د. ', '') + '</span>';
+                document.getElementById('userId').innerHTML = '<i class="fas fa-id-card"></i> ' + licenseNumber;
+                document.getElementById('userAvatar').textContent = doctorName.charAt(0) || 'ط';
+
+                // جلب الإحصائيات الحقيقية بعد جلب بيانات المستخدم
+                await loadDoctorStats();
+
+                console.log('✅ تم جلب بيانات الطبيب:', user, profile);
+                return data;
+            } catch (err) {
+                console.error('❌ فشل جلب بيانات الطبيب:', err);
+                const name = localStorage.getItem('doctor_name') || 'الطبيب';
+                document.getElementById('userName').innerHTML = 'د. <span style="color:var(--gateway-doctor);">' + name.replace('د. ', '') + '</span>';
+                document.getElementById('userAvatar').textContent = name.charAt(0) || 'ط';
+            }
+        }
+
+        // ============================================================
+        // ===== جلب الإحصائيات الحقيقية للطبيب =====
+        // ============================================================
+        async function loadDoctorStats() {
+            const token = getToken();
+            if (!token) return;
+
+            try {
+                const res = await fetch(`${API_BASE}/stats`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!res.ok) {
+                    console.warn('⚠️ فشل جلب إحصائيات الطبيب:', res.status);
+                    return;
+                }
+
+                const data = await res.json();
+                if (data.success) {
+                    const s = data.stats;
+                    document.getElementById('patientsToday').textContent = s.patientsToday || 0;
+                    document.getElementById('patientsWeek').textContent = s.patientsWeek || 0;
+                    document.getElementById('appointmentsCount').textContent = s.appointments || 0;
+                    document.getElementById('prescriptionsCount').textContent = s.prescriptions || 0;
+                }
+            } catch (err) {
+                console.error('❌ فشل جلب إحصائيات الطبيب:', err);
+            }
+        }
+
+        // ----- تسجيل الخروج (معدل) -----
         function logout() {
             if (confirm('هل أنت متأكد من الخروج من حسابك؟')) {
                 localStorage.clear();
@@ -185,6 +272,7 @@
             }
         }
 
+        // ----- التنقل في الشريط السفلي (كما هو) -----
         function navigateTo(page) {
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             const navItems = document.querySelectorAll('.nav-item');
@@ -201,10 +289,16 @@
             if (pageMap[page]) { window.location.href = pageMap[page]; }
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            loadDoctorData();
-            console.log('✅ لوحة الطبيب جاهزة!');
+        // ----- تحميل الصفحة -----
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 جاري تحميل لوحة الطبيب...');
+            await fetchDoctorData();
+            console.log('✅ لوحة الطبيب (مربوطة بالسيرفر) جاهزة!');
         });
+
+        // ربط الدوال بالـ window للاستخدام في الـ HTML
+        window.logout = logout;
+        window.navigateTo = navigateTo;
     </script>
 </body>
 </html>

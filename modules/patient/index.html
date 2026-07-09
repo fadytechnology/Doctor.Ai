@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../../CSS/style.css" />
     <link rel="stylesheet" href="style.css" />
     <style>
+        /* ===== نفس التنسيقات القديمة (ما لمستش) ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
         .patient-dashboard { max-width: 480px; margin: 0 auto; }
@@ -143,7 +144,6 @@
             </div>
         </div>
 
-        <!-- ✅ تم إصلاح الروابط -->
         <div class="containers-grid">
             <div class="container-card">
                 <div class="container-icon" style="background: rgba(13,148,136,0.1);">
@@ -171,7 +171,6 @@
             </div>
         </div>
 
-        <!-- ✅ القائمة السفلية (تم إصلاح network) -->
         <nav class="bottom-nav">
             <a href="index.html" class="active" id="navHome"><i class="fas fa-home"></i></a>
             <a href="map.html" id="navMap"><i class="fas fa-map"></i></a>
@@ -186,49 +185,113 @@
     </div>
 
     <script>
+        // ============================================================
+        // ===== التعديل الأساسي: جلب البيانات من السيرفر =====
+        // ============================================================
+
         const API_BASE = 'http://localhost:5000/api';
-        function getToken() { return localStorage.getItem('token'); }
-        function getUserId() { return localStorage.getItem('user_id') || null; }
-        function getHeaders() {
-            const token = getToken();
-            return { 'Content-Type': 'application/json', 'Authorization': token ? `Bearer ${token}` : '' };
+
+        // ----- جلب التوكن -----
+        function getToken() {
+            return localStorage.getItem('token');
         }
+
+        // ----- جلب بيانات المستخدم من السيرفر (مع تخزينها في localStorage) -----
         async function fetchUserData() {
+            const token = getToken();
+            if (!token) {
+                window.location.href = '../../auth/login.html';
+                return null;
+            }
+
             try {
-                const token = getToken();
-                if (!token) { window.location.href = '../../auth/login.html'; return null; }
-                const response = await fetch(`${API_BASE}/auth/me`, { headers: getHeaders() });
-                if (!response.ok) { if (response.status === 401 || response.status === 403) { logout(); return null; } throw new Error(`HTTP ${response.status}`); }
-                const user = await response.json();
+                const res = await fetch(`${API_BASE}/auth/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!res.ok) {
+                    if (res.status === 401 || res.status === 403) {
+                        logout();
+                    }
+                    throw new Error(`HTTP ${res.status}`);
+                }
+
+                const data = await res.json();
+                const user = data.user;
+
+                // تخزين البيانات في localStorage (نفس الطريقة القديمة)
                 localStorage.setItem('user_name', user.full_name || 'مستخدم');
                 localStorage.setItem('user_id', user.id || '');
                 localStorage.setItem('user_role', user.role || 'patient');
-                return user;
-            } catch (error) { console.error('❌ فشل جلب بيانات المستخدم:', error); return null; }
+
+                // تحديث الواجهة
+                document.getElementById('userNameDisplay').textContent = user.full_name || 'مستخدم';
+                document.getElementById('userIdDisplay').textContent = '🆔 ' + (user.id || '');
+                const avatar = document.getElementById('avatarLetter');
+                avatar.textContent = (user.full_name?.charAt(0) || 'م').toUpperCase();
+
+                // جلب الإحصائيات الحقيقية بعد جلب بيانات المستخدم
+                await loadPatientStats();
+
+                console.log('✅ تم جلب بيانات المستخدم:', user);
+                return data;
+            } catch (err) {
+                console.error('❌ فشل جلب بيانات المستخدم:', err);
+                const name = localStorage.getItem('user_name') || 'مستخدم';
+                const userId = localStorage.getItem('user_id') || 'غير معروف';
+                document.getElementById('userNameDisplay').textContent = name;
+                document.getElementById('userIdDisplay').textContent = '🆔 ' + userId;
+                const avatar = document.getElementById('avatarLetter');
+                avatar.textContent = name.charAt(0).toUpperCase();
+                return null;
+            }
         }
-        async function fetchStats() {
+
+        // ============================================================
+        // ===== جلب الإحصائيات الحقيقية من السيرفر =====
+        // ============================================================
+        async function loadPatientStats() {
+            const token = getToken();
+            if (!token) return;
+
             try {
-                const token = getToken();
-                if (!token) return;
-                const [prescriptionsRes, appointmentsRes, walletRes] = await Promise.all([
-                    fetch(`${API_BASE}/prescriptions/patient/${getUserId()}`, { headers: getHeaders() }).then(r => r.ok ? r.json() : []),
-                    fetch(`${API_BASE}/appointments/patient/${getUserId()}`, { headers: getHeaders() }).then(r => r.ok ? r.json() : []),
-                    fetch(`${API_BASE}/wallet/balance`, { headers: getHeaders() }).then(r => r.ok ? r.json() : { balance: 0 })
-                ]);
-                document.getElementById('statPrescriptions').textContent = Array.isArray(prescriptionsRes) ? prescriptionsRes.length : 0;
-                document.getElementById('statAppointments').textContent = Array.isArray(appointmentsRes) ? appointmentsRes.length : 0;
-                document.getElementById('statWallet').textContent = (walletRes.balance || 0) + ' ج.م';
-                document.getElementById('statLoyalty').textContent = '0';
-            } catch (error) { console.error('❌ فشل جلب الإحصائيات:', error); }
+                const res = await fetch(`${API_BASE}/stats`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!res.ok) {
+                    console.warn('⚠️ فشل جلب الإحصائيات:', res.status);
+                    return;
+                }
+
+                const data = await res.json();
+                if (data.success) {
+                    const s = data.stats;
+                    document.getElementById('statPrescriptions').textContent = s.prescriptions || 0;
+                    document.getElementById('statLoyalty').textContent = s.loyalty || 0;
+                    document.getElementById('statAppointments').textContent = s.appointments || 0;
+                    document.getElementById('statWallet').textContent = (s.wallet || 0) + ' ج.م';
+                }
+            } catch (err) {
+                console.error('❌ فشل جلب الإحصائيات:', err);
+            }
         }
-        function updateUI(user) {
-            const name = user?.full_name || localStorage.getItem('user_name') || 'مستخدم';
-            const userId = user?.id || localStorage.getItem('user_id') || 'DR-1001';
-            document.getElementById('userNameDisplay').textContent = name;
-            document.getElementById('userIdDisplay').textContent = '🆔 ' + userId;
-            const avatar = document.getElementById('avatarLetter');
-            avatar.textContent = name.charAt(0).toUpperCase();
+
+        // ----- باقي الدوال (كما هي) -----
+        function logout() {
+            if (confirm('هل أنت متأكد من الخروج من حسابك؟')) {
+                localStorage.clear();
+                sessionStorage.clear();
+                window.location.href = '../../auth/login.html';
+            }
         }
+
         function loadAds() {
             const ads = JSON.parse(localStorage.getItem('ads_data') || '[]');
             const activeAds = ads.filter(ad => ad.active !== false);
@@ -243,12 +306,14 @@
                 document.getElementById('secondaryAdLink').href = secondAd.link || 'chat.html';
             }
         }
+
         function loadNews() {
             const news = JSON.parse(localStorage.getItem('news_data') || '[]');
             const container = document.getElementById('newsTicker');
             if (news.length === 0) { container.innerHTML = `<div class="news-item">📢 لا توجد أخبار حالياً</div>`; return; }
             container.innerHTML = news.map(item => `<div class="news-item">📌 ${item.title} - ${item.body}</div>`).join('');
         }
+
         async function loadAIReport() {
             const container = document.getElementById('aiReportContainer');
             try {
@@ -264,6 +329,7 @@
                 container.innerHTML = `<div style="background:#fef2f2;padding:20px;border-radius:20px;text-align:center;color:#dc2626;border:1px solid #fecaca;"><i class="fas fa-exclamation-triangle" style="font-size:40px;display:block;margin-bottom:10px;"></i>تعذر تحميل التقرير الذكي. حاول مرة أخرى لاحقاً.</div>`;
             }
         }
+
         function highlightNav() {
             const current = window.location.pathname.split('/').pop() || 'index.html';
             const map = { 'index.html': 'navHome', 'map.html': 'navMap', 'settings.html': 'navSettings', 'gateway-details.html': 'navNetwork' };
@@ -274,29 +340,40 @@
                 if (el) el.classList.add('active');
             }
         }
-        function logout() {
-            if (confirm('هل أنت متأكد من الخروج من حسابك؟')) {
-                localStorage.clear();
-                sessionStorage.clear();
-                window.location.href = '../../auth/login.html';
-            }
-        }
+
+        // ----- تحميل الصفحة -----
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('🚀 جاري تحميل لوحة المريض...');
-            const user = await fetchUserData();
-            if (user) { updateUI(user); } else { updateUI(null); if (!getToken()) { window.location.href = '../../auth/login.html'; return; } }
-            await fetchStats();
+
+            // جلب بيانات المستخدم والإحصائيات
+            await fetchUserData();
+
+            // تحميل الإعلانات والأخبار (من localStorage)
             loadAds();
             loadNews();
+
+            // تحميل التقرير الذكي
             await loadAIReport();
+
+            // تمييز القائمة السفلية
             highlightNav();
+
+            // تفعيل Service Worker لو موجود
             if ('serviceWorker' in navigator) {
-                try { await navigator.serviceWorker.register('../../sw.js'); console.log('✅ Service Worker مسجل بنجاح'); } catch (err) { console.warn('⚠️ فشل تسجيل Service Worker:', err); }
+                try {
+                    await navigator.serviceWorker.register('../../sw.js');
+                    console.log('✅ Service Worker مسجل بنجاح');
+                } catch (err) {
+                    console.warn('⚠️ فشل تسجيل Service Worker:', err);
+                }
             }
-            console.log('✅ لوحة المريض جاهزة!');
+
+            console.log('✅ لوحة المريض (مربوطة بالسيرفر) جاهزة!');
         });
+
         window.logout = logout;
     </script>
+
     <script src="../../JS/script.js"></script>
     <script src="ai-interpreter.js" defer></script>
 </body>

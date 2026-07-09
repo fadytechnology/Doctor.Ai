@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <style>
+        /* نفس التنسيقات القديمة (محتفظ بها) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Cairo', sans-serif;
@@ -263,13 +264,13 @@
     <form id="loginForm">
         <div class="form-group">
             <label><i class="fas fa-user"></i> البريد الإلكتروني أو رقم الهاتف</label>
-            <input type="text" id="loginField" placeholder="01234567890" value="01234567890" />
+            <input type="text" id="loginField" placeholder="example@test.com أو 01001234567" />
         </div>
 
         <div class="form-group">
             <label><i class="fas fa-lock"></i> كلمة السر</label>
             <div class="password-wrap">
-                <input type="password" id="password" placeholder="********" value="123456" />
+                <input type="password" id="password" placeholder="********" />
                 <button type="button" class="toggle-btn" onclick="togglePassword()">
                     <i class="fas fa-eye"></i>
                 </button>
@@ -304,9 +305,10 @@
 
 <script>
     // ============================================================
-    // 🔧 1. غيّر الرقم ده على حسب البورت اللي شغال عليه السيرفر
+    // ===== تسجيل الدخول (مربوط بالسيرفر الحقيقي) =====
     // ============================================================
-    const API_BASE = 'http://localhost:5000';
+
+    const API_BASE = 'http://localhost:5000'; // تأكد أن السيرفر شغال على هذا المنفذ
 
     function togglePassword() {
         const input = document.getElementById('password');
@@ -320,6 +322,7 @@
         }
     }
 
+    // توجيه المستخدم بناءً على الدور
     function goToDashboard(user) {
         if (!user || !user.role) {
             window.location.href = '../index.html';
@@ -328,6 +331,7 @@
         const map = {
             'patient': '../modules/patient/index.html',
             'pharmacy': '../modules/pharmacy/index.html',
+            'doctor': '../modules/clinic/index.html', // دور الطبيب يُخزَّن كـ 'doctor'
             'clinic': '../modules/clinic/index.html',
             'lab': '../modules/lab/index.html',
             'radiology': '../modules/radiology/index.html',
@@ -337,6 +341,7 @@
         window.location.href = map[user.role] || '../index.html';
     }
 
+    // معالج تسجيل الدخول
     async function handleLogin(e) {
         e.preventDefault();
 
@@ -361,17 +366,6 @@
         btn.innerHTML = '<span class="spinner"></span> جاري التحقق...';
 
         try {
-            // فحص السيرفر
-            const test = await fetch(API_BASE, { method: 'HEAD' });
-            if (!test.ok && test.status !== 405) {
-                errorEl.textContent = `⚠️ السيرفر مش شغال على ${API_BASE} - ابدأ node server.js`;
-                errorEl.style.display = 'block';
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
-                return;
-            }
-
-            // طلب تسجيل الدخول
             const response = await fetch(`${API_BASE}/api/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -381,36 +375,32 @@
                 })
             });
 
-            let data;
-            const contentType = response.headers.get('content-type');
-            if (contentType && contentType.includes('application/json')) {
-                data = await response.json();
-            } else {
-                data = { message: await response.text() };
-            }
+            const data = await response.json();
 
             if (response.ok) {
-                const userData = data.user || data.data || { role: 'patient' };
+                // تخزين التوكن
                 const storage = remember ? localStorage : sessionStorage;
+                storage.setItem('token', data.token);
+
+                // تخزين بيانات المستخدم (للتوافق مع الصفحات القديمة)
+                const userData = data.user || data.data || { role: 'patient' };
                 storage.setItem('currentUser', JSON.stringify(userData));
-                if (data.token) storage.setItem('token', data.token);
+
+                // إذا كان هناك بروفايل إضافي (مثل بيانات الصيدلية)
+                if (data.profile) {
+                    storage.setItem('userProfile', JSON.stringify(data.profile));
+                }
 
                 successEl.textContent = '✅ ' + (data.message || 'تم تسجيل الدخول بنجاح!');
                 successEl.style.display = 'block';
 
                 setTimeout(() => goToDashboard(userData), 1200);
-            } else if (response.status === 401) {
-                errorEl.textContent = `❌ خطأ في السيرفر (401) - ${data.message || 'البريد أو كلمة السر غير صحيحة'}`;
-                errorEl.style.display = 'block';
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
             } else {
-                errorEl.textContent = `❌ خطأ ${response.status} - ${data.message || 'حدث خطأ غير متوقع'}`;
+                errorEl.textContent = `❌ ${data.message || 'حدث خطأ في تسجيل الدخول'}`;
                 errorEl.style.display = 'block';
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
             }
-
         } catch (error) {
             errorEl.textContent = `⚠️ تعذر الاتصال بالسيرفر (${API_BASE}) - تأكد من تشغيله`;
             errorEl.style.display = 'block';
@@ -422,16 +412,18 @@
 
     document.getElementById('loginForm').addEventListener('submit', handleLogin);
 
+    // إذا كان المستخدم مسجلاً بالفعل، يُوجه مباشرة
     document.addEventListener('DOMContentLoaded', function() {
-        let user = localStorage.getItem('currentUser');
-        if (!user) user = sessionStorage.getItem('currentUser');
-        if (user) {
-            try {
-                const u = JSON.parse(user);
-                if (u && u.role) goToDashboard(u);
-            } catch (e) {}
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        if (token) {
+            // يمكن التحقق من صلاحية التوكن عن طريق /api/auth/me، لكننا سنوجهه للوحة مباشرة
+            // (يمكن تحسين ذلك لاحقاً)
+            const user = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || '{}');
+            if (user && user.role) {
+                goToDashboard(user);
+            }
         }
-        console.log('✅ صفحة تسجيل الدخول جاهزة (نسخة مستقلة)');
+        console.log('✅ صفحة تسجيل الدخول (مربوطة بالسيرفر) جاهزة!');
     });
 </script>
 </body>

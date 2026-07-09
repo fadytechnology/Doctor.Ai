@@ -1,12 +1,11 @@
 // ============================================================
 // ===== طبقة الاتصال بالسيرفر (API Service) =====
-// ===== تم التعديل لحل مشكلة 401 نهائياً =====
+// ===== متوافقة مع الـ Backend الجديد (JWT + Roles) =====
 // ============================================================
 
-// ⚠️ غيّر الرقم 5000 في السطر التالي إلى البورت اللي شغال عليه السيرفر (مثلاً 3000 أو 8080)
 const API_URL = 'http://localhost:5000/api';
 
-// ----- إدارة التوكن -----
+// ===== إدارة التوكن =====
 function getToken() {
     return localStorage.getItem('token') || sessionStorage.getItem('token');
 }
@@ -26,17 +25,16 @@ function setToken(token, remember = false) {
     }
 }
 
-// ----- دالة الطلب العامة -----
+// ===== دالة الطلب العامة (مع معالجة الأخطاء) =====
 async function request(endpoint, method = 'GET', body = null, requiresAuth = false) {
     const headers = { 'Content-Type': 'application/json' };
 
     if (requiresAuth) {
         const token = getToken();
-        if (token) {
-            headers['Authorization'] = `Bearer ${token}`;
-        } else {
+        if (!token) {
             return { success: false, message: 'غير مصرح، يرجى تسجيل الدخول' };
         }
+        headers['Authorization'] = `Bearer ${token}`;
     }
 
     const options = { method, headers };
@@ -46,10 +44,8 @@ async function request(endpoint, method = 'GET', body = null, requiresAuth = fal
 
     try {
         const response = await fetch(`${API_URL}${endpoint}`, options);
-
-        // محاولة قراءة الرد (نص أو JSON)
-        let data;
         const contentType = response.headers.get('content-type');
+        let data;
         if (contentType && contentType.includes('application/json')) {
             data = await response.json();
         } else {
@@ -57,7 +53,6 @@ async function request(endpoint, method = 'GET', body = null, requiresAuth = fal
         }
 
         if (!response.ok) {
-            // هنا هنعدل عشان نرجع الرسالة اللي جاية من السيرفر بالظبط
             return {
                 success: false,
                 message: data.message || `خطأ في السيرفر (${response.status})`,
@@ -66,14 +61,13 @@ async function request(endpoint, method = 'GET', body = null, requiresAuth = fal
             };
         }
 
-        // إذا كان الرد موفقاً ولكن بدون خاصية success، نضيفها يدوياً
         if (data && typeof data.success === 'undefined') {
             data.success = true;
         }
         return data;
 
     } catch (error) {
-        console.error('❌ خطأ في الاتصال بالسيرفر:', error);
+        console.error('❌ فشل الاتصال بالسيرفر:', error);
         return {
             success: false,
             message: 'تعذر الاتصال بالسيرفر. تأكد من تشغيله على http://localhost:5000'
@@ -82,34 +76,32 @@ async function request(endpoint, method = 'GET', body = null, requiresAuth = fal
 }
 
 // ============================================================
-// ===== دوال المصادقة =====
+// ===== دوال المصادقة (متوافقة مع authRoutes.js) =====
 // ============================================================
 
+/**
+ * تسجيل مستخدم جديد
+ */
 async function apiRegister(userData) {
     return request('/auth/register', 'POST', userData);
 }
 
-// ============================================================
-// 🔥 [تم التعديل هنا] دالة تسجيل الدخول - حل مشكلة 401
-// ============================================================
+/**
+ * تسجيل الدخول - يرسل identifier (إيميل أو هاتف) وكلمة مرور
+ * ويخزن التوكن وبيانات المستخدم
+ */
 async function apiLogin(identifier, password, remember = false) {
-    // ⚠️ اختار السطر المناسب حسب ما يطلبه السيرفر الخلفي بتاعك:
-    // - لو بيطلب 'email'  => استخدم السطر الأول (email: identifier)
-    // - لو بيطلب 'phone'  => استخدم السطر الثاني (phone: identifier)
-    // - لو بيطلب 'identifier' => استخدم السطر الثالث (identifier: identifier)
+    // 🔥 السيرفر ينتظر identifier وليس email أو phone
     const payload = {
-        email: identifier,      // <-- الأكثر شيوعاً (خليها لو مش متأكد)
-        // phone: identifier,   // <-- اختار هذا لو السيرفر بيطلب phone
-        // identifier: identifier, // <-- اختار هذا لو السيرفر بيطلب identifier
+        identifier: identifier,
         password: password
     };
 
-    // إرسال الطلب للسيرفر
     const result = await request('/auth/login', 'POST', payload);
 
-    // معالجة النجاح
     if (result.success && result.token) {
         setToken(result.token, remember);
+        // تخزين بيانات المستخدم
         const userStr = JSON.stringify(result.user);
         if (remember) {
             localStorage.setItem('currentUser', userStr);
@@ -118,41 +110,63 @@ async function apiLogin(identifier, password, remember = false) {
             sessionStorage.setItem('currentUser', userStr);
             localStorage.removeItem('currentUser');
         }
+        // تخزين البروفايل الإضافي (لو موجود)
+        if (result.profile) {
+            const profileStr = JSON.stringify(result.profile);
+            if (remember) {
+                localStorage.setItem('userProfile', profileStr);
+                sessionStorage.removeItem('userProfile');
+            } else {
+                sessionStorage.setItem('userProfile', profileStr);
+                localStorage.removeItem('userProfile');
+            }
+        }
     } else if (!result.success && result.status === 401) {
-        // هنا بنرجع رسالة الخطأ بطريقة واضحة عشان تظهر في الواجهة
-        result.message = result.message || '❌ البريد الإلكتروني أو كلمة السر غير صحيحة (401)';
+        result.message = result.message || '❌ البريد/الهاتف أو كلمة السر غير صحيحة (401)';
     }
 
     return result;
 }
 
+/**
+ * تسجيل الخروج
+ */
 function apiLogout() {
     setToken(null);
     localStorage.removeItem('currentUser');
     sessionStorage.removeItem('currentUser');
-    window.location.href = '/index.html';
+    localStorage.removeItem('userProfile');
+    sessionStorage.removeItem('userProfile');
+    window.location.href = '../../index.html';
 }
 
 // ============================================================
-// ===== دوال الطلبات (Orders) - زي ما هي من غير تغيير =====
+// ===== دوال الإحصائيات (Stats) =====
 // ============================================================
 
-// ----- إنشاء طلب جديد (للمريض) -----
+/**
+ * جلب الإحصائيات حسب دور المستخدم
+ */
+async function apiGetStats() {
+    return request('/stats', 'GET', null, true);
+}
+
+// ============================================================
+// ===== دوال الطلبات (Orders) =====
+// ============================================================
+
 async function apiCreateOrder(orderData) {
     return request('/orders', 'POST', orderData, true);
 }
 
-// ----- جلب طلبات الصيدلي -----
 async function apiGetPharmacyOrders() {
     return request('/pharmacy/orders', 'GET', null, true);
 }
 
-// ----- تحديث حالة طلب (للصيدلي) -----
 async function apiUpdateOrderStatus(orderId, status) {
     return request(`/orders/${orderId}/status`, 'PUT', { status }, true);
 }
 
-// ----- جلب طلبات المريض -----
 async function apiGetPatientOrders() {
     return request('/patient/orders', 'GET', null, true);
 }
@@ -167,22 +181,30 @@ function getCurrentUser() {
     return user ? JSON.parse(user) : null;
 }
 
+function getUserProfile() {
+    let profile = localStorage.getItem('userProfile');
+    if (!profile) profile = sessionStorage.getItem('userProfile');
+    return profile ? JSON.parse(profile) : null;
+}
+
 function isLoggedIn() {
     return getToken() !== null && getCurrentUser() !== null;
 }
 
 // ============================================================
-// ===== تصدير الدوال للاستخدام في الـ HTML =====
+// ===== تصدير الدوال =====
 // ============================================================
 
 window.apiRegister = apiRegister;
 window.apiLogin = apiLogin;
 window.apiLogout = apiLogout;
+window.apiGetStats = apiGetStats;
 window.apiCreateOrder = apiCreateOrder;
 window.apiGetPharmacyOrders = apiGetPharmacyOrders;
 window.apiUpdateOrderStatus = apiUpdateOrderStatus;
 window.apiGetPatientOrders = apiGetPatientOrders;
 window.getCurrentUser = getCurrentUser;
+window.getUserProfile = getUserProfile;
 window.isLoggedIn = isLoggedIn;
 
-console.log('✅ API Service loaded. Server:', API_URL);
+console.log('✅ API Service (متوافق مع السيرفر الجديد) جاهز!');

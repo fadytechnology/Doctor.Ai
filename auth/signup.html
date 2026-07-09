@@ -121,66 +121,174 @@
     </button>
     <p class="auth-footer">لديك حساب بالفعل؟ <a href="login.html">تسجيل الدخول</a></p>
 </div>
-<script src="../JS/api.js"></script>
-<script>
-function togglePassword(inputId, button) {
-    const input = document.getElementById(inputId);
-    if (!input) return;
-    const icon = button.querySelector('i');
-    if (input.type === 'password') { input.type = 'text'; icon.className = 'fas fa-eye-slash'; }
-    else { input.type = 'password'; icon.className = 'fas fa-eye'; }
-}
 
-async function handleSignup(e) {
-    e.preventDefault();
-    const fullName = document.getElementById('fullName').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const role = document.getElementById('role').value;
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    const termsCheck = document.getElementById('termsCheck').checked;
-    const errorMsg = document.getElementById('errorMsg');
-    const successMsg = document.getElementById('successMsg');
-    errorMsg.style.display = 'none';
-    successMsg.style.display = 'none';
-    if (!fullName || !email || !phone || !password || !confirmPassword) {
-        errorMsg.textContent = '❌ يرجى ملء جميع الحقول';
-        errorMsg.style.display = 'block';
-        return;
+<script>
+    // ============================================================
+    // ===== تسجيل حساب جديد (مربوط بالسيرفر الحقيقي) =====
+    // ============================================================
+
+    const API_BASE = 'http://localhost:5000'; // تأكد أن السيرفر شغال على هذا المنفذ
+
+    // دالة إظهار/إخفاء كلمة السر
+    function togglePassword(inputId, button) {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        const icon = button.querySelector('i');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.className = 'fas fa-eye-slash';
+        } else {
+            input.type = 'password';
+            icon.className = 'fas fa-eye';
+        }
     }
-    if (!termsCheck) {
-        errorMsg.textContent = '❌ يرجى الموافقة على الشروط والأحكام';
-        errorMsg.style.display = 'block';
-        return;
+
+    // توجيه المستخدم بعد التسجيل حسب الدور
+    function goToDashboard(user) {
+        if (!user || !user.role) {
+            window.location.href = '../index.html';
+            return;
+        }
+        const map = {
+            'patient': '../modules/patient/index.html',
+            'pharmacy': '../modules/pharmacy/index.html',
+            'clinic': '../modules/clinic/index.html',
+            'doctor': '../modules/clinic/index.html', // مراعاة دور الطبيب
+            'lab': '../modules/lab/index.html',
+            'radiology': '../modules/radiology/index.html',
+            'supplier': '../modules/supplier/index.html',
+            'admin': '../modules/admin/index.html'
+        };
+        window.location.href = map[user.role] || '../index.html';
     }
-    if (password !== confirmPassword) {
-        errorMsg.textContent = '❌ كلمة السر وتأكيدها غير متطابقين';
-        errorMsg.style.display = 'block';
-        return;
+
+    // معالج التسجيل
+    async function handleSignup(e) {
+        e.preventDefault();
+
+        // قراءة المدخلات
+        const fullName = document.getElementById('fullName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const role = document.getElementById('role').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const termsCheck = document.getElementById('termsCheck').checked;
+
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+        const btn = document.querySelector('button[type="submit"]');
+
+        // إخفاء الرسائل السابقة
+        errorMsg.style.display = 'none';
+        successMsg.style.display = 'none';
+
+        // التحقق من الحقول
+        if (!fullName || !email || !phone || !password || !confirmPassword) {
+            errorMsg.textContent = '❌ يرجى ملء جميع الحقول';
+            errorMsg.style.display = 'block';
+            return;
+        }
+        if (!termsCheck) {
+            errorMsg.textContent = '❌ يرجى الموافقة على الشروط والأحكام';
+            errorMsg.style.display = 'block';
+            return;
+        }
+        if (password !== confirmPassword) {
+            errorMsg.textContent = '❌ كلمة السر وتأكيدها غير متطابقين';
+            errorMsg.style.display = 'block';
+            return;
+        }
+        if (password.length < 8) {
+            errorMsg.textContent = '❌ كلمة السر يجب أن تكون 8 أحرف على الأقل';
+            errorMsg.style.display = 'block';
+            return;
+        }
+        if (!/^01[0-9]{9}$/.test(phone)) {
+            errorMsg.textContent = '❌ رقم الهاتف يجب أن يكون 11 رقم ويبدأ بـ 01';
+            errorMsg.style.display = 'block';
+            return;
+        }
+
+        // تعطيل الزر أثناء الإرسال
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> جاري التسجيل...';
+
+        try {
+            const response = await fetch(`${API_BASE}/api/auth/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    full_name: fullName,
+                    email: email,
+                    phone: phone,
+                    password: password,
+                    role: role
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // تخزين التوكن وبيانات المستخدم
+                const storage = localStorage; // نستخدم localStorage دائماً للتسجيل
+                if (data.token) {
+                    storage.setItem('token', data.token);
+                }
+                if (data.user) {
+                    storage.setItem('currentUser', JSON.stringify(data.user));
+                }
+
+                successMsg.textContent = '✅ ' + (data.message || 'تم إنشاء الحساب بنجاح!');
+                successMsg.style.display = 'block';
+
+                // توجيه المستخدم بعد 1.5 ثانية
+                setTimeout(() => {
+                    if (data.user) {
+                        goToDashboard(data.user);
+                    } else {
+                        window.location.href = 'login.html';
+                    }
+                }, 1500);
+            } else {
+                errorMsg.textContent = '❌ ' + (data.message || 'حدث خطأ أثناء التسجيل');
+                errorMsg.style.display = 'block';
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-user-plus"></i> إنشاء الحساب';
+            }
+        } catch (error) {
+            errorMsg.textContent = `⚠️ تعذر الاتصال بالسيرفر (${API_BASE}) - تأكد من تشغيله`;
+            errorMsg.style.display = 'block';
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-user-plus"></i> إنشاء الحساب';
+            console.error('Fetch error:', error);
+        }
     }
-    if (password.length < 8) {
-        errorMsg.textContent = '❌ كلمة السر يجب أن تكون 8 أحرف على الأقل';
-        errorMsg.style.display = 'block';
-        return;
-    }
-    if (!/^01[0-9]{9}$/.test(phone)) {
-        errorMsg.textContent = '❌ رقم الهاتف يجب أن يكون 11 رقم ويبدأ بـ 01';
-        errorMsg.style.display = 'block';
-        return;
-    }
-    const result = await apiRegister({ full_name: fullName, email, phone, password, role });
-    if (result.success) {
-        successMsg.textContent = '✅ ' + result.message;
-        successMsg.style.display = 'block';
-        document.getElementById('signupForm').reset();
-        setTimeout(() => { window.location.href = 'login.html'; }, 2000);
-    } else {
-        errorMsg.textContent = '❌ ' + (result.message || 'حدث خطأ غير متوقع');
-        errorMsg.style.display = 'block';
-    }
-}
-document.getElementById('signupForm').addEventListener('submit', handleSignup);
+
+    // ربط النموذج بالمعالج
+    document.getElementById('signupForm').addEventListener('submit', handleSignup);
+
+    // إضافة Spinner مؤقت
+    const style = document.createElement('style');
+    style.textContent = `
+        .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
+
+    console.log('✅ صفحة التسجيل (مربوطة بالسيرفر) جاهزة!');
 </script>
 </body>
 </html>

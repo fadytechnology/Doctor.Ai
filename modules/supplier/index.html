@@ -77,10 +77,10 @@
             </div>
         </header>
         <div class="stats-grid">
-            <div class="stat-card"><div class="num">18</div><div class="label">منتجات</div></div>
-            <div class="stat-card"><div class="num">6</div><div class="label">طلبات شراء</div></div>
-            <div class="stat-card"><div class="num">4</div><div class="label">قيد التجهيز</div></div>
-            <div class="stat-card"><div class="num">12</div><div class="label">عملاء (صيدليات)</div></div>
+            <div class="stat-card"><div class="num" id="statProducts">0</div><div class="label">منتجات</div></div>
+            <div class="stat-card"><div class="num" id="statPurchaseOrders">0</div><div class="label">طلبات شراء</div></div>
+            <div class="stat-card"><div class="num" id="statProcessing">0</div><div class="label">قيد التجهيز</div></div>
+            <div class="stat-card"><div class="num" id="statClients">0</div><div class="label">عملاء (صيدليات)</div></div>
         </div>
         <a href="supplier-services-app.html" class="services-hub-btn">
             <i class="fas fa-th-large"></i>
@@ -110,22 +110,131 @@
         </nav>
     </div>
     <script>
-        function loadSupplierData() {
-            let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-            if (!user.fullName) { user = { fullName: 'مورد الأدوية المتميز', id: 'SUP-2024', avatar: 'م' }; }
-            document.getElementById('userName').innerHTML = 'مورد <span style="color:var(--gateway-supplier);">' + user.fullName.replace('مورد ', '') + '</span>';
-            document.getElementById('userId').innerHTML = '<i class="fas fa-id-card"></i> ' + (user.id || 'SUP-2024');
-            document.getElementById('userAvatar').textContent = user.fullName.charAt(0) || 'م';
+        // ============================================================
+        // ===== التعديل الأساسي: جلب البيانات من السيرفر =====
+        // ============================================================
+
+        const API_BASE = 'http://localhost:5000/api';
+
+        function getToken() {
+            return localStorage.getItem('token');
         }
-        function logout() { if (confirm('هل أنت متأكد من الخروج؟')) { localStorage.clear(); sessionStorage.clear(); window.location.href = '../../auth/login.html'; } }
+
+        // ----- جلب بيانات المورد من السيرفر -----
+        async function fetchSupplierData() {
+            const token = getToken();
+            if (!token) {
+                window.location.href = '../../auth/login.html';
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/auth/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!res.ok) {
+                    if (res.status === 401 || res.status === 403) {
+                        logout();
+                    }
+                    throw new Error(`HTTP ${res.status}`);
+                }
+
+                const data = await res.json();
+                const user = data.user;
+                const profile = data.profile;
+
+                const supplierName = profile?.supplier_name || user.full_name || 'مورد';
+                document.getElementById('userName').innerHTML = 'مورد <span style="color:var(--gateway-supplier);">' + supplierName.replace('مورد ', '') + '</span>';
+                document.getElementById('userId').innerHTML = '<i class="fas fa-id-card"></i> ' + (profile?.license_number || user.id || 'SUP-2024');
+                document.getElementById('userAvatar').textContent = supplierName.charAt(0) || 'م';
+
+                // جلب الإحصائيات الحقيقية
+                await loadSupplierStats();
+
+                console.log('✅ تم جلب بيانات المورد:', user, profile);
+                return data;
+            } catch (err) {
+                console.error('❌ فشل جلب بيانات المورد:', err);
+                const name = localStorage.getItem('supplier_name') || 'مورد';
+                document.getElementById('userName').innerHTML = 'مورد <span style="color:var(--gateway-supplier);">' + name.replace('مورد ', '') + '</span>';
+                document.getElementById('userAvatar').textContent = name.charAt(0) || 'م';
+            }
+        }
+
+        // ============================================================
+        // ===== جلب الإحصائيات الحقيقية =====
+        // ============================================================
+        async function loadSupplierStats() {
+            const token = getToken();
+            if (!token) return;
+
+            try {
+                const res = await fetch(`${API_BASE}/stats`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!res.ok) {
+                    console.warn('⚠️ فشل جلب إحصائيات المورد:', res.status);
+                    return;
+                }
+
+                const data = await res.json();
+                if (data.success) {
+                    const s = data.stats;
+                    document.getElementById('statProducts').textContent = s.products || 0;
+                    document.getElementById('statPurchaseOrders').textContent = s.purchaseOrders || 0;
+                    document.getElementById('statProcessing').textContent = s.processing || 0;
+                    document.getElementById('statClients').textContent = s.clients || 0;
+                }
+            } catch (err) {
+                console.error('❌ فشل جلب إحصائيات المورد:', err);
+            }
+        }
+
+        // ----- تسجيل الخروج -----
+        function logout() {
+            if (confirm('هل أنت متأكد من الخروج من حسابك؟')) {
+                localStorage.clear();
+                sessionStorage.clear();
+                window.location.href = '../../auth/login.html';
+            }
+        }
+
+        // ----- التنقل في الشريط السفلي -----
         function navigateTo(page) {
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            const navItems = document.querySelectorAll('.nav-item');
             const pages = ['home', 'products', 'orders', 'reports', 'more'];
-            const index = pages.indexOf(page); if (index !== -1) document.querySelectorAll('.nav-item')[index].classList.add('active');
-            const map = { 'home': 'index.html', 'products': 'services/supplier-products.html', 'orders': 'services/supplier-orders.html', 'reports': 'services/supplier-reports.html', 'more': 'supplier-services-app.html' };
-            if (map[page]) window.location.href = map[page];
+            const index = pages.indexOf(page);
+            if (index !== -1) navItems[index].classList.add('active');
+            const pageMap = {
+                'home': 'index.html',
+                'products': 'services/supplier-products.html',
+                'orders': 'services/supplier-orders.html',
+                'reports': 'services/supplier-reports.html',
+                'more': 'supplier-services-app.html'
+            };
+            if (pageMap[page]) {
+                window.location.href = pageMap[page];
+            }
         }
-        document.addEventListener('DOMContentLoaded', function() { loadSupplierData(); console.log('✅ لوحة المورد جاهزة!'); });
+
+        // ----- تحميل الصفحة -----
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 جاري تحميل لوحة المورد...');
+            await fetchSupplierData();
+            console.log('✅ لوحة المورد (مربوطة بالسيرفر) جاهزة!');
+        });
+
+        window.logout = logout;
+        window.navigateTo = navigateTo;
     </script>
 </body>
 </html>

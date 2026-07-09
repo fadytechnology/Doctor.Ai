@@ -150,7 +150,6 @@
             </div>
         </div>
 
-        <!-- ✅ تم إصلاح زر "المزيد" للبوابات -->
         <nav class="bottom-nav">
             <div class="nav-item active" onclick="navigateTo('home')">
                 <i class="fas fa-home"></i>
@@ -176,40 +175,115 @@
     </div>
 
     <script>
-        function loadPharmacyData() {
-            let user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-            if (!user.fullName) { user = { fullName: 'صيدلية النور', id: 'PH-2024', avatar: 'ص' }; }
-            document.getElementById('userName').innerHTML = 'صيدلية <span style="color:var(--gateway-commerce);">' + user.fullName.replace('صيدلية ', '') + '</span>';
-            document.getElementById('userId').innerHTML = '<i class="fas fa-id-card"></i> ' + (user.id || 'PH-2024');
-            document.getElementById('userAvatar').textContent = user.fullName.charAt(0) || 'ص';
-            let code = localStorage.getItem('pharmacyCode');
-            if (!code) { code = 'PH-' + Math.floor(1000 + Math.random() * 9000); localStorage.setItem('pharmacyCode', code); }
-            document.getElementById('pharmacyCode').textContent = code;
-            const orders = JSON.parse(localStorage.getItem('pharmacyOrders') || '[]');
-            const products = JSON.parse(localStorage.getItem('pharmacyInventory') || '[]');
-            const customers = JSON.parse(localStorage.getItem('pharmacyCustomers') || '[]');
-            document.getElementById('ordersToday').textContent = orders.length || Math.floor(Math.random() * 20) + 5;
-            document.getElementById('patientsCount').textContent = customers.length || Math.floor(Math.random() * 30) + 10;
-            document.getElementById('alertsCount').textContent = products.filter(p => p.stock < 20).length || Math.floor(Math.random() * 5);
-            document.getElementById('groupsCount').textContent = Math.floor(Math.random() * 6) + 1;
-            const recentOrders = document.getElementById('recentOrders');
-            if (orders.length > 0) {
-                const lastOrders = orders.slice(-3).reverse();
-                recentOrders.innerHTML = '';
-                lastOrders.forEach(o => {
-                    const statusMap = { pending:'⏳ قيد التجهيز', ready:'✅ جاهز', delivered:'📦 تم التوصيل' };
-                    const statusClass = o.status || 'pending';
-                    const div = document.createElement('div');
-                    div.className = 'order-item';
-                    div.innerHTML = `<div class="order-info"><span class="patient">${o.patient || 'مريض'}</span><span class="meds">${o.meds || 'طلب'}</span></div><span class="order-status status-${statusClass}">${statusMap[statusClass] || statusClass}</span>`;
-                    recentOrders.appendChild(div);
+        // ============================================================
+        // ===== التعديل الأساسي: جلب البيانات من السيرفر =====
+        // ============================================================
+
+        const API_BASE = 'http://localhost:5000/api';
+
+        // ----- جلب التوكن -----
+        function getToken() {
+            return localStorage.getItem('token');
+        }
+
+        // ----- جلب بيانات الصيدلي من السيرفر -----
+        async function fetchPharmacyData() {
+            const token = getToken();
+            if (!token) {
+                window.location.href = '../../auth/login.html';
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/auth/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
                 });
+
+                if (!res.ok) {
+                    if (res.status === 401 || res.status === 403) {
+                        logout();
+                    }
+                    throw new Error(`HTTP ${res.status}`);
+                }
+
+                const data = await res.json();
+                const user = data.user;
+                const profile = data.profile;
+
+                // تحديث الواجهة باسم الصيدلي
+                const pharmacyName = profile?.pharmacy_name || user.full_name || 'صيدلية';
+                document.getElementById('userName').innerHTML = 'صيدلية <span style="color:var(--gateway-commerce);">' + pharmacyName.replace('صيدلية ', '') + '</span>';
+                document.getElementById('userId').innerHTML = '<i class="fas fa-id-card"></i> ' + (profile?.license_number || user.id || 'PH-2024');
+                document.getElementById('userAvatar').textContent = pharmacyName.charAt(0) || 'ص';
+
+                // كود التعاون (مؤقتاً من localStorage)
+                let code = localStorage.getItem('pharmacyCode');
+                if (!code) {
+                    code = 'PH-' + Math.floor(1000 + Math.random() * 9000);
+                    localStorage.setItem('pharmacyCode', code);
+                }
+                document.getElementById('pharmacyCode').textContent = code;
+
+                // جلب الإحصائيات الحقيقية بعد جلب بيانات المستخدم
+                await loadPharmacyStats();
+
+                console.log('✅ تم جلب بيانات الصيدلي:', user, profile);
+                return data;
+            } catch (err) {
+                console.error('❌ فشل جلب بيانات الصيدلي:', err);
+                const name = localStorage.getItem('pharmacy_name') || 'صيدلية النور';
+                document.getElementById('userName').innerHTML = 'صيدلية <span style="color:var(--gateway-commerce);">' + name.replace('صيدلية ', '') + '</span>';
+                document.getElementById('userAvatar').textContent = name.charAt(0) || 'ص';
             }
         }
+
+        // ============================================================
+        // ===== جلب الإحصائيات الحقيقية للصيدلي =====
+        // ============================================================
+        async function loadPharmacyStats() {
+            const token = getToken();
+            if (!token) return;
+
+            try {
+                const res = await fetch(`${API_BASE}/stats`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!res.ok) {
+                    console.warn('⚠️ فشل جلب إحصائيات الصيدلي:', res.status);
+                    return;
+                }
+
+                const data = await res.json();
+                if (data.success) {
+                    const s = data.stats;
+                    document.getElementById('ordersToday').textContent = s.ordersToday || 0;
+                    document.getElementById('patientsCount').textContent = s.customers || 0;
+                    document.getElementById('alertsCount').textContent = s.alerts || 0;
+                    document.getElementById('groupsCount').textContent = s.groups || 0;
+                }
+            } catch (err) {
+                console.error('❌ فشل جلب إحصائيات الصيدلي:', err);
+            }
+        }
+
+        // ----- وظيفة نسخ كود التعاون (كما هي) -----
         function copyCode() {
             const code = document.getElementById('pharmacyCode').textContent;
-            if (navigator.clipboard) { navigator.clipboard.writeText(code).then(() => alert('✅ تم نسخ الكود: ' + code)); } else { alert('🔑 كود التعاون: ' + code); }
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(code).then(() => alert('✅ تم نسخ الكود: ' + code));
+            } else {
+                alert('🔑 كود التعاون: ' + code);
+            }
         }
+
+        // ----- تسجيل الخروج (معدل) -----
         function logout() {
             if (confirm('هل أنت متأكد من الخروج من حسابك؟')) {
                 localStorage.clear();
@@ -217,12 +291,15 @@
                 window.location.href = '../../auth/login.html';
             }
         }
+
+        // ----- التنقل في الشريط السفلي (كما هو) -----
         function navigateTo(page) {
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             const navItems = document.querySelectorAll('.nav-item');
             const pages = ['home', 'orders', 'inventory', 'patients', 'more'];
             const index = pages.indexOf(page);
             if (index !== -1) navItems[index].classList.add('active');
+
             const pageMap = {
                 'home': 'index.html',
                 'orders': 'services/ph-orders.html',
@@ -230,12 +307,22 @@
                 'patients': 'services/ph-customers.html',
                 'more': 'pharmacy-services-app.html'
             };
-            if (pageMap[page]) { window.location.href = pageMap[page]; }
+            if (pageMap[page]) {
+                window.location.href = pageMap[page];
+            }
         }
-        document.addEventListener('DOMContentLoaded', function() {
-            loadPharmacyData();
-            console.log('✅ لوحة الصيدلي (بوابة الخدمات) جاهزة!');
+
+        // ----- تحميل الصفحة -----
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 جاري تحميل لوحة الصيدلي...');
+            await fetchPharmacyData();
+            console.log('✅ لوحة الصيدلي (مربوطة بالسيرفر) جاهزة!');
         });
+
+        // ربط الدوال بالـ window للاستخدام في الـ HTML
+        window.logout = logout;
+        window.copyCode = copyCode;
+        window.navigateTo = navigateTo;
     </script>
 </body>
 </html>
