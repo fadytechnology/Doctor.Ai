@@ -322,23 +322,19 @@
         }
     }
 
-    // توجيه المستخدم بناءً على الدور
-    function goToDashboard(user) {
-        if (!user || !user.role) {
-            window.location.href = '../index.html';
-            return;
-        }
+    // توجيه المستخدم بناءً على الدور (وظيفة واحدة فقط)
+    function goToDashboard(role) {
         const map = {
             'patient': '../modules/patient/index.html',
             'pharmacy': '../modules/pharmacy/index.html',
-            'doctor': '../modules/clinic/index.html', // دور الطبيب يُخزَّن كـ 'doctor'
+            'doctor': '../modules/clinic/index.html',
             'clinic': '../modules/clinic/index.html',
             'lab': '../modules/lab/index.html',
             'radiology': '../modules/radiology/index.html',
             'supplier': '../modules/supplier/index.html',
             'admin': '../modules/admin/index.html'
         };
-        window.location.href = map[user.role] || '../index.html';
+        window.location.href = map[role] || '../index.html';
     }
 
     // معالج تسجيل الدخول
@@ -378,23 +374,16 @@
             const data = await response.json();
 
             if (response.ok) {
-                // تخزين التوكن
+                // تخزين التوكن والدور فقط (بدون أي بيانات إضافية)
                 const storage = remember ? localStorage : sessionStorage;
                 storage.setItem('token', data.token);
-
-                // تخزين بيانات المستخدم (للتوافق مع الصفحات القديمة)
-                const userData = data.user || data.data || { role: 'patient' };
-                storage.setItem('currentUser', JSON.stringify(userData));
-
-                // إذا كان هناك بروفايل إضافي (مثل بيانات الصيدلية)
-                if (data.profile) {
-                    storage.setItem('userProfile', JSON.stringify(data.profile));
-                }
+                const role = data.user?.role || 'patient';
+                storage.setItem('user_role', role);
 
                 successEl.textContent = '✅ ' + (data.message || 'تم تسجيل الدخول بنجاح!');
                 successEl.style.display = 'block';
 
-                setTimeout(() => goToDashboard(userData), 1200);
+                setTimeout(() => goToDashboard(role), 1200);
             } else {
                 errorEl.textContent = `❌ ${data.message || 'حدث خطأ في تسجيل الدخول'}`;
                 errorEl.style.display = 'block';
@@ -416,12 +405,8 @@
     document.addEventListener('DOMContentLoaded', function() {
         const token = localStorage.getItem('token') || sessionStorage.getItem('token');
         if (token) {
-            // يمكن التحقق من صلاحية التوكن عن طريق /api/auth/me، لكننا سنوجهه للوحة مباشرة
-            // (يمكن تحسين ذلك لاحقاً)
-            const user = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || '{}');
-            if (user && user.role) {
-                goToDashboard(user);
-            }
+            const role = localStorage.getItem('user_role') || sessionStorage.getItem('user_role');
+            if (role) goToDashboard(role);
         }
         console.log('✅ صفحة تسجيل الدخول (مربوطة بالسيرفر) جاهزة!');
     });

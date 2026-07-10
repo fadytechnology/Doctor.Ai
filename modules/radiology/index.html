@@ -169,12 +169,37 @@
         // ============================================================
         // ===== جلب الإحصائيات الحقيقية للأشعة =====
         // ============================================================
-        async function loadRadiologyStats() {
+        
+        async function loadE:\Doctor Ai\Doctor.Ai\modules\radiology\Stats() {
             const token = getToken();
             if (!token) return;
 
             try {
                 const res = await fetch(`${API_BASE}/stats`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!res.ok) {
+                    console.warn('⚠️ فشل جلب الإحصائيات:', res.status);
+                    return;
+                }
+
+                const data = await res.json();
+                if (data.success) {
+                    const s = data.stats;
+                    document.getElementById('statOrdersToday').textContent = s.prescriptions || 0;
+                    document.getElementById('statProcessing').textContent = s.loyalty || 0;
+                    document.getElementById('statCompleted').textContent = s.appointments || 0;
+                    document.getElementById('statClients').textContent = s.wallet || 0;
+                }
+            } catch (err) {
+                console.error('❌ فشل جلب الإحصائيات:', err);
+            }
+        }
+        /stats`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'

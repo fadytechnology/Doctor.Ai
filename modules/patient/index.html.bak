@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../../CSS/style.css" />
     <link rel="stylesheet" href="style.css" />
     <style>
-        /* ===== نفس التنسيقات القديمة ===== */
+        /* ===== نفس التنسيقات القديمة (ما لمستش) ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
         .patient-dashboard { max-width: 480px; margin: 0 auto; }
@@ -186,16 +186,17 @@
 
     <script>
         // ============================================================
-        // ===== جلب البيانات من السيرفر والإحصائيات =====
+        // ===== التعديل الأساسي: جلب البيانات من السيرفر =====
         // ============================================================
 
         const API_BASE = 'http://localhost:5000/api';
 
+        // ----- جلب التوكن -----
         function getToken() {
             return localStorage.getItem('token');
         }
 
-        // ----- جلب بيانات المستخدم -----
+        // ----- جلب بيانات المستخدم من السيرفر (مع تخزينها في localStorage) -----
         async function fetchUserData() {
             const token = getToken();
             if (!token) {
@@ -221,15 +222,18 @@
                 const data = await res.json();
                 const user = data.user;
 
+                // تخزين البيانات في localStorage (نفس الطريقة القديمة)
                 localStorage.setItem('user_name', user.full_name || 'مستخدم');
                 localStorage.setItem('user_id', user.id || '');
                 localStorage.setItem('user_role', user.role || 'patient');
 
+                // تحديث الواجهة
                 document.getElementById('userNameDisplay').textContent = user.full_name || 'مستخدم';
                 document.getElementById('userIdDisplay').textContent = '🆔 ' + (user.id || '');
                 const avatar = document.getElementById('avatarLetter');
                 avatar.textContent = (user.full_name?.charAt(0) || 'م').toUpperCase();
 
+                // جلب الإحصائيات الحقيقية بعد جلب بيانات المستخدم
                 await loadPatientStats();
 
                 console.log('✅ تم جلب بيانات المستخدم:', user);
@@ -247,7 +251,7 @@
         }
 
         // ============================================================
-        // ===== جلب الإحصائيات الحقيقية =====
+        // ===== جلب الإحصائيات الحقيقية من السيرفر =====
         // ============================================================
         async function loadPatientStats() {
             const token = getToken();
@@ -279,7 +283,7 @@
             }
         }
 
-        // ----- تسجيل الخروج -----
+        // ----- باقي الدوال (كما هي) -----
         function logout() {
             if (confirm('هل أنت متأكد من الخروج من حسابك؟')) {
                 localStorage.clear();
@@ -288,7 +292,6 @@
             }
         }
 
-        // ----- باقي الدوال كما هي -----
         function loadAds() {
             const ads = JSON.parse(localStorage.getItem('ads_data') || '[]');
             const activeAds = ads.filter(ad => ad.active !== false);
@@ -338,15 +341,24 @@
             }
         }
 
+        // ----- تحميل الصفحة -----
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('🚀 جاري تحميل لوحة المريض...');
 
+            // جلب بيانات المستخدم والإحصائيات
             await fetchUserData();
+
+            // تحميل الإعلانات والأخبار (من localStorage)
             loadAds();
             loadNews();
+
+            // تحميل التقرير الذكي
             await loadAIReport();
+
+            // تمييز القائمة السفلية
             highlightNav();
 
+            // تفعيل Service Worker لو موجود
             if ('serviceWorker' in navigator) {
                 try {
                     await navigator.serviceWorker.register('../../sw.js');

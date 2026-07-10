@@ -233,37 +233,12 @@
         // ============================================================
         // ===== جلب الإحصائيات الحقيقية للطبيب =====
         // ============================================================
-        
-        async function loadE:\Doctor Ai\Doctor.Ai\modules\clinic\Stats() {
+        async function loadDoctorStats() {
             const token = getToken();
             if (!token) return;
 
             try {
                 const res = await fetch(`${API_BASE}/stats`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!res.ok) {
-                    console.warn('⚠️ فشل جلب الإحصائيات:', res.status);
-                    return;
-                }
-
-                const data = await res.json();
-                if (data.success) {
-                    const s = data.stats;
-                    document.getElementById('patientsToday').textContent = s.prescriptions || 0;
-                    document.getElementById('patientsWeek').textContent = s.loyalty || 0;
-                    document.getElementById('appointmentsCount').textContent = s.appointments || 0;
-                    document.getElementById('prescriptionsCount').textContent = s.wallet || 0;
-                }
-            } catch (err) {
-                console.error('❌ فشل جلب الإحصائيات:', err);
-            }
-        }
-        /stats`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'

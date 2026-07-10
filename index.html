@@ -527,27 +527,6 @@
     <script src="JS/utils.js"></script>
     <script src="JS/main.js"></script> <!-- لو موجود -->
 
-        // ===== سكربت ترحيب بسيط =====
-        console.log('🚀 Doctor.ai - المنصة الصحية المتكاملة');
-
-        // يمكن إضافة أي كود خاص بالصفحة الرئيسية هنا
-        // مثلاً: التحقق من حالة تسجيل الدخول، عرض رسالة ترحيب، إلخ.
-
-        // مثال: إذا كان المستخدم مسجل دخول، نغير الزر
-        document.addEventListener('DOMContentLoaded', function() {
-            let userStr = localStorage.getItem('currentUser');
-            if (!userStr) userStr = sessionStorage.getItem('currentUser');
-            if (userStr) {
-                try {
-                    const user = JSON.parse(userStr);
-                    const loginBtn = document.querySelector('.btn-login-nav');
-                    if (user && user.full_name) {
-                        loginBtn.innerHTML = `<i class="fas fa-user"></i> ${user.full_name}`;
-                        loginBtn.href = 'modules/patient/index.html'; // أو حسب الدور
-                    }
-                } catch (e) {}
-            }
-        });
     </script>
 
 </body>

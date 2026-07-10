@@ -243,37 +243,12 @@
         // ============================================================
         // ===== جلب الإحصائيات الحقيقية للصيدلي =====
         // ============================================================
-        
-        async function loadE:\Doctor Ai\Doctor.Ai\modules\pharmacy\Stats() {
+        async function loadPharmacyStats() {
             const token = getToken();
             if (!token) return;
 
             try {
                 const res = await fetch(`${API_BASE}/stats`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!res.ok) {
-                    console.warn('⚠️ فشل جلب الإحصائيات:', res.status);
-                    return;
-                }
-
-                const data = await res.json();
-                if (data.success) {
-                    const s = data.stats;
-                    document.getElementById('ordersToday').textContent = s.prescriptions || 0;
-                    document.getElementById('patientsCount').textContent = s.loyalty || 0;
-                    document.getElementById('alertsCount').textContent = s.appointments || 0;
-                    document.getElementById('groupsCount').textContent = s.wallet || 0;
-                }
-            } catch (err) {
-                console.error('❌ فشل جلب الإحصائيات:', err);
-            }
-        }
-        /stats`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
