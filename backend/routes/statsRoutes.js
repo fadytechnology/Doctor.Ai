@@ -132,38 +132,50 @@ router.get('/', authenticateToken, async (req, res) => {
             );
             if (supplier.length > 0) {
                 const supplierId = supplier[0].id;
+                // استخدام جداول موجودة فقط، وتجنب الأخطاء
                 let productsCount = 0;
                 let purchaseOrders = 0;
                 let processing = 0;
                 let clients = 0;
 
+                // محاولة جلب عدد المنتجات (إذا كان الجدول موجوداً)
                 try {
                     const [products] = await db.query(
                         'SELECT COUNT(*) as count FROM supplier_products WHERE supplier_id = ?', [supplierId]
                     );
                     productsCount = products[0]?.count || 0;
-                } catch (e) { /* جدول غير موجود أو خطأ */ }
+                } catch (e) {
+                    // تجاهل الخطأ، الجدول غير موجود
+                    productsCount = 0;
+                }
 
+                // محاولة جلب طلبات الشراء (إذا كان عمود supplier_id موجوداً)
                 try {
                     const [orders] = await db.query(
                         'SELECT COUNT(*) as count FROM orders WHERE supplier_id = ? AND status != "delivered"', [supplierId]
                     );
                     purchaseOrders = orders[0]?.count || 0;
-                } catch (e) { /* قد لا يوجد عمود supplier_id */ }
+                } catch (e) {
+                    purchaseOrders = 0;
+                }
 
                 try {
                     const [proc] = await db.query(
                         'SELECT COUNT(*) as count FROM orders WHERE supplier_id = ? AND status = "processing"', [supplierId]
                     );
                     processing = proc[0]?.count || 0;
-                } catch (e) { /* قد لا يوجد عمود supplier_id */ }
+                } catch (e) {
+                    processing = 0;
+                }
 
                 try {
                     const [cl] = await db.query(
                         'SELECT COUNT(DISTINCT pharmacy_id) as count FROM orders WHERE supplier_id = ?', [supplierId]
                     );
                     clients = cl[0]?.count || 0;
-                } catch (e) { /* قد لا يوجد عمود supplier_id */ }
+                } catch (e) {
+                    clients = 0;
+                }
 
                 stats = {
                     products: productsCount,
@@ -177,10 +189,18 @@ router.get('/', authenticateToken, async (req, res) => {
         } else if (role === 'admin') {
             const [users] = await db.query('SELECT COUNT(*) as count FROM users');
             const [orders] = await db.query('SELECT COUNT(*) as count FROM orders');
+            // يمكن جلب الإيرادات من جدول orders إذا كان موجوداً
+            let revenue = 0;
+            try {
+                const [rev] = await db.query('SELECT SUM(final_payment) as total FROM orders WHERE delivery_status = "delivered"');
+                revenue = rev[0]?.total || 0;
+            } catch (e) {
+                revenue = 0;
+            }
             stats = {
                 users: users[0]?.count || 0,
                 orders: orders[0]?.count || 0,
-                revenue: 0
+                revenue: revenue
             };
         }
 

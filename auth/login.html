@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <style>
-        /* نفس التنسيقات القديمة (محتفظ بها) */
+        /* نفس التنسيقات القديمة */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Cairo', sans-serif;
@@ -308,7 +308,7 @@
     // ===== تسجيل الدخول (مربوط بالسيرفر الحقيقي) =====
     // ============================================================
 
-    const API_BASE = 'http://localhost:5000'; // تأكد أن السيرفر شغال على هذا المنفذ
+    const API_BASE = 'http://localhost:5000';
 
     function togglePassword() {
         const input = document.getElementById('password');
@@ -322,7 +322,6 @@
         }
     }
 
-    // توجيه المستخدم بناءً على الدور (وظيفة واحدة فقط)
     function goToDashboard(role) {
         const map = {
             'patient': '../modules/patient/index.html',
@@ -337,7 +336,6 @@
         window.location.href = map[role] || '../index.html';
     }
 
-    // معالج تسجيل الدخول
     async function handleLogin(e) {
         e.preventDefault();
 
@@ -374,7 +372,6 @@
             const data = await response.json();
 
             if (response.ok) {
-                // تخزين التوكن والدور فقط (بدون أي بيانات إضافية)
                 const storage = remember ? localStorage : sessionStorage;
                 storage.setItem('token', data.token);
                 const role = data.user?.role || 'patient';
@@ -401,7 +398,6 @@
 
     document.getElementById('loginForm').addEventListener('submit', handleLogin);
 
-    // إذا كان المستخدم مسجلاً بالفعل، يُوجه مباشرة
     document.addEventListener('DOMContentLoaded', function() {
         const token = localStorage.getItem('token') || sessionStorage.getItem('token');
         if (token) {

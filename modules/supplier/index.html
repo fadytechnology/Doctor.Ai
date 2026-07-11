@@ -109,9 +109,10 @@
             <div class="nav-item" onclick="navigateTo('more')"><i class="fas fa-th-large"></i><span>البوابات</span></div>
         </nav>
     </div>
+
     <script>
         // ============================================================
-        // ===== التعديل الأساسي: جلب البيانات من السيرفر =====
+        // ===== جلب البيانات من السيرفر والإحصائيات =====
         // ============================================================
 
         const API_BASE = 'http://localhost:5000/api';
@@ -120,7 +121,7 @@
             return localStorage.getItem('token');
         }
 
-        // ----- جلب بيانات المورد من السيرفر -----
+        // ----- جلب بيانات المورد -----
         async function fetchSupplierData() {
             const token = getToken();
             if (!token) {
@@ -152,7 +153,6 @@
                 document.getElementById('userId').innerHTML = '<i class="fas fa-id-card"></i> ' + (profile?.license_number || user.id || 'SUP-2024');
                 document.getElementById('userAvatar').textContent = supplierName.charAt(0) || 'م';
 
-                // جلب الإحصائيات الحقيقية
                 await loadSupplierStats();
 
                 console.log('✅ تم جلب بيانات المورد:', user, profile);
@@ -166,39 +166,14 @@
         }
 
         // ============================================================
-        // ===== جلب الإحصائيات الحقيقية =====
+        // ===== جلب الإحصائيات الحقيقية للمورد =====
         // ============================================================
-        
-        async function loadE:\Doctor Ai\Doctor.Ai\modules\supplier\Stats() {
+        async function loadSupplierStats() {
             const token = getToken();
             if (!token) return;
 
             try {
                 const res = await fetch(`${API_BASE}/stats`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!res.ok) {
-                    console.warn('⚠️ فشل جلب الإحصائيات:', res.status);
-                    return;
-                }
-
-                const data = await res.json();
-                if (data.success) {
-                    const s = data.stats;
-                    document.getElementById('statProducts').textContent = s.prescriptions || 0;
-                    document.getElementById('statPurchaseOrders').textContent = s.loyalty || 0;
-                    document.getElementById('statProcessing').textContent = s.appointments || 0;
-                    document.getElementById('statClients').textContent = s.wallet || 0;
-                }
-            } catch (err) {
-                console.error('❌ فشل جلب الإحصائيات:', err);
-            }
-        }
-        /stats`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
@@ -251,7 +226,6 @@
             }
         }
 
-        // ----- تحميل الصفحة -----
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('🚀 جاري تحميل لوحة المورد...');
             await fetchSupplierData();
