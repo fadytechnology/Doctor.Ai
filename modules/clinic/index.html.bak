@@ -86,10 +86,10 @@
         </header>
 
         <div class="stats-grid">
-            <div class="stat-card"><div class="num" id="patientsToday">8</div><div class="label">مرضى اليوم</div></div>
-            <div class="stat-card"><div class="num" id="patientsWeek">24</div><div class="label">مرضى هذا الأسبوع</div></div>
-            <div class="stat-card"><div class="num" id="appointmentsCount">5</div><div class="label">مواعيد قادمة</div></div>
-            <div class="stat-card"><div class="num" id="prescriptionsCount">12</div><div class="label">روشتات</div></div>
+            <div class="stat-card"><div class="num" id="patientsToday">0</div><div class="label">مرضى اليوم</div></div>
+            <div class="stat-card"><div class="num" id="patientsWeek">0</div><div class="label">مرضى هذا الأسبوع</div></div>
+            <div class="stat-card"><div class="num" id="appointmentsCount">0</div><div class="label">مواعيد قادمة</div></div>
+            <div class="stat-card"><div class="num" id="prescriptionsCount">0</div><div class="label">روشتات</div></div>
         </div>
 
         <a href="doctor-services-app.html" class="services-hub-btn">
@@ -170,17 +170,16 @@
 
     <script>
         // ============================================================
-        // ===== التعديل الأساسي: جلب البيانات من السيرفر =====
+        // ===== جلب البيانات من السيرفر والإحصائيات =====
         // ============================================================
 
         const API_BASE = 'http://localhost:5000/api';
 
-        // ----- جلب التوكن -----
         function getToken() {
             return localStorage.getItem('token');
         }
 
-        // ----- جلب بيانات الطبيب من السيرفر -----
+        // ----- جلب بيانات الطبيب -----
         async function fetchDoctorData() {
             const token = getToken();
             if (!token) {
@@ -207,7 +206,6 @@
                 const user = data.user;
                 const profile = data.profile;
 
-                // تحديث الواجهة باسم الطبيب والعيادة
                 const doctorName = user.full_name || 'الطبيب';
                 const clinicName = profile?.clinic_name || '';
                 const specialty = profile?.specialty || '';
@@ -217,8 +215,7 @@
                 document.getElementById('userId').innerHTML = '<i class="fas fa-id-card"></i> ' + licenseNumber;
                 document.getElementById('userAvatar').textContent = doctorName.charAt(0) || 'ط';
 
-                // جلب الإحصائيات الحقيقية بعد جلب بيانات المستخدم
-                await loadDoctorStats();
+                await loadClinicStats();
 
                 console.log('✅ تم جلب بيانات الطبيب:', user, profile);
                 return data;
@@ -233,7 +230,7 @@
         // ============================================================
         // ===== جلب الإحصائيات الحقيقية للطبيب =====
         // ============================================================
-        async function loadDoctorStats() {
+        async function loadClinicStats() {
             const token = getToken();
             if (!token) return;
 
@@ -263,7 +260,7 @@
             }
         }
 
-        // ----- تسجيل الخروج (معدل) -----
+        // ----- تسجيل الخروج -----
         function logout() {
             if (confirm('هل أنت متأكد من الخروج من حسابك؟')) {
                 localStorage.clear();
@@ -272,7 +269,7 @@
             }
         }
 
-        // ----- التنقل في الشريط السفلي (كما هو) -----
+        // ----- التنقل في الشريط السفلي -----
         function navigateTo(page) {
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             const navItems = document.querySelectorAll('.nav-item');
@@ -289,14 +286,12 @@
             if (pageMap[page]) { window.location.href = pageMap[page]; }
         }
 
-        // ----- تحميل الصفحة -----
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('🚀 جاري تحميل لوحة الطبيب...');
             await fetchDoctorData();
             console.log('✅ لوحة الطبيب (مربوطة بالسيرفر) جاهزة!');
         });
 
-        // ربط الدوال بالـ window للاستخدام في الـ HTML
         window.logout = logout;
         window.navigateTo = navigateTo;
     </script>

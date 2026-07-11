@@ -3,35 +3,131 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>الخريطة - Doctor.ai</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <title>الخريطة الطبية - Doctor.ai</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../../CSS/style.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #f2f4f8;
+            direction: rtl;
+            padding: 16px;
+            min-height: 100vh;
+        }
         .app-container { max-width: 480px; margin: 0 auto; }
-        
-        .page-header { background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
-        .page-header .back-btn { background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; }
-        .page-header h1 { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; flex: 1; }
-        
-        .map-placeholder { background: #e2e8f0; border-radius: 20px; height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 16px; color: #64748b; }
-        .map-placeholder i { font-size: 64px; color: #94a3b8; margin-bottom: 16px; }
-        .map-placeholder h3 { font-size: 18px; margin: 0; }
-        .map-placeholder p { font-size: 14px; margin: 4px 0 0; }
-        
-        .location-list { background: #fff; border-radius: 16px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
-        .location-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
-        .location-item:last-child { border-bottom: none; }
-        .location-item i { font-size: 20px; color: #0d9488; width: 32px; text-align: center; }
-        .location-item .info { flex: 1; }
-        .location-item .info h4 { font-size: 14px; font-weight: 600; color: #1e293b; margin: 0; }
-        .location-item .info p { font-size: 12px; color: #94a3b8; margin: 0; }
-        
-        .bottom-nav { display: flex; justify-content: space-around; align-items: center; background: #fff; padding: 10px 0; border-radius: 30px; box-shadow: 0 -2px 12px rgba(0,0,0,0.04); margin-top: 8px; }
-        .bottom-nav a { color: #94a3b8; font-size: 22px; text-decoration: none; padding: 8px 16px; border-radius: 30px; transition: 0.2s; }
-        .bottom-nav a.active { color: #0d9488; background: #e6f7f5; }
+
+        .page-header {
+            background: #fff;
+            padding: 16px;
+            border-radius: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .page-header .back-btn {
+            background: #f1f5f9;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 18px;
+            color: #1e293b;
+            cursor: pointer;
+        }
+        .page-header h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0;
+            flex: 1;
+        }
+        .page-header h1 i { color: var(--gateway-biometric); }
+
+        .search-box {
+            background: #fff;
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            display: flex;
+            gap: 10px;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+        }
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--gateway-biometric);
+        }
+        .search-box button {
+            background: var(--gateway-biometric);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+        }
+        .search-box button:active { transform: scale(0.95); }
+
+        #map {
+            height: 400px;
+            border-radius: 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            margin-bottom: 16px;
+        }
+
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: #fff;
+            padding: 10px 0;
+            border-radius: 30px;
+            box-shadow: 0 -2px 12px rgba(0,0,0,0.04);
+            margin-top: 8px;
+        }
+        .bottom-nav a {
+            color: #94a3b8;
+            font-size: 22px;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            transition: 0.2s;
+        }
+        .bottom-nav a.active {
+            color: var(--gateway-biometric);
+            background: rgba(13,148,136,0.1);
+        }
+
+        /* تنسيق نافذة المعلومات المنبثقة */
+        .custom-popup .pharmacy-name { font-weight: 700; color: #1e293b; font-size: 15px; }
+        .custom-popup .pharmacy-address { font-size: 12px; color: #64748b; }
+        .custom-popup .drug-info { font-size: 13px; color: #0d9488; margin-top: 4px; }
+        .custom-popup .drug-info .price { font-weight: 700; }
+        .custom-popup .btn-order {
+            display: inline-block;
+            margin-top: 8px;
+            background: #0d9488;
+            color: #fff;
+            padding: 4px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -39,41 +135,198 @@
 <div class="app-container">
     <div class="page-header">
         <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
-        <h1><i class="fas fa-map" style="color:#0d9488;"></i> الخريطة الطبية</h1>
+        <h1><i class="fas fa-map-marked-alt"></i> الخريطة الطبية</h1>
     </div>
 
-    <div class="map-placeholder">
-        <i class="fas fa-map-marked-alt"></i>
-        <h3>🗺️ الخريطة قيد التطوير</h3>
-        <p>ستظهر هنا أقرب العيادات والصيدليات والمختبرات</p>
-        <button onclick="alert('🚀 قريباً: سيتم تفعيل الخريطة')" style="margin-top:16px;background:#0d9488;border:none;color:#fff;padding:10px 24px;border-radius:30px;font-weight:600;cursor:pointer;">🔜 قريباً</button>
+    <div class="search-box">
+        <input type="text" id="drugSearchInput" placeholder="ابحث عن دواء (مثل: باراسيتامول)" />
+        <button id="searchBtn"><i class="fas fa-search"></i> بحث</button>
     </div>
 
-    <div class="location-list">
-        <div class="location-item">
-            <i class="fas fa-store"></i>
-            <div class="info"><h4>صيدلية النيل</h4><p>شارع الثورة، القاهرة - 2.3 كم</p></div>
-            <i class="fas fa-chevron-left" style="color:#94a3b8;"></i>
-        </div>
-        <div class="location-item">
-            <i class="fas fa-flask"></i>
-            <div class="info"><h4>مختبر الماس</h4><p>شارع الجمهورية، الجيزة - 4.1 كم</p></div>
-            <i class="fas fa-chevron-left" style="color:#94a3b8;"></i>
-        </div>
-        <div class="location-item">
-            <i class="fas fa-user-md"></i>
-            <div class="info"><h4>عيادة الدكتور أحمد</h4><p>شارع النيل، القاهرة - 1.8 كم</p></div>
-            <i class="fas fa-chevron-left" style="color:#94a3b8;"></i>
-        </div>
-    </div>
+    <div id="map"></div>
 
     <nav class="bottom-nav">
         <a href="index.html"><i class="fas fa-home"></i></a>
-        <a href="map.html" class="active"><i class="fas fa-map"></i></a>
+        <a href="#" class="active"><i class="fas fa-map"></i></a>
         <a href="settings.html"><i class="fas fa-cog"></i></a>
         <a href="gateway-details.html?gateway=communication"><i class="fas fa-share-alt"></i></a>
     </nav>
 </div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    // ============================================================
+    // ===== الخريطة الذكية =====
+    // ============================================================
+
+    const API_BASE = 'http://localhost:5000/api';
+    let mapInstance = null;
+    let markersLayer = null;
+
+    // ----- الحصول على موقع المريض (باستخدام GPS) -----
+    function getCurrentPosition() {
+        return new Promise((resolve) => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        resolve({
+                            lat: pos.coords.latitude,
+                            lng: pos.coords.longitude
+                        });
+                    },
+                    () => {
+                        // إذا رفض المستخدم أو تعذر تحديد الموقع، نستخدم موقع افتراضي (القاهرة)
+                        resolve({ lat: 30.0444, lng: 31.2357 });
+                    }
+                );
+            } else {
+                resolve({ lat: 30.0444, lng: 31.2357 });
+            }
+        });
+    }
+
+    // ----- تهيئة الخريطة -----
+    function initMap(lat, lng) {
+        if (mapInstance) {
+            mapInstance.remove();
+        }
+
+        mapInstance = L.map('map').setView([lat, lng], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(mapInstance);
+
+        // إضافة علامة لموقع المريض
+        L.marker([lat, lng], {
+            icon: L.divIcon({
+                html: '<i class="fas fa-user-circle" style="font-size:28px;color:#0d9488;"></i>',
+                className: '',
+                iconSize: [28, 28]
+            })
+        }).addTo(mapInstance)
+          .bindPopup('📍 موقعك الحالي');
+
+        markersLayer = L.layerGroup().addTo(mapInstance);
+    }
+
+    // ----- جلب الصيدليات القريبة -----
+    async function searchNearbyPharmacies(drugName, lat, lng) {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('يرجى تسجيل الدخول أولاً');
+            window.location.href = '../../auth/login.html';
+            return;
+        }
+
+        // مسح العلامات القديمة
+        if (markersLayer) {
+            markersLayer.clearLayers();
+        }
+
+        try {
+            const res = await fetch(
+                `${API_BASE}/inventory/nearby?lat=${lat}&lng=${lng}&drug=${encodeURIComponent(drugName)}&radius=10`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+
+            if (!res.ok) {
+                throw new Error(`HTTP ${res.status}`);
+            }
+
+            const data = await res.json();
+            if (!data.success) {
+                alert('حدث خطأ في البحث');
+                return;
+            }
+
+            const results = data.results;
+
+            if (results.length === 0) {
+                alert('🔍 لم يتم العثور على صيدليات قريبة تحتوي على هذا الدواء');
+                return;
+            }
+
+            // إضافة علامات لكل صيدلية
+            results.forEach(pharmacy => {
+                const popupContent = `
+                    <div class="custom-popup">
+                        <div class="pharmacy-name">💊 ${pharmacy.pharmacy_name}</div>
+                        <div class="pharmacy-address">📍 ${pharmacy.address || 'عنوان غير متوفر'}</div>
+                        <div class="drug-info">
+                            ${pharmacy.drug_name} ${pharmacy.concentration ? `(${pharmacy.concentration})` : ''}
+                            <br>
+                            السعر: <span class="price">${pharmacy.price} ج.م</span>
+                            ${pharmacy.requires_prescription ? '🔴 يتطلب روشتة' : '🟢 بدون روشتة'}
+                            <br>
+                            الكمية: ${pharmacy.quantity_in_stock} حبة
+                            <br>
+                            المسافة: ${pharmacy.distance_km.toFixed(1)} كم
+                        </div>
+                        <a href="services/order.html?pharmacy=${pharmacy.id}&drug=${pharmacy.drug_name}" class="btn-order">
+                            🛒 طلب الآن
+                        </a>
+                    </div>
+                `;
+
+                const marker = L.marker([pharmacy.latitude, pharmacy.longitude], {
+                    icon: L.divIcon({
+                        html: '<i class="fas fa-store" style="font-size:24px;color:#0d9488;"></i>',
+                        className: '',
+                        iconSize: [24, 24]
+                    })
+                });
+
+                marker.bindPopup(popupContent, { maxWidth: 260, className: 'custom-popup' });
+                markersLayer.addLayer(marker);
+            });
+
+            // ضبط الخريطة لعرض جميع العلامات
+            if (results.length > 0) {
+                const bounds = results.map(p => [p.latitude, p.longitude]);
+                bounds.push([lat, lng]);
+                mapInstance.fitBounds(bounds, { padding: [20, 20] });
+            }
+
+        } catch (err) {
+            console.error('❌ خطأ في جلب الصيدليات:', err);
+            alert('حدث خطأ في البحث، تأكد من اتصالك بالسيرفر');
+        }
+    }
+
+    // ----- معالج البحث -----
+    async function handleSearch() {
+        const drugInput = document.getElementById('drugSearchInput');
+        const drugName = drugInput.value.trim();
+        if (!drugName || drugName.length < 2) {
+            alert('📝 يرجى إدخال اسم الدواء (حرفان على الأقل)');
+            return;
+        }
+
+        const position = await getCurrentPosition();
+        await searchNearbyPharmacies(drugName, position.lat, position.lng);
+    }
+
+    // ----- تحميل الصفحة -----
+    document.addEventListener('DOMContentLoaded', async function() {
+        const position = await getCurrentPosition();
+        initMap(position.lat, position.lng);
+
+        // زر البحث
+        document.getElementById('searchBtn').addEventListener('click', handleSearch);
+        document.getElementById('drugSearchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleSearch();
+        });
+
+        console.log('✅ الخريطة الطبية جاهزة!');
+    });
+</script>
 
 </body>
 </html> 

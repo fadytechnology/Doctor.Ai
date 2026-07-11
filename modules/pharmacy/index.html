@@ -239,12 +239,7 @@
         // ============================================================
         // ===== جلب الإحصائيات الحقيقية للصيدلي =====
         // ============================================================
-        async function loadPharmacyStats() {
-            const token = getToken();
-            if (!token) return;
-
-            try {
-                const res = await fetch(`${API_BASE}/stats`, {
+        /stats`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
@@ -317,6 +312,43 @@
         window.logout = logout;
         window.copyCode = copyCode;
         window.navigateTo = navigateTo;
-    </script>
+    
+        // ============================================================
+        // ===== جلب الإحصائيات الحقيقية =====
+        // ============================================================
+        async function loadPharmacyStats() {
+            const token = getToken();
+            if (!token) return;
+
+            try {
+                const res = await fetch(`${API_BASE}/stats`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!res.ok) {
+                    console.warn('⚠️ فشل جلب الإحصائيات:', res.status);
+                    return;
+                }
+
+                const data = await res.json();
+                if (data.success) {
+                    const s = data.stats;
+                    
+                    document.getElementById('ordersToday').textContent = s.ordersToday || 0;
+                    document.getElementById('patientsCount').textContent = s.customers || 0;
+                    document.getElementById('alertsCount').textContent = s.alerts || 0;
+                    document.getElementById('groupsCount').textContent = s.groups || 0;
+                
+                }
+            } catch (err) {
+                console.error('❌ فشل جلب الإحصائيات:', err);
+            }
+        }
+        
+
+</script>
 </body>
 </html>

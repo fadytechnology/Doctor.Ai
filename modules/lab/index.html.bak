@@ -108,19 +108,19 @@
             <div class="nav-item" onclick="navigateTo('more')"><i class="fas fa-th-large"></i><span>البوابات</span></div>
         </nav>
     </div>
+
     <script>
         // ============================================================
-        // ===== التعديل الأساسي: جلب البيانات من السيرفر =====
+        // ===== جلب البيانات من السيرفر والإحصائيات =====
         // ============================================================
 
         const API_BASE = 'http://localhost:5000/api';
 
-        // ----- جلب التوكن -----
         function getToken() {
             return localStorage.getItem('token');
         }
 
-        // ----- جلب بيانات المختبر من السيرفر -----
+        // ----- جلب بيانات المختبر -----
         async function fetchLabData() {
             const token = getToken();
             if (!token) {
@@ -147,13 +147,11 @@
                 const user = data.user;
                 const profile = data.profile;
 
-                // تحديث الواجهة باسم المختبر
                 const labName = profile?.lab_name || user.full_name || 'مختبر';
                 document.getElementById('userName').innerHTML = 'مختبر <span style="color:var(--gateway-lab);">' + labName.replace('مختبر ', '') + '</span>';
                 document.getElementById('userId').innerHTML = '<i class="fas fa-id-card"></i> ' + (profile?.license_number || user.id || 'LAB-2024');
                 document.getElementById('userAvatar').textContent = labName.charAt(0) || 'م';
 
-                // جلب الإحصائيات الحقيقية بعد جلب بيانات المستخدم
                 await loadLabStats();
 
                 console.log('✅ تم جلب بيانات المختبر:', user, profile);
@@ -199,7 +197,7 @@
             }
         }
 
-        // ----- تسجيل الخروج (معدل) -----
+        // ----- تسجيل الخروج -----
         function logout() {
             if (confirm('هل أنت متأكد من الخروج من حسابك؟')) {
                 localStorage.clear();
@@ -208,7 +206,7 @@
             }
         }
 
-        // ----- التنقل في الشريط السفلي (كما هو) -----
+        // ----- التنقل في الشريط السفلي -----
         function navigateTo(page) {
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             const navItems = document.querySelectorAll('.nav-item');
@@ -227,14 +225,12 @@
             }
         }
 
-        // ----- تحميل الصفحة -----
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('🚀 جاري تحميل لوحة المختبر...');
             await fetchLabData();
             console.log('✅ لوحة المختبر (مربوطة بالسيرفر) جاهزة!');
         });
 
-        // ربط الدوال بالـ window للاستخدام في الـ HTML
         window.logout = logout;
         window.navigateTo = navigateTo;
     </script>

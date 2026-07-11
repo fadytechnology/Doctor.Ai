@@ -322,7 +322,6 @@
         }
     }
 
-    
     function goToDashboard(role) {
         const map = {
             'patient': '../modules/patient/index.html',
@@ -334,9 +333,6 @@
             'supplier': '../modules/supplier/index.html',
             'admin': '../modules/admin/index.html'
         };
-        window.location.href = map[role] || '../index.html';
-    }
-    ;
         window.location.href = map[role] || '../index.html';
     }
 

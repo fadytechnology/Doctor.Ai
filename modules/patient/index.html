@@ -249,12 +249,7 @@
         // ============================================================
         // ===== جلب الإحصائيات الحقيقية =====
         // ============================================================
-        async function loadPatientStats() {
-            const token = getToken();
-            if (!token) return;
-
-            try {
-                const res = await fetch(`${API_BASE}/stats`, {
+        /stats`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
@@ -363,6 +358,43 @@
     </script>
 
     <script src="../../JS/script.js"></script>
-    <script src="ai-interpreter.js" defer></script>
+    <script src="ai-interpreter.js" defer>
+        // ============================================================
+        // ===== جلب الإحصائيات الحقيقية =====
+        // ============================================================
+        async function loadPatientStats() {
+            const token = getToken();
+            if (!token) return;
+
+            try {
+                const res = await fetch(`${API_BASE}/stats`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!res.ok) {
+                    console.warn('⚠️ فشل جلب الإحصائيات:', res.status);
+                    return;
+                }
+
+                const data = await res.json();
+                if (data.success) {
+                    const s = data.stats;
+                    
+                    document.getElementById('statPrescriptions').textContent = s.prescriptions || 0;
+                    document.getElementById('statLoyalty').textContent = s.loyalty || 0;
+                    document.getElementById('statAppointments').textContent = s.appointments || 0;
+                    document.getElementById('statWallet').textContent = (s.wallet || 0) + ' ج.م';
+                
+                }
+            } catch (err) {
+                console.error('❌ فشل جلب الإحصائيات:', err);
+            }
+        }
+        
+
+</script>
 </body>
 </html>
