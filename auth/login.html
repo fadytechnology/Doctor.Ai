@@ -322,7 +322,7 @@
         }
     }
 
-    
+    // دالة توجيه المستخدم حسب الدور (وظيفة واحدة فقط)
     function goToDashboard(role) {
         const map = {
             'patient': '../modules/patient/index.html',
@@ -336,10 +336,8 @@
         };
         window.location.href = map[role] || '../index.html';
     }
-    ;
-        window.location.href = map[role] || '../index.html';
-    }
 
+    // معالج تسجيل الدخول
     async function handleLogin(e) {
         e.preventDefault();
 
@@ -402,6 +400,7 @@
 
     document.getElementById('loginForm').addEventListener('submit', handleLogin);
 
+    // إذا كان المستخدم مسجلاً بالفعل، يُوجه مباشرة
     document.addEventListener('DOMContentLoaded', function() {
         const token = localStorage.getItem('token') || sessionStorage.getItem('token');
         if (token) {

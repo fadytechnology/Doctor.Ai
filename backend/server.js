@@ -3,61 +3,142 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const http = require('http');
+const socketIo = require('socket.io');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// ===== Middleware =====
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ===== المسارات الأساسية (اللي شغالة 100%) =====
+// ===== استيراد المسارات =====
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
+const statsRoutes = require('./routes/statsRoutes');
+const inventoryRoutes = require('./routes/inventoryRoutes');
+const chatRoutes = require('./routes/chatRoutes');
 
-// ===== المسارات الجديدة (علقها دلوقتي) =====
-// const orderRoutes = require('./routes/orderRoutes');
-// const b2bRoutes = require('./routes/b2bRoutes');
-// const prescriptionRoutes = require('./routes/prescriptionRoutes');
-// const labOrderRoutes = require('./routes/labOrderRoutes');
-// const walletRoutes = require('./routes/walletRoutes');
-// const profileRoutes = require('./routes/profileRoutes');
-// const passwordRoutes = require('./routes/passwordRoutes');
-// const adminRoutes = require('./routes/adminRoutes');
-// const clinicRoutes = require('./routes/clinicRoutes');
-// const labRoutes = require('./routes/labRoutes');
-// const patientRoutes = require('./routes/patientRoutes');
-// const pharmacyRoutes = require('./routes/pharmacyRoutes');
-// const radiologyRoutes = require('./routes/radiologyRoutes');
-// const supplierRoutes = require('./routes/supplierRoutes');
-// const notificationRoutes = require('./routes/notificationRoutes');
-
-// ===== تعريف المسارات =====
+// ===== تعريف المسارات (API) =====
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/stats', statsRoutes);
+app.use('/api/inventory', inventoryRoutes);
+app.use('/api/chat', chatRoutes);
 
-// ===== المسارات الجديدة (علقها) =====
-// app.use('/api/orders', orderRoutes);
-// app.use('/api/b2b', b2bRoutes);
-// app.use('/api/prescriptions', prescriptionRoutes);
-// app.use('/api/lab-orders', labOrderRoutes);
-// app.use('/api/wallet', walletRoutes);
+// ===== المسارات المعلقة (يمكن تفعيلها لاحقاً) =====
+// app.use('/api/orders', require('./routes/orderRoutes'));
+// app.use('/api/b2b', require('./routes/b2bRoutes'));
+// app.use('/api/prescriptions', require('./routes/prescriptionRoutes'));
+// app.use('/api/lab-orders', require('./routes/labOrderRoutes'));
+// app.use('/api/wallet', require('./routes/walletRoutes'));
+// app.use('/api/profile', require('./routes/profileRoutes'));
+// app.use('/api/password', require('./routes/passwordRoutes'));
+// app.use('/api/admin', require('./routes/adminRoutes'));
+// app.use('/api/clinic', require('./routes/clinicRoutes'));
+// app.use('/api/lab', require('./routes/labRoutes'));
+// app.use('/api/patient', require('./routes/patientRoutes'));
+// app.use('/api/pharmacy', require('./routes/pharmacyRoutes'));
+// app.use('/api/radiology', require('./routes/radiologyRoutes'));
+// app.use('/api/supplier', require('./routes/supplierRoutes'));
+// app.use('/api/notifications', require('./routes/notificationRoutes'));
 
-// ===== خدمة الملفات الثابتة =====
+// ===== خدمة الملفات الثابتة (لـ Frontend) =====
 app.use(express.static(path.join(__dirname, '..')));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
 
-const statsRoutes = require('./routes/statsRoutes');
-app.use('/api/stats', statsRoutes);
-
-app.listen(PORT, () => {
-  console.log(`✅ Server is running on http://localhost:${PORT}`);
+// ============================================================
+// ===== Socket.io - الشات الفوري =====
+// ============================================================
+const server = http.createServer(app);
+const io = socketIo(server, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST']
+    }
 });
-// ... بعد باقي الـ requires ...
-const inventoryRoutes = require('./routes/inventoryRoutes');
 
-// ... بعد باقي الـ app.use ...
-app.use('/api/inventory', inventoryRoutes);
+// تخزين المستخدمين المتصلين
+const onlineUsers = new Map();
+
+io.on('connection', (socket) => {
+    console.log('🟢 مستخدم متصل:', socket.id);
+
+    socket.on('user-online', (userId) => {
+        onlineUsers.set(userId, socket.id);
+        console.log(`✅ المستخدم ${userId} متصل الآن`);
+        io.emit('online-users', Array.from(onlineUsers.keys()));
+    });
+
+    socket.on('join-room', ({ roomId, userId }) => {
+        socket.join(roomId);
+        console.log(`📌 المستخدم ${userId} انضم للغرفة ${roomId}`);
+    });
+
+    socket.on('send-message', async ({ roomId, senderId, message, type = 'text' }) => {
+        try {
+            const db = require('./config/db');
+            const [result] = await db.query(
+                `INSERT INTO chat_messages (room_id, sender_id, message_type, content, is_read, created_at)
+                 VALUES (?, ?, ?, ?, false, NOW())`,
+                [roomId, senderId, type, message]
+            );
+            io.to(roomId).emit('receive-message', {
+                id: result.insertId,
+                senderId,
+                message,
+                type,
+                timestamp: new Date().toISOString()
+            });
+        } catch (err) {
+            console.error('❌ خطأ في حفظ الرسالة:', err);
+        }
+    });
+
+    socket.on('mark-read', async ({ roomId, userId }) => {
+        try {
+            const db = require('./config/db');
+            await db.query(
+                `UPDATE chat_messages SET is_read = true
+                 WHERE room_id = ? AND sender_id != ? AND is_read = false`,
+                [roomId, userId]
+            );
+        } catch (err) {
+            console.error('❌ خطأ في تحديث حالة القراءة:', err);
+        }
+    });
+
+    socket.on('disconnect', () => {
+        let disconnectedUser = null;
+        for (const [userId, socketId] of onlineUsers.entries()) {
+            if (socketId === socket.id) {
+                disconnectedUser = userId;
+                onlineUsers.delete(userId);
+                break;
+            }
+        }
+        if (disconnectedUser) {
+            console.log(`🔴 المستخدم ${disconnectedUser} غير متصل`);
+            io.emit('online-users', Array.from(onlineUsers.keys()));
+        }
+    });
+});
+
+// ============================================================
+// ===== تشغيل Scheduler (المهام المجدولة) =====
+// ============================================================
+const { startScheduler } = require('./services/notificationScheduler');
+startScheduler();
+
+// ============================================================
+// ===== بدء تشغيل السيرفر (استخدام server.listen فقط) =====
+// ============================================================
+server.listen(PORT, () => {
+    console.log(`✅ Server is running on http://localhost:${PORT}`);
+    console.log(`✅ Socket.io is ready for real-time chat`);
+});
