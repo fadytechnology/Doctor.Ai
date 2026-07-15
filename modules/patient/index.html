@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../../CSS/style.css" />
     <link rel="stylesheet" href="style.css" />
     <style>
-        /* نفس التنسيقات القديمة */
+        /* ===== نفس التنسيقات القديمة ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
         .patient-dashboard { max-width: 480px; margin: 0 auto; }
@@ -171,9 +171,11 @@
             </div>
         </div>
 
+        <!-- ✅ القائمة السفلية مع روابط map, chat, settings, gateway-details -->
         <nav class="bottom-nav">
             <a href="index.html" class="active" id="navHome"><i class="fas fa-home"></i></a>
             <a href="map.html" id="navMap"><i class="fas fa-map"></i></a>
+            <a href="chat.html" id="navChat"><i class="fas fa-comment-dots"></i></a>
             <a href="settings.html" id="navSettings"><i class="fas fa-cog"></i></a>
             <a href="gateway-details.html?gateway=communication" id="navNetwork"><i class="fas fa-share-alt"></i></a>
         </nav>
@@ -247,9 +249,14 @@
         }
 
         // ============================================================
-        // ===== جلب الإحصائيات الحقيقية =====
+        // ===== جلب الإحصائيات الحقيقية (دالة واحدة فقط) =====
         // ============================================================
-        /stats`, {
+        async function loadPatientStats() {
+            const token = getToken();
+            if (!token) return;
+
+            try {
+                const res = await fetch(`${API_BASE}/stats`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
@@ -283,7 +290,7 @@
             }
         }
 
-        // ----- باقي الدوال كما هي -----
+        // ----- تحميل الإعلانات والأخبار (من localStorage مؤقتاً) -----
         function loadAds() {
             const ads = JSON.parse(localStorage.getItem('ads_data') || '[]');
             const activeAds = ads.filter(ad => ad.active !== false);
@@ -324,7 +331,13 @@
 
         function highlightNav() {
             const current = window.location.pathname.split('/').pop() || 'index.html';
-            const map = { 'index.html': 'navHome', 'map.html': 'navMap', 'settings.html': 'navSettings', 'gateway-details.html': 'navNetwork' };
+            const map = {
+                'index.html': 'navHome',
+                'map.html': 'navMap',
+                'chat.html': 'navChat',
+                'settings.html': 'navSettings',
+                'gateway-details.html': 'navNetwork'
+            };
             const activeId = map[current];
             if (activeId) {
                 document.querySelectorAll('.bottom-nav a').forEach(a => a.classList.remove('active'));
@@ -358,43 +371,6 @@
     </script>
 
     <script src="../../JS/script.js"></script>
-    <script src="ai-interpreter.js" defer>
-        // ============================================================
-        // ===== جلب الإحصائيات الحقيقية =====
-        // ============================================================
-        async function loadPatientStats() {
-            const token = getToken();
-            if (!token) return;
-
-            try {
-                const res = await fetch(`${API_BASE}/stats`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!res.ok) {
-                    console.warn('⚠️ فشل جلب الإحصائيات:', res.status);
-                    return;
-                }
-
-                const data = await res.json();
-                if (data.success) {
-                    const s = data.stats;
-                    
-                    document.getElementById('statPrescriptions').textContent = s.prescriptions || 0;
-                    document.getElementById('statLoyalty').textContent = s.loyalty || 0;
-                    document.getElementById('statAppointments').textContent = s.appointments || 0;
-                    document.getElementById('statWallet').textContent = (s.wallet || 0) + ' ج.م';
-                
-                }
-            } catch (err) {
-                console.error('❌ فشل جلب الإحصائيات:', err);
-            }
-        }
-        
-
-</script>
+    <script src="ai-interpreter.js" defer></script>
 </body>
 </html>
