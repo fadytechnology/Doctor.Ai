@@ -54,5 +54,73 @@
         <a href="../services-app.html"><i class="fas fa-th-large"></i></a>
     </nav>
 </div>
+
+        <script>
+        const API_BASE = 'http://localhost:5000/api';
+        function getToken() { return localStorage.getItem('token'); }
+        async function searchFood() {
+            const q = document.getElementById('foodSearch')?.value.trim();
+            if (!q) return alert('يرجى إدخال اسم الطعام');
+            const token = getToken();
+            if (!token) return alert('يرجى تسجيل الدخول');
+            try {
+                const res = await fetch(`${API_BASE}/calories/search?q=${encodeURIComponent(q)}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                const list = document.getElementById('searchResults');
+                if (list) {
+                    list.innerHTML = '';
+                    if (data.success && data.data.length > 0) {
+                        data.data.forEach(food => {
+                            const div = document.createElement('div');
+                            div.className = 'search-item';
+                            div.innerHTML = `
+                                <span>${food.name} - ${food.calories_per_unit} سعرة/${food.unit}</span>
+                                <button onclick="logFood(${food.id})">تسجيل</button>
+                            `;
+                            list.appendChild(div);
+                        });
+                    } else {
+                        list.innerHTML = '<div class="empty">😔 لا توجد نتائج</div>';
+                    }
+                }
+            } catch (err) { console.error(err); }
+        }
+        async function logFood(foodId) {
+            const qty = prompt('أدخل الكمية (بالوحدة المحددة):');
+            if (!qty) return;
+            const token = getToken();
+            if (!token) return alert('يرجى تسجيل الدخول');
+            try {
+                const res = await fetch(`${API_BASE}/calories/log`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ food_id: foodId, quantity: parseFloat(qty) })
+                });
+                const data = await res.json();
+                if (data.success) { alert('✅ تم تسجيل الوجبة'); loadDaily(); }
+                else alert('❌ فشل التسجيل');
+            } catch (err) { alert('❌ حدث خطأ'); }
+        }
+        async function loadDaily() {
+            const token = getToken();
+            if (!token) return;
+            try {
+                const res = await fetch(`${API_BASE}/calories/daily`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    const el = document.getElementById('dailyCalories');
+                    if (el) el.textContent = `السعرات اليومية: ${data.total_calories || 0}`;
+                }
+            } catch (err) { console.error(err); }
+        }
+        document.addEventListener('DOMContentLoaded', loadDaily);
+        window.searchFood = searchFood;
+        window.logFood = logFood;
+        </script>
+        
 </body>
 </html>

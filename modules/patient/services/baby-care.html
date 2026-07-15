@@ -51,5 +51,60 @@
         <a href="../services-app.html"><i class="fas fa-th-large"></i></a>
     </nav>
 </div>
+
+        <script>
+        const API_BASE = 'http://localhost:5000/api';
+        function getToken() { return localStorage.getItem('token'); }
+        async function addBaby() {
+            const name = prompt('اسم الطفل:');
+            if (!name) return;
+            const birth = prompt('تاريخ الميلاد (YYYY-MM-DD):');
+            if (!birth) return;
+            const token = getToken();
+            if (!token) return alert('يرجى تسجيل الدخول');
+            try {
+                const res = await fetch(`${API_BASE}/baby`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ baby_name: name, birth_date: birth })
+                });
+                const data = await res.json();
+                if (data.success) { alert('✅ تم إضافة الطفل'); loadBabies(); }
+                else alert('❌ فشل الإضافة');
+            } catch (err) { alert('❌ حدث خطأ'); }
+        }
+        async function loadBabies() {
+            const token = getToken();
+            if (!token) return;
+            try {
+                const res = await fetch(`${API_BASE}/baby`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    const list = document.getElementById('babyList');
+                    if (list) {
+                        list.innerHTML = '';
+                        if (data.data.length === 0) {
+                            list.innerHTML = '<div class="empty">👶 لا يوجد أطفال مسجلون</div>';
+                        } else {
+                            data.data.forEach(b => {
+                                const div = document.createElement('div');
+                                div.className = 'baby-item';
+                                div.innerHTML = `
+                                    👶 ${b.baby_name} - 🎂 ${new Date(b.birth_date).toLocaleDateString('ar-EG')}
+                                    <button onclick="alert('📋 تفاصيل الطفل: ${b.baby_name}')">تفاصيل</button>
+                                `;
+                                list.appendChild(div);
+                            });
+                        }
+                    }
+                }
+            } catch (err) { console.error(err); }
+        }
+        document.addEventListener('DOMContentLoaded', loadBabies);
+        window.addBaby = addBaby;
+        </script>
+        
 </body>
 </html>

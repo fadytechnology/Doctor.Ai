@@ -133,11 +133,23 @@ io.on('connection', (socket) => {
 // ===== تشغيل Scheduler (المهام المجدولة) =====
 // ============================================================
 const { startScheduler } = require('./services/notificationScheduler');
+const biometricRoutes = require('./routes/biometricRoutes');
+const medicalRecordsRoutes = require('./routes/medicalRecordsRoutes');
+const medicationRoutes = require('./routes/medicationRoutes');
+const caloriesRoutes = require('./routes/caloriesRoutes');
+const periodRoutes = require('./routes/periodRoutes');
+const babyRoutes = require('./routes/babyRoutes');
 startScheduler();
 
 // ============================================================
 // ===== بدء تشغيل السيرفر (استخدام server.listen فقط) =====
 // ============================================================
+app.use('/api/biometric', biometricRoutes);
+app.use('/api/medical-records', medicalRecordsRoutes);
+app.use('/api/medications', medicationRoutes);
+app.use('/api/calories', caloriesRoutes);
+app.use('/api/period', periodRoutes);
+app.use('/api/baby', babyRoutes);
 server.listen(PORT, () => {
     console.log(`✅ Server is running on http://localhost:${PORT}`);
     console.log(`✅ Socket.io is ready for real-time chat`);

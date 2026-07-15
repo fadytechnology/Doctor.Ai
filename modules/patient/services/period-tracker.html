@@ -60,5 +60,57 @@
         <a href="../services-app.html"><i class="fas fa-th-large"></i></a>
     </nav>
 </div>
+
+        <script>
+        const API_BASE = 'http://localhost:5000/api';
+        function getToken() { return localStorage.getItem('token'); }
+        async function addPeriod() {
+            const date = prompt('أدخل تاريخ بداية الدورة (YYYY-MM-DD):');
+            if (!date) return;
+            const token = getToken();
+            if (!token) return alert('يرجى تسجيل الدخول');
+            try {
+                const res = await fetch(`${API_BASE}/period`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ start_date: date })
+                });
+                const data = await res.json();
+                if (data.success) { alert('✅ تم تسجيل الدورة'); loadHistory(); }
+                else alert('❌ فشل التسجيل');
+            } catch (err) { alert('❌ حدث خطأ'); }
+        }
+        async function loadHistory() {
+            const token = getToken();
+            if (!token) return;
+            try {
+                const res = await fetch(`${API_BASE}/period/history`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    const list = document.getElementById('periodHistory');
+                    if (list) {
+                        list.innerHTML = '';
+                        if (data.data.length === 0) {
+                            list.innerHTML = '<div class="empty">📭 لا توجد دورات مسجلة</div>';
+                        } else {
+                            data.data.forEach(p => {
+                                const div = document.createElement('div');
+                                div.className = 'period-item';
+                                div.innerHTML = `
+                                    📅 بداية: ${p.start_date} - مدة: ${p.cycle_length || 28} يوم
+                                `;
+                                list.appendChild(div);
+                            });
+                        }
+                    }
+                }
+            } catch (err) { console.error(err); }
+        }
+        document.addEventListener('DOMContentLoaded', loadHistory);
+        window.addPeriod = addPeriod;
+        </script>
+        
 </body>
 </html>

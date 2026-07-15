@@ -59,5 +59,54 @@
         <a href="../services-app.html"><i class="fas fa-th-large"></i></a>
     </nav>
 </div>
+
+        <script>
+        const API_BASE = 'http://localhost:5000/api';
+        function getToken() { return localStorage.getItem('token'); }
+        async function loadMedications() {
+            const token = getToken();
+            if (!token) return;
+            try {
+                const res = await fetch(`${API_BASE}/medications`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success && data.data.length > 0) {
+                    const list = document.getElementById('medicationList');
+                    if (list) {
+                        list.innerHTML = '';
+                        data.data.forEach(med => {
+                            const div = document.createElement('div');
+                            div.className = 'med-item';
+                            div.innerHTML = `
+                                <div class="info">
+                                    <div class="name">💊 ${med.name}</div>
+                                    <div class="dose">💉 ${med.dose}</div>
+                                    <div class="freq">🕒 ${med.frequency}</div>
+                                </div>
+                                <button class="btn-take" onclick="confirmTake(${med.id})">تأكيد</button>
+                            `;
+                            list.appendChild(div);
+                        });
+                    }
+                }
+            } catch (err) { console.error(err); }
+        }
+        async function confirmTake(id) {
+            const token = getToken();
+            if (!token) return alert('يرجى تسجيل الدخول');
+            try {
+                const res = await fetch(`${API_BASE}/medications/${id}/take`, {
+                    method: 'PATCH',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success) { alert('✅ تم تسجيل أخذ الجرعة'); loadMedications(); }
+                else alert('❌ فشل تسجيل الجرعة');
+            } catch (err) { alert('❌ حدث خطأ'); }
+        }
+        document.addEventListener('DOMContentLoaded', loadMedications);
+        </script>
+        
 </body>
 </html>
