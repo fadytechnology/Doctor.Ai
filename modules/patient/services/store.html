@@ -31,9 +31,59 @@
         <h1><i class="fas fa-store"></i> المتجر</h1>
     </div>
 
-    <div id="productList">
-        <div class="product-item">
-            <div class="info"><div class="name">باراسيتامول 500mg</div><div class="price">💰 15 ج.م</div></div>
+    
+    <div id="productList" class="product-list">
+        <div class="loading">⏳ جاري تحميل المنتجات...</div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+        const token = localStorage.getItem('token');
+
+        async function loadProducts() {
+            const list = document.getElementById('productList');
+            try {
+                const res = await fetch(`${API_BASE}/inventory/search?q=all`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (!data.success || data.results.length === 0) {
+                    list.innerHTML = '<div class="empty">😔 لا توجد منتجات متاحة حالياً</div>';
+                    return;
+                }
+                list.innerHTML = '';
+                data.results.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'product-item';
+                    div.innerHTML = `
+                        <div class="info">
+                            <div class="name">${item.drug_name}</div>
+                            <div class="price">💰 ${item.price} ج.م</div>
+                            <div class="pharmacy">🏪 ${item.pharmacy_name}</div>
+                        </div>
+                        <button class="btn-buy" onclick="alert('🛒 تم إضافة المنتج إلى السلة')">شراء</button>
+                    `;
+                    list.appendChild(div);
+                });
+            } catch (err) {
+                list.innerHTML = '<div class="error">❌ حدث خطأ في تحميل المنتجات</div>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadProducts);
+    </script>
+
+    <style>
+        .product-list { padding: 10px 0; }
+        .product-item { background: #fff; padding: 14px; border-radius: 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+        .product-item .info .name { font-weight: 600; }
+        .product-item .info .price { font-size: 14px; color: #0d9488; font-weight: 700; }
+        .product-item .info .pharmacy { font-size: 12px; color: #94a3b8; }
+        .product-item .btn-buy { background: #0d9488; color: #fff; border: none; padding: 6px 16px; border-radius: 30px; font-size: 12px; cursor: pointer; }
+        .loading, .empty, .error { text-align: center; padding: 30px; color: #94a3b8; }
+        .error { color: #dc2626; }
+    </style>
+    <div class="price">💰 15 ج.م</div></div>
             <button class="btn-buy" onclick="alert('🛒 تم إضافة المنتج')">شراء</button>
         </div>
         <div class="product-item">
