@@ -54,6 +54,7 @@
     </div>
     <script>
         const GATEWAYS = {
+            // ===== البوابة الحيوية =====
             biometric: {
                 name: 'البوابة الحيوية',
                 icon: 'fa-heartbeat',
@@ -72,6 +73,7 @@
                     { name: 'رعاية الطفل', file: 'baby-care.html', icon: 'fa-baby' }
                 ]
             },
+            // ===== الالتزام العلاجي =====
             medication: {
                 name: 'الالتزام العلاجي',
                 icon: 'fa-pills',
@@ -90,6 +92,7 @@
                     { name: 'ماسح الروشتة', file: 'ocr-scanner.html', icon: 'fa-camera' }
                 ]
             },
+            // ===== الصحة النفسية =====
             mental: {
                 name: 'الصحة النفسية',
                 icon: 'fa-brain',
@@ -105,6 +108,7 @@
                     { name: 'مشاركة الملف', file: 'share-ehr.html', icon: 'fa-share-alt' }
                 ]
             },
+            // ===== التغذية واللياقة =====
             nutrition: {
                 name: 'التغذية واللياقة',
                 icon: 'fa-utensils',
@@ -120,6 +124,7 @@
                     { name: 'مؤقت الصيام', file: 'fasting-timer.html', icon: 'fa-clock' }
                 ]
             },
+            // ===== الطوارئ والسلامة =====
             emergency: {
                 name: 'الطوارئ والسلامة',
                 icon: 'fa-ambulance',
@@ -136,6 +141,7 @@
                     { name: 'الخزنة الصحية', file: 'health-vault.html', icon: 'fa-database' }
                 ]
             },
+            // ===== التواصل الطبي =====
             communication: {
                 name: 'التواصل الطبي',
                 icon: 'fa-comments-medical',
@@ -151,6 +157,7 @@
                     { name: 'كارت الطوارئ', file: 'ice-card.html', icon: 'fa-id-card' }
                 ]
             },
+            // ===== المحفظة والمدفوعات =====
             wallet: {
                 name: 'المحفظة والمدفوعات',
                 icon: 'fa-wallet',
@@ -162,9 +169,11 @@
                     { name: 'حاسبة التكاليف', file: 'cost-calculator.html', icon: 'fa-coins' },
                     { name: 'مشغل الخدمات', file: 'service-launcher.html', icon: 'fa-play' },
                     { name: 'مشاركة الملف', file: 'share-ehr.html', icon: 'fa-share-alt' },
-                    { name: 'تذكير ذكي', file: 'smart-reminder.html', icon: 'fa-robot' }
+                    { name: 'تذكير ذكي', file: 'smart-reminder.html', icon: 'fa-robot' },
+                    { name: 'المتجر', file: 'store.html', icon: 'fa-store' }  // ✅ تمت إضافتها
                 ]
             },
+            // ===== البحث والتوعية =====
             education: {
                 name: 'البحث والتوعية',
                 icon: 'fa-book-medical',
@@ -180,6 +189,7 @@
                     { name: 'البحث عن بدائل الأدوية', file: 'alternatives-finder.html', icon: 'fa-exchange-alt' }
                 ]
             },
+            // ===== الخصوصية والإعدادات =====
             settings: {
                 name: 'الخصوصية والإعدادات',
                 icon: 'fa-sliders-h',
@@ -194,6 +204,7 @@
                     { name: 'كارت الطوارئ', file: 'ice-card.html', icon: 'fa-id-card' }
                 ]
             },
+            // ===== التكامل الذكي =====
             integration: {
                 name: 'التكامل الذكي',
                 icon: 'fa-robot',
@@ -210,10 +221,12 @@
                 ]
             }
         };
+
         function getGatewayId() {
             const params = new URLSearchParams(window.location.search);
             return params.get('gateway') || 'biometric';
         }
+
         function renderGateway() {
             const id = getGatewayId();
             const gateway = GATEWAYS[id];
@@ -236,10 +249,15 @@
                 card.style.setProperty('--gateway-color', gateway.color);
                 card.style.setProperty('--gateway-bg', gateway.bg);
                 card.onclick = () => { window.location.href = `services/${service.file}`; };
-                card.innerHTML = `<div class="icon"><i class="fas ${service.icon}"></i></div><h4>${service.name}</h4><p>${service.file.replace('.html','').replace(/-/g,' ')}</p>`;
+                card.innerHTML = `
+                    <div class="icon"><i class="fas ${service.icon}"></i></div>
+                    <h4>${service.name}</h4>
+                    <p>${service.file.replace('.html','').replace(/-/g,' ')}</p>
+                `;
                 container.appendChild(card);
             });
         }
+
         document.addEventListener('DOMContentLoaded', renderGateway);
     </script>
 </body>

@@ -4,213 +4,54 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>المتجر - Doctor.ai</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="../../../CSS/style.css" />
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; }
-        .app-container { max-width:480px; margin:0 auto; background:#fff; border-radius:28px; padding:20px; box-shadow:0 8px 40px rgba(0,0,0,0.06); }
-        .header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
-        .header .back { background:none; border:none; font-size:20px; color:#0d9488; cursor:pointer; }
-        .header .title { font-size:20px; font-weight:700; color:#1e293b; flex:1; }
-        .pharmacy-name { font-size:13px; color:#64748b; margin-bottom:12px; }
-        .product-item { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #f1f5f9; }
-        .product-item .info .name { font-weight:700; }
-        .product-item .info .price { color:#0d9488; font-weight:600; font-size:14px; }
-        .btn-add { background:#0d9488; color:#fff; border:none; padding:4px 16px; border-radius:20px; cursor:pointer; font-size:13px; }
-        .btn-add:disabled { opacity:0.5; cursor:not-allowed; }
-        .cart-box { background:#ecfdf5; border-radius:16px; padding:16px; margin-top:16px; border:2px dashed #0d9488; }
-        .cart-box .item { display:flex; justify-content:space-between; padding:4px 0; font-size:14px; }
-        .btn-checkout { width:100%; padding:12px; background:#0d9488; color:#fff; border:none; border-radius:14px; font-size:16px; font-weight:600; cursor:pointer; margin-top:8px; }
-        .btn-checkout:disabled { opacity:0.5; cursor:not-allowed; }
-        .empty-state { text-align:center; padding:20px; color:#94a3b8; }
-        .loading { text-align:center; padding:20px; color:#0d9488; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
+        .app-container { max-width: 480px; margin: 0 auto; }
+        .page-header { background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+        .page-header .back-btn { background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; }
+        .page-header h1 { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; flex: 1; }
+        .page-header h1 i { color: #f59e0b; }
+        .product-item { background: #fff; padding: 14px; border-radius: 16px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); display: flex; justify-content: space-between; align-items: center; }
+        .product-item .info .name { font-weight: 600; }
+        .product-item .info .price { font-size: 14px; color: #0d9488; font-weight: 700; }
+        .product-item .btn-buy { background: #0d9488; color: #fff; border: none; padding: 6px 16px; border-radius: 30px; font-size: 12px; cursor: pointer; }
+        .bottom-nav { display: flex; justify-content: space-around; align-items: center; background: #fff; padding: 10px 0; border-radius: 30px; box-shadow: 0 -2px 12px rgba(0,0,0,0.04); margin-top: 16px; }
+        .bottom-nav a { color: #94a3b8; font-size: 22px; text-decoration: none; padding: 8px 16px; border-radius: 30px; transition: 0.2s; }
+        .bottom-nav a.active { color: #f59e0b; background: rgba(245,158,11,0.1); }
     </style>
 </head>
 <body>
 <div class="app-container">
-    <div class="header">
-        <button class="back" onclick="window.location.href='../services-hub.html'"><i class="fas fa-arrow-right"></i></button>
-        <div class="title">🛒 المتجر</div>
+    <div class="page-header">
+        <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
+        <h1><i class="fas fa-store"></i> المتجر</h1>
     </div>
-    <div class="pharmacy-name" id="pharmacyName">📍 صيدليتك المرتبطة: <strong id="pharmacyNameStrong">غير مرتبط</strong></div>
-    <div id="productList"></div>
-    <div class="cart-box" id="cartBox">
-        <h4 style="color:#0d9488;"><i class="fas fa-shopping-cart"></i> السلة</h4>
-        <div id="cartItems"><p style="font-size:13px;color:#94a3b8;">السلة فارغة</p></div>
-        <div style="display:flex;justify-content:space-between;font-weight:700;padding-top:8px;border-top:1px solid #d1fae5;">
-            <span>الإجمالي</span>
-            <span id="cartTotal">0 ج.م</span>
+
+    <div id="productList">
+        <div class="product-item">
+            <div class="info"><div class="name">باراسيتامول 500mg</div><div class="price">💰 15 ج.م</div></div>
+            <button class="btn-buy" onclick="alert('🛒 تم إضافة المنتج')">شراء</button>
         </div>
-        <button class="btn-checkout" id="checkoutBtn" onclick="checkout()"><i class="fas fa-check"></i> تأكيد الطلب</button>
+        <div class="product-item">
+            <div class="info"><div class="name">فيتامين C 1000mg</div><div class="price">💰 25 ج.م</div></div>
+            <button class="btn-buy" onclick="alert('🛒 تم إضافة المنتج')">شراء</button>
+        </div>
+        <div class="product-item">
+            <div class="info"><div class="name">أموكسيسيلين 250mg</div><div class="price">💰 40 ج.م</div></div>
+            <button class="btn-buy" onclick="alert('🛒 تم إضافة المنتج')">شراء</button>
+        </div>
     </div>
+
+    <nav class="bottom-nav">
+        <a href="../index.html"><i class="fas fa-home"></i></a>
+        <a href="../map.html"><i class="fas fa-map"></i></a>
+        <a href="../settings.html"><i class="fas fa-cog"></i></a>
+        <a href="#" class="active"><i class="fas fa-store"></i></a>
+    </nav>
 </div>
-<script src="../../../JS/api.js"></script>
-<script>
-// ============================================================
-// ===== المتجر - المريض =====
-// ============================================================
-
-const products = [
-    { id:1, name:'باراسيتامول', price:15, stock:50 },
-    { id:2, name:'أموكسيسيلين', price:40, stock:20 },
-    { id:3, name:'فيتامين C', price:25, stock:100 },
-    { id:4, name:'أنسولين', price:120, stock:5 },
-    { id:5, name:'مضاد حيوي', price:60, stock:0 }
-];
-
-let cart = JSON.parse(localStorage.getItem('myCart') || '[]');
-let pharmacyId = null;
-let pharmacyName = 'غير مرتبط';
-
-// ----- تحميل الصيدلية المرتبطة -----
-function loadPharmacy() {
-    const partners = JSON.parse(localStorage.getItem('myNetwork') || '[]');
-    const pharmacy = partners.find(p => p.type === 'pharmacy' && p.status === 'active');
-    if (pharmacy) {
-        pharmacyId = pharmacy.id || 1;
-        pharmacyName = pharmacy.name || 'صيدلية النور';
-        document.getElementById('pharmacyNameStrong').textContent = pharmacyName;
-    } else {
-        document.getElementById('pharmacyNameStrong').textContent = '⚠️ غير مرتبط';
-        document.getElementById('pharmacyNameStrong').style.color = '#dc2626';
-    }
-}
-
-// ----- عرض المنتجات -----
-function renderProducts() {
-    const container = document.getElementById('productList');
-    container.innerHTML = '';
-    if (!pharmacyId) {
-        container.innerHTML = '<div class="empty-state"><i class="fas fa-store"></i> يرجى ربط صيدلية أولاً من "شبكتي الصحية"</div>';
-        return;
-    }
-    products.forEach(p => {
-        const div = document.createElement('div');
-        div.className = 'product-item';
-        const inCart = cart.find(c => c.id === p.id);
-        const qtyInCart = inCart ? inCart.qty : 0;
-        const available = p.stock - qtyInCart;
-        div.innerHTML = `
-            <div class="info">
-                <div class="name">💊 ${p.name}</div>
-                <div class="price">${p.price} ج.م | متبقي: ${available}</div>
-            </div>
-            <button class="btn-add" onclick="addToCart(${p.id})" ${available <= 0 ? 'disabled' : ''}>
-                ${available <= 0 ? 'غير متوفر' : 'إضافة'}
-            </button>
-        `;
-        container.appendChild(div);
-    });
-}
-
-// ----- إضافة للسلة -----
-function addToCart(id) {
-    const product = products.find(p => p.id === id);
-    if (!product) return;
-    const inCart = cart.find(c => c.id === id);
-    const currentQty = inCart ? inCart.qty : 0;
-    if (currentQty >= product.stock) {
-        alert('⚠️ الكمية المطلوبة غير متوفرة في المخزون');
-        return;
-    }
-    if (inCart) {
-        inCart.qty += 1;
-    } else {
-        cart.push({ ...product, qty: 1 });
-    }
-    localStorage.setItem('myCart', JSON.stringify(cart));
-    renderCart();
-    renderProducts();
-}
-
-// ----- عرض السلة -----
-function renderCart() {
-    const container = document.getElementById('cartItems');
-    const totalEl = document.getElementById('cartTotal');
-    const checkoutBtn = document.getElementById('checkoutBtn');
-    if (cart.length === 0) {
-        container.innerHTML = '<p style="font-size:13px;color:#94a3b8;">السلة فارغة</p>';
-        totalEl.textContent = '0 ج.م';
-        checkoutBtn.disabled = true;
-        return;
-    }
-    let total = 0;
-    container.innerHTML = '';
-    cart.forEach((item, i) => {
-        total += item.price * item.qty;
-        const div = document.createElement('div');
-        div.className = 'item';
-        div.innerHTML = `
-            <span>${item.name} × ${item.qty}</span>
-            <span>${item.price * item.qty} ج.م</span>
-        `;
-        container.appendChild(div);
-    });
-    totalEl.textContent = total + ' ج.م';
-    checkoutBtn.disabled = false;
-}
-
-// ----- تأكيد الطلب -----
-async function checkout() {
-    if (cart.length === 0) {
-        alert('❌ السلة فارغة');
-        return;
-    }
-
-    if (!pharmacyId) {
-        alert('❌ لا توجد صيدلية مرتبطة. اذهب إلى "شبكتي الصحية" أولاً.');
-        return;
-    }
-
-    // حساب الإجمالي
-    let total = 0;
-    cart.forEach(item => total += item.price * item.qty);
-
-    // تجهيز بيانات الطلب
-    const orderData = {
-        pharmacy_id: pharmacyId,
-        items: cart.map(item => ({
-            drug_name: item.name,
-            quantity: item.qty,
-            price: item.price
-        })),
-        total_price: total,
-        notes: 'طلب من تطبيق Doctor.ai'
-    };
-
-    const checkoutBtn = document.getElementById('checkoutBtn');
-    checkoutBtn.disabled = true;
-    checkoutBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> جاري الإرسال...';
-
-    try {
-        const result = await apiCreateOrder(orderData);
-        if (result.success) {
-            alert('✅ تم إرسال طلبك إلى الصيدلية بنجاح!');
-            cart = [];
-            localStorage.setItem('myCart', JSON.stringify(cart));
-            renderCart();
-            renderProducts();
-        } else {
-            alert('❌ فشل إرسال الطلب: ' + (result.message || 'خطأ غير معروف'));
-        }
-    } catch (error) {
-        alert('❌ حدث خطأ في الاتصال بالسيرفر');
-        console.error(error);
-    } finally {
-        checkoutBtn.disabled = false;
-        checkoutBtn.innerHTML = '<i class="fas fa-check"></i> تأكيد الطلب';
-    }
-}
-
-// ----- تحميل الصفحة -----
-document.addEventListener('DOMContentLoaded', function() {
-    loadPharmacy();
-    renderProducts();
-    renderCart();
-    console.log('✅ المتجر جاهز (مرتبط بالسيرفر)');
-});
-</script>
 </body>
 </html>

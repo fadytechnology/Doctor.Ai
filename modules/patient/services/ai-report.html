@@ -3,439 +3,61 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>التقرير الصحي الذكي - Doctor.ai</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <title>التقرير الذكي - Doctor.ai</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../../CSS/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../../CSS/style.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
         .app-container { max-width: 480px; margin: 0 auto; }
-        .header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-        .header .back { background: none; border: none; font-size: 20px; color: #0d9488; cursor: pointer; }
-        .header .title { font-size: 20px; font-weight: 700; color: #1e293b; flex: 1; }
-
-        .health-score-card { background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); border-radius: 20px; padding: 20px; color: #fff; margin-bottom: 16px; text-align: center; }
-        .health-score-card .score { font-size: 48px; font-weight: 800; }
-        .health-score-card .label { font-size: 14px; opacity: 0.9; }
-        .health-score-card .status { font-size: 14px; background: rgba(255,255,255,0.15); padding: 4px 16px; border-radius: 20px; display: inline-block; margin-top: 6px; }
-
-        .section-card { background: #fff; border-radius: 16px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border-right: 4px solid #0d9488; }
-        .section-card .section-title { font-weight: 700; color: #0d9488; font-size: 15px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-        .section-card .section-title .badge { font-size: 10px; background: #d1fae5; color: #065f46; padding: 0 10px; border-radius: 10px; }
-        .section-item { display: flex; justify-content: space-between; padding: 4px 0; font-size: 13px; border-bottom: 1px solid #f3f4f6; }
-        .section-item:last-child { border-bottom: none; }
-        .section-item .label { color: #64748b; }
-        .section-item .value { font-weight: 600; color: #1e293b; }
-        .section-item .value.green { color: #065f46; }
-        .section-item .value.yellow { color: #d97706; }
-        .section-item .value.red { color: #dc2626; }
-
-        .recommendations { background: #ecfdf5; border-radius: 16px; padding: 16px; margin: 16px 0; border: 2px dashed #0d9488; }
-        .recommendations h4 { color: #0d9488; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-        .recommendations ul { list-style: none; padding: 0; }
-        .recommendations ul li { padding: 4px 0; font-size: 13px; color: #065f46; display: flex; align-items: flex-start; gap: 8px; }
-        .recommendations ul li i { color: #0d9488; margin-top: 3px; }
-
-        .alert-box { background: #fef2f2; border-radius: 16px; padding: 16px; margin: 16px 0; border-right: 4px solid #dc2626; }
-        .alert-box h4 { color: #dc2626; display: flex; align-items: center; gap: 8px; }
-        .alert-box ul { list-style: none; padding: 0; }
-        .alert-box ul li { padding: 4px 0; font-size: 13px; color: #991b1b; display: flex; align-items: center; gap: 8px; }
-
-        .btn-actions { display: flex; gap: 10px; margin: 16px 0; }
-        .btn-actions button { flex: 1; padding: 12px; border: none; border-radius: 14px; font-size: 14px; font-weight: 600; cursor: pointer; }
-        .btn-refresh { background: #0d9488; color: #fff; }
-        .btn-share { background: #fff; color: #0d9488; border: 2px solid #0d9488 !important; }
-        .btn-export { background: #f1f5f9; color: #1e293b; }
-
-        .empty-state { text-align: center; padding: 40px 0; color: #94a3b8; }
-        .empty-state i { font-size: 48px; color: #cbd5e1; display: block; margin-bottom: 12px; }
-
-        @media (max-width: 480px) { .health-score-card .score { font-size: 36px; } }
+        .page-header { background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+        .page-header .back-btn { background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; }
+        .page-header h1 { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; flex: 1; }
+        .page-header h1 i { color: #8b5cf6; }
+        .report-card { background: #fff; border-radius: 20px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); margin-bottom: 12px; }
+        .report-card .title { font-weight: 700; font-size: 16px; color: #1e293b; }
+        .report-card .value { font-size: 22px; font-weight: 800; color: #0d9488; margin: 4px 0; }
+        .report-card .status { font-size: 13px; padding: 2px 12px; border-radius: 30px; display: inline-block; }
+        .status.good { background: #dcfce7; color: #166534; }
+        .status.warning { background: #fef3c7; color: #92400e; }
+        .btn-generate { width: 100%; padding: 14px; background: #8b5cf6; color: #fff; border: none; border-radius: 14px; font-weight: 600; cursor: pointer; }
+        .bottom-nav { display: flex; justify-content: space-around; align-items: center; background: #fff; padding: 10px 0; border-radius: 30px; box-shadow: 0 -2px 12px rgba(0,0,0,0.04); margin-top: 16px; }
+        .bottom-nav a { color: #94a3b8; font-size: 22px; text-decoration: none; padding: 8px 16px; border-radius: 30px; transition: 0.2s; }
+        .bottom-nav a.active { color: #8b5cf6; background: rgba(139,92,246,0.1); }
     </style>
 </head>
 <body>
 <div class="app-container">
-    <div class="header">
-        <button class="back" onclick="window.location.href='index.html'"><i class="fas fa-arrow-right"></i></button>
-        <div class="title">🧠 التقرير الصحي الذكي</div>
-        <button class="back" onclick="shareReport()" style="color:#0d9488;"><i class="fas fa-share-alt"></i></button>
+    <div class="page-header">
+        <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
+        <h1><i class="fas fa-robot"></i> التقرير الذكي</h1>
     </div>
 
-    <div id="reportContainer"></div>
-
-    <div class="btn-actions">
-        <button class="btn-refresh" onclick="generateReport()"><i class="fas fa-sync"></i> تحديث</button>
-        <button class="btn-share" onclick="shareReport()"><i class="fas fa-share-alt"></i> مشاركة</button>
+    <div class="report-card">
+        <div class="title">🩸 السكر التراكمي</div>
+        <div class="value">5.7%</div>
+        <span class="status good">✅ ممتاز</span>
     </div>
+    <div class="report-card">
+        <div class="title">❤️ ضغط الدم</div>
+        <div class="value">120/80 مم زئبق</div>
+        <span class="status good">✅ طبيعي</span>
+    </div>
+    <div class="report-card">
+        <div class="title">📊 مؤشر كتلة الجسم</div>
+        <div class="value">22.5</div>
+        <span class="status good">✅ وزن مثالي</span>
+    </div>
+
+    <button class="btn-generate" onclick="alert('📊 جاري توليد التقرير الكامل...')"><i class="fas fa-file-pdf"></i> توليد تقرير كامل</button>
+
+    <nav class="bottom-nav">
+        <a href="../index.html"><i class="fas fa-home"></i></a>
+        <a href="../map.html"><i class="fas fa-map"></i></a>
+        <a href="../settings.html"><i class="fas fa-cog"></i></a>
+        <a href="#" class="active"><i class="fas fa-robot"></i></a>
+    </nav>
 </div>
-
-<script>
-// ============================================================
-// ===== التقرير الصحي الذكي - 100 سؤال متكامل =====
-// ============================================================
-
-// ----- ١. جلب جميع البيانات من localStorage -----
-function getAllData() {
-    const data = {
-        profile: JSON.parse(localStorage.getItem('patientProfile') || '{}'),
-        biometric: JSON.parse(localStorage.getItem('biometricAdvanced') || '{}'),
-        questionnaire: JSON.parse(localStorage.getItem('biometricQuestionnaire') || '{}'),
-        lab: JSON.parse(localStorage.getItem('biometricLabData') || '{}'),
-        // آخر قراءة من الملف البيومتري
-        latest: null
-    };
-    // جلب آخر قياس من الملف البيومتري
-    if (data.biometric.measurements && data.biometric.measurements.length > 0) {
-        data.latest = data.biometric.measurements[data.biometric.measurements.length - 1];
-    }
-    return data;
-}
-
-// ----- ٢. تحليل القيم وتصنيفها -----
-function classifyValue(value, normalRange, unit = '') {
-    if (!value || value === '') return { label: 'غير مدخل', status: 'unknown', color: 'gray' };
-    const num = parseFloat(value);
-    if (isNaN(num)) return { label: value, status: 'unknown', color: 'gray' };
-    if (normalRange.min !== undefined && num < normalRange.min) return { label: `${num} ${unit} (منخفض)`, status: 'low', color: 'yellow' };
-    if (normalRange.max !== undefined && num > normalRange.max) return { label: `${num} ${unit} (مرتفع)`, status: 'high', color: 'red' };
-    return { label: `${num} ${unit} (طبيعي)`, status: 'normal', color: 'green' };
-}
-
-function classifyBoolean(value, labelTrue = 'نعم', labelFalse = 'لا') {
-    if (value === undefined || value === null) return { label: 'غير مدخل', status: 'unknown', color: 'gray' };
-    if (value === true || value === 'نعم' || value === 'yes' || value === 'true') {
-        return { label: labelTrue, status: 'positive', color: 'yellow' };
-    }
-    return { label: labelFalse, status: 'negative', color: 'green' };
-}
-
-function classifySelect(value, normalValues = []) {
-    if (!value) return { label: 'غير مدخل', status: 'unknown', color: 'gray' };
-    if (normalValues.includes(value)) return { label: value, status: 'normal', color: 'green' };
-    return { label: value, status: 'caution', color: 'yellow' };
-}
-
-// ----- ٣. تحليل الفئة ١: البيانات الأساسية -----
-function analyzeBaseProfile(data) {
-    const profile = data.profile;
-    const q = data.questionnaire;
-    const items = [];
-
-    // العمر
-    if (profile.birthDate) {
-        const age = Math.floor((new Date() - new Date(profile.birthDate)) / (365.25 * 24 * 60 * 60 * 1000));
-        items.push({ label: 'العمر', value: `${age} سنة`, status: 'normal', color: 'green' });
-    }
-    // الجنس
-    if (profile.gender) {
-        items.push({ label: 'الجنس', value: profile.gender === 'male' ? 'ذكر' : 'أنثى', status: 'normal', color: 'green' });
-    }
-    // الوزن والطول و BMI
-    const weight = profile.weight || data.latest?.weight || 0;
-    const height = profile.height || data.latest?.height || 0;
-    if (weight && height) {
-        items.push({ label: 'الوزن', value: `${weight} كجم`, status: 'normal', color: 'green' });
-        items.push({ label: 'الطول', value: `${height} سم`, status: 'normal', color: 'green' });
-        const bmi = Math.round((weight / ((height/100)**2)) * 10) / 10;
-        let bmiStatus = 'طبيعي', bmiColor = 'green';
-        if (bmi < 18.5) { bmiStatus = 'نقص وزن'; bmiColor = 'yellow'; }
-        else if (bmi >= 25 && bmi < 30) { bmiStatus = 'زيادة وزن'; bmiColor = 'yellow'; }
-        else if (bmi >= 30) { bmiStatus = 'سمنة'; bmiColor = 'red'; }
-        items.push({ label: 'BMI', value: `${bmi} (${bmiStatus})`, status: bmiStatus === 'طبيعي' ? 'normal' : 'caution', color: bmiColor });
-    }
-    // محيط الخصر
-    if (profile.waist) {
-        const waist = parseFloat(profile.waist);
-        const normal = profile.gender === 'male' ? waist < 94 : waist < 80;
-        items.push({ label: 'محيط الخصر', value: `${waist} سم`, status: normal ? 'normal' : 'caution', color: normal ? 'green' : 'yellow' });
-    }
-    // فصيلة الدم
-    if (profile.bloodType) {
-        items.push({ label: 'فصيلة الدم', value: profile.bloodType, status: 'normal', color: 'green' });
-    }
-    return { title: 'البيانات الأساسية', icon: 'fa-user-md', items };
-}
-
-// ----- ٤. تحليل الفئة ٢: العلامات الحيوية -----
-function analyzeVitals(data) {
-    const q = data.questionnaire;
-    const lab = data.lab;
-    const items = [];
-
-    // ضغط الدم
-    const sys = q.q36 || lab.systolic || data.latest?.bloodPressure?.split('/')[0] || 0;
-    const dia = q.q37 || lab.diastolic || data.latest?.bloodPressure?.split('/')[1] || 0;
-    if (sys && dia) {
-        const numSys = parseFloat(sys);
-        const numDia = parseFloat(dia);
-        const normal = numSys < 120 && numDia < 80;
-        items.push({ label: 'ضغط الدم', value: `${numSys}/${numDia}`, status: normal ? 'normal' : 'caution', color: normal ? 'green' : numSys > 140 || numDia > 90 ? 'red' : 'yellow' });
-    }
-    // النبض
-    const hr = q.q38 || lab.heartRate || 0;
-    if (hr) {
-        const num = parseFloat(hr);
-        const normal = num >= 60 && num <= 80;
-        items.push({ label: 'معدل النبض', value: `${num} نبضة/دقيقة`, status: normal ? 'normal' : 'caution', color: normal ? 'green' : 'yellow' });
-    }
-    // الأكسجين
-    const ox = q.q40 || lab.oxygen || 0;
-    if (ox) {
-        const num = parseFloat(ox);
-        const normal = num >= 95;
-        items.push({ label: 'الأكسجين (SpO2)', value: `${num}%`, status: normal ? 'normal' : 'caution', color: normal ? 'green' : 'yellow' });
-    }
-    // درجة الحرارة
-    const temp = q.q39 || 0;
-    if (temp) {
-        const num = parseFloat(temp);
-        const normal = num >= 36.5 && num <= 37.5;
-        items.push({ label: 'درجة الحرارة', value: `${num}°C`, status: normal ? 'normal' : 'caution', color: normal ? 'green' : 'yellow' });
-    }
-    return { title: 'العلامات الحيوية', icon: 'fa-heartbeat', items };
-}
-
-// ----- ٥. تحليل الفئة ٣: تحاليل الدم -----
-function analyzeCBC(data) {
-    const q = data.questionnaire;
-    const items = [];
-    // الهيموجلوبين
-    if (q.q21) { const r = classifyValue(q.q21, { min: 13, max: 17 }, 'جرام/دل'); items.push({ label: 'الهيموجلوبين (Hb)', value: r.label, status: r.status, color: r.color }); }
-    // الصفائح الدموية
-    if (q.q28) { const r = classifyValue(q.q28, { min: 150, max: 400 }, 'ألف'); items.push({ label: 'الصفائح الدموية', value: r.label, status: r.status, color: r.color }); }
-    // مخزون الحديد
-    if (q.q29) { const r = classifyValue(q.q29, { min: 20, max: 300 }, 'نانو/مل'); items.push({ label: 'مخزون الحديد (Ferritin)', value: r.label, status: r.status, color: r.color }); }
-    // الحديد الحر
-    if (q.q30) { const r = classifyValue(q.q30, { min: 60, max: 170 }, 'مجم/دل'); items.push({ label: 'الحديد الحر', value: r.label, status: r.status, color: r.color }); }
-    // كرات الدم البيضاء
-    if (q.q25) { const r = classifyValue(q.q25, { min: 4, max: 11 }, 'ألف'); items.push({ label: 'كرات الدم البيضاء (WBC)', value: r.label, status: r.status, color: r.color }); }
-    return { title: 'تحاليل الدم', icon: 'fa-flask', items };
-}
-
-// ----- ٦. تحليل الفئة ٤: الدهون والقلب -----
-function analyzeLipids(data) {
-    const q = data.questionnaire;
-    const items = [];
-    // الكوليسترول الكلي
-    if (q.q31) { const r = classifyValue(q.q31, { min: 120, max: 200 }, 'مجم/دل'); items.push({ label: 'الكوليسترول الكلي', value: r.label, status: r.status, color: r.color }); }
-    // الدهون الثلاثية
-    if (q.q32) { const r = classifyValue(q.q32, { min: 50, max: 150 }, 'مجم/دل'); items.push({ label: 'الدهون الثلاثية', value: r.label, status: r.status, color: r.color }); }
-    // HDL
-    if (q.q33) { const r = classifyValue(q.q33, { min: 40 }, 'مجم/دل'); items.push({ label: 'HDL (النافع)', value: r.label, status: r.status, color: r.color }); }
-    // LDL
-    if (q.q34) { const r = classifyValue(q.q34, { min: 0, max: 130 }, 'مجم/دل'); items.push({ label: 'LDL (الضار)', value: r.label, status: r.status, color: r.color }); }
-    return { title: 'الدهون والقلب', icon: 'fa-heart', items };
-}
-
-// ----- ٧. تحليل الفئة ٥: السكر والأيض -----
-function analyzeSugar(data) {
-    const q = data.questionnaire;
-    const items = [];
-    // السكر الصائم
-    if (q.q41) { const r = classifyValue(q.q41, { min: 70, max: 100 }, 'مجم/دل'); items.push({ label: 'السكر الصائم', value: r.label, status: r.status, color: r.color }); }
-    // السكر التراكمي
-    if (q.q42) { const r = classifyValue(q.q42, { min: 4, max: 5.7 }, '%'); items.push({ label: 'السكر التراكمي (HbA1c)', value: r.label, status: r.status, color: r.color }); }
-    return { title: 'السكر والأيض', icon: 'fa-tint', items };
-}
-
-// ----- ٨. تحليل الفئة ٦: الكلى والكبد -----
-function analyzeKidneyLiver(data) {
-    const q = data.questionnaire;
-    const items = [];
-    // الكرياتينين
-    if (q.q46) { const r = classifyValue(q.q46, { min: 0.7, max: 1.3 }, 'مجم/دل'); items.push({ label: 'الكرياتينين', value: r.label, status: r.status, color: r.color }); }
-    // ALT
-    if (q.q47) { const r = classifyValue(q.q47, { min: 7, max: 40 }, 'وحدة/لتر'); items.push({ label: 'ALT (إنزيم الكبد)', value: r.label, status: r.status, color: r.color }); }
-    return { title: 'الكلى والكبد', icon: 'fa-kidney', items };
-}
-
-// ----- ٩. تحليل الفئة ٧: الفيتامينات والغدد -----
-function analyzeVitamins(data) {
-    const q = data.questionnaire;
-    const items = [];
-    // فيتامين د
-    if (q.q48) { const r = classifyValue(q.q48, { min: 20, max: 80 }, 'نانو/مل'); items.push({ label: 'فيتامين د (25-OH)', value: r.label, status: r.status, color: r.color }); }
-    // فيتامين ب12
-    if (q.q49) { const r = classifyValue(q.q49, { min: 200, max: 900 }, 'بيكو/مل'); items.push({ label: 'فيتامين ب12', value: r.label, status: r.status, color: r.color }); }
-    // TSH
-    if (q.q50) { const r = classifyValue(q.q50, { min: 0.4, max: 4 }, 'ميكرو/مل'); items.push({ label: 'TSH (الغدة الدرقية)', value: r.label, status: r.status, color: r.color }); }
-    return { title: 'الفيتامينات والغدد', icon: 'fa-pills', items };
-}
-
-// ----- ١٠. تحليل الفئة ٨: العادات الغذائية -----
-function analyzeLifestyle(data) {
-    const q = data.questionnaire;
-    const items = [];
-    // النظام الغذائي
-    if (q.q21) { const r = classifySelect(q.q21, ['صحي جداً', 'متوازن']); items.push({ label: 'النظام الغذائي', value: r.label, status: r.status, color: r.color }); }
-    // شرب المياه
-    if (q.q22_water) { items.push({ label: 'شرب المياه', value: q.q22_water, status: 'normal', color: 'green' }); }
-    // النشاط البدني
-    if (q.q29) { const r = classifySelect(q.q29, ['نشاط متوسط', 'رياضي محترف']); items.push({ label: 'النشاط البدني', value: r.label, status: r.status, color: r.color }); }
-    return { title: 'العادات الغذائية', icon: 'fa-utensils', items };
-}
-
-// ----- ١١. تحليل الفئة ٩: النوم والصحة النفسية -----
-function analyzeMentalHealth(data) {
-    const q = data.questionnaire;
-    const items = [];
-    // ساعات النوم
-    if (q.q26) { const r = classifySelect(q.q26, ['7-9', '5-7']); items.push({ label: 'ساعات النوم', value: r.label, status: r.status, color: r.color }); }
-    // التوتر
-    if (q.q31) { const r = classifySelect(q.q31, ['منخفض', 'متوسط']); items.push({ label: 'مستوى التوتر', value: r.label, status: r.status, color: r.color }); }
-    return { title: 'النوم والصحة النفسية', icon: 'fa-brain', items };
-}
-
-// ----- ١٢. تحليل الفئة ١٠: التاريخ الطبي -----
-function analyzeMedicalHistory(data) {
-    const q = data.questionnaire;
-    const items = [];
-    // أمراض مزمنة
-    const chronic = q.q11 || data.profile.chronicDiseases || 'لا يوجد';
-    items.push({ label: 'أمراض مزمنة', value: chronic, status: chronic === 'لا يوجد' ? 'normal' : 'caution', color: chronic === 'لا يوجد' ? 'green' : 'yellow' });
-    // حساسية
-    const allergy = q.q15 || data.profile.allergies || 'لا يوجد';
-    items.push({ label: 'حساسية', value: allergy, status: allergy === 'لا يوجد' ? 'normal' : 'caution', color: allergy === 'لا يوجد' ? 'green' : 'yellow' });
-    return { title: 'التاريخ الطبي', icon: 'fa-file-medical', items };
-}
-
-// ----- ١٣. حساب التقييم العام -----
-function calculateOverallScore(analyses) {
-    let total = 0, count = 0;
-    analyses.forEach(a => {
-        a.items.forEach(item => {
-            if (item.status === 'normal') { total += 100; count++; }
-            else if (item.status === 'caution' || item.status === 'low' || item.status === 'high') { total += 50; count++; }
-            else { total += 30; count++; }
-        });
-    });
-    return count > 0 ? Math.round(total / count) : 0;
-}
-
-// ----- ١٤. توليد التوصيات الذكية -----
-function generateRecommendations(analyses, score) {
-    const recs = [];
-    // توصيات عامة
-    if (score < 60) recs.push('⚠️ حالتك الصحية تحتاج متابعة. ننصح بزيارة الطبيب قريباً.');
-    else if (score < 80) recs.push('🟡 حالتك الصحية جيدة، لكن هناك مجال للتحسين. اتبع النصائح أدناه.');
-    else recs.push('🟢 حالتك الصحية ممتازة! استمر في روتينك الصحي.');
-
-    // توصيات مخصصة
-    const profile = JSON.parse(localStorage.getItem('patientProfile') || '{}');
-    const weight = parseFloat(profile.weight) || 0;
-    if (weight > 0) {
-        const bmi = weight / ((parseFloat(profile.height) || 175) / 100) ** 2;
-        if (bmi > 25) recs.push('🥗 حاول تقليل السكريات والدهون، وأضف الخضروات إلى وجباتك.');
-        else if (bmi < 18.5) recs.push('🍗 تناول وجبات غنية بالبروتين والدهون الصحية لزيادة وزنك.');
-    }
-    // المياه
-    const water = parseFloat(document.getElementById('q22_water')?.value || 0);
-    if (water && water < 2) recs.push('💧 اشرب على الأقل 2 لتر مياه يومياً (حالياً أقل من المطلوب).');
-    // النوم
-    const sleep = document.getElementById('q26')?.value || '';
-    if (sleep && sleep.includes('أقل')) recs.push('😴 حاول النوم 7-8 ساعات يومياً لتحسين صحتك العامة.');
-    // التوتر
-    const stress = document.getElementById('q31')?.value || '';
-    if (stress && stress.includes('مرتفع')) recs.push('🧘 مارس تمارين التنفس أو التأمل 5 دقائق يومياً لتخفيف التوتر.');
-    // النشاط
-    const activity = document.getElementById('q29')?.value || '';
-    if (activity && (activity.includes('خامل') || activity.includes('خفيف'))) {
-        recs.push('🚶 مارس المشي 30 دقيقة يومياً لتحسين لياقتك البدنية.');
-    }
-
-    return recs.slice(0, 8);
-}
-
-// ----- ١٥. توليد التقرير الكامل -----
-function generateReport() {
-    const container = document.getElementById('reportContainer');
-    const data = getAllData();
-
-    // تحليل كل الفئات
-    const analyses = [
-        analyzeBaseProfile(data),
-        analyzeVitals(data),
-        analyzeCBC(data),
-        analyzeLipids(data),
-        analyzeSugar(data),
-        analyzeKidneyLiver(data),
-        analyzeVitamins(data),
-        analyzeLifestyle(data),
-        analyzeMentalHealth(data),
-        analyzeMedicalHistory(data)
-    ];
-
-    const score = calculateOverallScore(analyses);
-    const recommendations = generateRecommendations(analyses, score);
-
-    // بناء HTML
-    let html = `
-        <div class="health-score-card">
-            <div class="label">تقييم الحالة الصحية</div>
-            <div class="score">${score}%</div>
-            <div class="status">${score >= 80 ? '🟢 ممتاز' : score >= 60 ? '🟡 جيد' : '🔴 يحتاج متابعة'}</div>
-            <div style="font-size:12px;opacity:0.7;margin-top:8px;">آخر تحديث: ${new Date().toLocaleString('ar-EG')}</div>
-        </div>
-    `;
-
-    // عرض كل فئة
-    analyses.forEach(a => {
-        if (a.items.length === 0) return;
-        html += `<div class="section-card">
-            <div class="section-title"><i class="fas ${a.icon}"></i> ${a.title}</div>`;
-        a.items.forEach(item => {
-            html += `<div class="section-item">
-                <span class="label">${item.label}</span>
-                <span class="value ${item.color}">${item.value}</span>
-            </div>`;
-        });
-        html += `</div>`;
-    });
-
-    // التوصيات
-    html += `<div class="recommendations">
-        <h4><i class="fas fa-lightbulb"></i> 💡 التوصيات الذكية</h4>
-        <ul>${recommendations.map(r => `<li><i class="fas fa-chevron-left"></i> ${r}</li>`).join('')}</ul>
-    </div>`;
-
-    // التنبيهات
-    const alerts = [];
-    if (score < 50) alerts.push('⚠️ حالتك الصحية تحتاج تدخلاً طبياً عاجلاً.');
-    const sys = parseFloat(document.getElementById('q36')?.value || 0);
-    if (sys > 140) alerts.push('⚠️ ضغط الدم مرتفع جداً. استشر طبيبك فوراً.');
-    const sugar = parseFloat(document.getElementById('q41')?.value || 0);
-    if (sugar > 200) alerts.push('⚠️ مستوى السكر مرتفع جداً. استشر طبيبك فوراً.');
-
-    if (alerts.length > 0) {
-        html += `<div class="alert-box">
-            <h4><i class="fas fa-exclamation-triangle"></i> ⚠️ التنبيهات</h4>
-            <ul>${alerts.map(a => `<li><i class="fas fa-circle" style="font-size:6px;"></i> ${a}</li>`).join('')}</ul>
-        </div>`;
-    }
-
-    // حفظ التقرير
-    localStorage.setItem('lastReport', JSON.stringify({ score, analyses, recommendations, date: new Date().toISOString() }));
-
-    container.innerHTML = html;
-}
-
-// ----- ١٦. مشاركة التقرير (محاكاة) -----
-function shareReport() {
-    const report = localStorage.getItem('lastReport');
-    if (report) {
-        const data = JSON.parse(report);
-        alert(`🔐 تم مشاركة تقريرك الصحي\n\n📊 التقييم: ${data.score}%\n💡 عدد التوصيات: ${data.recommendations.length}\n📅 التاريخ: ${new Date(data.date).toLocaleString('ar-EG')}\n\n✅ تم إرسال التقرير للعيادة (محاكاة).`);
-    } else {
-        alert('⚠️ لا يوجد تقرير محفوظ. قم بتحديث التقرير أولاً.');
-    }
-}
-
-// ----- ١٧. تحميل الصفحة -----
-document.addEventListener('DOMContentLoaded', function() {
-    generateReport();
-    console.log('✅ التقرير الصحي الذكي جاهز (100 سؤال)!');
-});
-</script>
 </body>
 </html>

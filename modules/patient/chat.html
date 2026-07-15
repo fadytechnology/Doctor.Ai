@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>الشات - Doctor.ai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../CSS/style.css" />
+    <!-- Socket.io Client -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
+        .app-container { max-width: 480px; margin: 0 auto; }
+        .page-header { background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+        .page-header .back-btn { background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; }
+        .page-header h1 { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; flex: 1; }
+        .page-header h1 i { color: var(--gateway-communication); }
+        .chat-list { background: #fff; border-radius: 16px; padding: 12px; max-height: 400px; overflow-y: auto; }
+        .chat-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
+        .chat-item:last-child { border-bottom: none; }
+        .chat-item .info .name { font-weight: 600; }
+        .chat-item .info .last-msg { font-size: 12px; color: #94a3b8; }
+        .chat-item .badge { background: #ef4444; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 30px; }
+        .online-dot { display: inline-block; width: 8px; height: 8px; background: #22c55e; border-radius: 50%; margin-right: 6px; }
+        .bottom-nav { display: flex; justify-content: space-around; align-items: center; background: #fff; padding: 10px 0; border-radius: 30px; box-shadow: 0 -2px 12px rgba(0,0,0,0.04); margin-top: 16px; }
+        .bottom-nav a { color: #94a3b8; font-size: 22px; text-decoration: none; padding: 8px 16px; border-radius: 30px; transition: 0.2s; }
+        .bottom-nav a.active { color: var(--gateway-communication); background: rgba(14,165,233,0.1); }
+        .loading { text-align: center; padding: 20px; color: #94a3b8; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="page-header">
+        <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
+        <h1><i class="fas fa-comment-dots"></i> الشات</h1>
+    </div>
+
+    <div class="chat-list" id="chatList">
+        <div class="loading">💬 جاري تحميل المحادثات...</div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html"><i class="fas fa-home"></i></a>
+        <a href="map.html"><i class="fas fa-map"></i></a>
+        <a href="settings.html"><i class="fas fa-cog"></i></a>
+        <a href="#" class="active"><i class="fas fa-comment-dots"></i></a>
+    </nav>
+</div>
+
+<script>
+    const API_BASE = 'http://localhost:5000/api';
+    const SOCKET_URL = 'http://localhost:5000';
+    let socket = null;
+    const userId = localStorage.getItem('user_id') || '';
+
+    function getToken() { return localStorage.getItem('token'); }
+
+    // تهيئة Socket.io
+    function initSocket() {
+        if (!socket) {
+            socket = io(SOCKET_URL);
+            socket.on('connect', () => {
+                console.log('🟢 متصل بالشات');
+                socket.emit('user-online', userId);
+            });
+            socket.on('online-users', (users) => {
+                document.querySelectorAll('.chat-item').forEach(el => {
+                    const pid = el.dataset.participant;
+                    const dot = el.querySelector('.online-dot');
+                    if (dot && users.includes(pid)) {
+                        dot.style.display = 'inline-block';
+                    } else if (dot) {
+                        dot.style.display = 'none';
+                    }
+                });
+            });
+        }
+    }
+
+    // جلب المحادثات
+    async function loadRooms() {
+        const token = getToken();
+        if (!token) { window.location.href = '../../auth/login.html'; return; }
+
+        const list = document.getElementById('chatList');
+        list.innerHTML = '<div class="loading">⏳ جاري التحميل...</div>';
+
+        try {
+            const res = await fetch(`${API_BASE}/chat/rooms`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+
+            if (!data.success || data.rooms.length === 0) {
+                list.innerHTML = '<div class="loading">💬 لا توجد محادثات بعد</div>';
+                return;
+            }
+
+            list.innerHTML = '';
+            data.rooms.forEach(room => {
+                const div = document.createElement('div');
+                div.className = 'chat-item';
+                div.dataset.participant = room.participant_1 === parseInt(userId) ? room.participant_2 : room.participant_1;
+                div.onclick = () => {
+                    window.location.href = `chat-room.html?roomId=${room.room_id}`;
+                };
+                div.innerHTML = `
+                    <div class="info">
+                        <div class="name"><span class="online-dot" style="display:none;"></span> ${room.participant_name}</div>
+                        <div class="last-msg">${room.last_message || 'ابدأ المحادثة'}</div>
+                    </div>
+                    ${room.unread_count > 0 ? `<span class="badge">${room.unread_count}</span>` : ''}
+                `;
+                list.appendChild(div);
+            });
+
+            initSocket();
+            setTimeout(() => {
+                socket.emit('user-online', userId);
+            }, 500);
+
+        } catch (err) {
+            console.error(err);
+            list.innerHTML = '<div class="loading">❌ حدث خطأ</div>';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadRooms);
+</script>
+</body>
+</html>

@@ -8,26 +8,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="../../../CSS/style.css" />
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Cairo',sans-serif; background:#f2f4f8; direction:rtl; padding:16px; min-height:100vh; }
-        .app-container { max-width:480px; margin:0 auto; }
-        .page-header { background:#fff; padding:16px; border-radius:20px; box-shadow:0 2px 12px rgba(0,0,0,0.04); margin-bottom:16px; display:flex; align-items:center; gap:12px; }
-        .page-header .back-btn { background:#f1f5f9; border:none; width:40px; height:40px; border-radius:50%; font-size:18px; color:#1e293b; cursor:pointer; }
-        .page-header h1 { font-size:20px; font-weight:700; color:#1e293b; margin:0; flex:1; }
-        .page-header h1 i { color:#ef4444; }
-        .content-box { background:#fff; border-radius:20px; padding:20px; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
-        .vault-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
-        .vault-stat { background:#f8fafc; padding:12px; border-radius:12px; text-align:center; }
-        .vault-stat .num { font-weight:800; font-size:20px; color:#0d9488; }
-        .vault-stat .label { font-size:11px; color:#94a3b8; }
-        .file-item { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #f1f5f9; }
-        .file-item:last-child { border-bottom:none; }
-        .file-item .info .name { font-weight:600; }
-        .file-item .info .size { font-size:12px; color:#94a3b8; }
-        .file-item .btn-download { background:#f1f5f9; border:none; padding:4px 12px; border-radius:30px; font-size:12px; cursor:pointer; }
-        .bottom-nav { display:flex; justify-content:space-around; align-items:center; background:#fff; padding:10px 0; border-radius:30px; box-shadow:0 -2px 12px rgba(0,0,0,0.04); margin-top:16px; }
-        .bottom-nav a { color:#94a3b8; font-size:22px; text-decoration:none; padding:8px 16px; border-radius:30px; transition:0.2s; }
-        .bottom-nav a.active { color:#ef4444; background:rgba(239,68,68,0.1); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
+        .app-container { max-width: 480px; margin: 0 auto; }
+        .page-header { background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+        .page-header .back-btn { background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; }
+        .page-header h1 { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; flex: 1; }
+        .page-header h1 i { color: #ef4444; }
+        .file-item { background: #fff; padding: 16px; border-radius: 16px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); display: flex; justify-content: space-between; align-items: center; }
+        .file-item .info .name { font-weight: 600; }
+        .file-item .info .date { font-size: 12px; color: #94a3b8; }
+        .file-item .btn-download { background: #f1f5f9; border: none; padding: 6px 16px; border-radius: 30px; font-size: 12px; cursor: pointer; }
+        .btn-upload { width: 100%; padding: 14px; background: #0d9488; color: #fff; border: none; border-radius: 14px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .bottom-nav { display: flex; justify-content: space-around; align-items: center; background: #fff; padding: 10px 0; border-radius: 30px; box-shadow: 0 -2px 12px rgba(0,0,0,0.04); margin-top: 16px; }
+        .bottom-nav a { color: #94a3b8; font-size: 22px; text-decoration: none; padding: 8px 16px; border-radius: 30px; transition: 0.2s; }
+        .bottom-nav a.active { color: #ef4444; background: rgba(239,68,68,0.1); }
     </style>
 </head>
 <body>
@@ -36,21 +31,29 @@
         <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
         <h1><i class="fas fa-database"></i> الخزنة الصحية</h1>
     </div>
-    <div class="content-box">
-        <div class="vault-stats">
-            <div class="vault-stat"><span class="num">4</span><span class="label">ملفات</span></div>
-            <div class="vault-stat"><span class="num">1.2</span><span class="label">ميجابايت</span></div>
-            <div class="vault-stat"><span class="num">✓</span><span class="label">مشفرة</span></div>
+
+    <div id="fileList">
+        <div class="file-item">
+            <div class="info"><div class="name">تقرير طبي - يوليو 2026</div><div class="date">📅 15/07/2026</div></div>
+            <button class="btn-download" onclick="alert('📥 جاري التحميل...')">تحميل</button>
         </div>
-        <div class="file-item"><div class="info"><div class="name">تقرير طبي - 2026/07</div><div class="size">2.4 MB</div></div><button class="btn-download" onclick="alert('📥 جاري تحميل الملف')">تحميل</button></div>
-        <div class="file-item"><div class="info"><div class="name">نتائج تحاليل الدم</div><div class="size">1.8 MB</div></div><button class="btn-download" onclick="alert('📥 جاري تحميل الملف')">تحميل</button></div>
-        <div class="file-item"><div class="info"><div class="name">أشعة الصدر</div><div class="size">3.1 MB</div></div><button class="btn-download" onclick="alert('📥 جاري تحميل الملف')">تحميل</button></div>
-        <button onclick="alert('📤 جاري فتح نافذة رفع الملفات')" style="width:100%;margin-top:16px;padding:10px;background:#ef4444;color:#fff;border:none;border-radius:12px;font-weight:600;cursor:pointer;"><i class="fas fa-upload"></i> رفع ملف جديد</button>
+        <div class="file-item">
+            <div class="info"><div class="name">نتائج تحاليل الدم</div><div class="date">📅 10/07/2026</div></div>
+            <button class="btn-download" onclick="alert('📥 جاري التحميل...')">تحميل</button>
+        </div>
+        <div class="file-item">
+            <div class="info"><div class="name">أشعة الصدر</div><div class="date">📅 05/07/2026</div></div>
+            <button class="btn-download" onclick="alert('📥 جاري التحميل...')">تحميل</button>
+        </div>
     </div>
+
+    <button class="btn-upload" onclick="alert('📤 سيتم فتح نافذة رفع الملفات')"><i class="fas fa-upload"></i> رفع ملف جديد</button>
+
     <nav class="bottom-nav">
         <a href="../index.html"><i class="fas fa-home"></i></a>
+        <a href="../map.html"><i class="fas fa-map"></i></a>
+        <a href="../settings.html"><i class="fas fa-cog"></i></a>
         <a href="#" class="active"><i class="fas fa-database"></i></a>
-        <a href="../services-app.html"><i class="fas fa-th-large"></i></a>
     </nav>
 </div>
 </body>
