@@ -11,80 +11,176 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
         .app-container { max-width: 480px; margin: 0 auto; }
-        
-        .page-header { background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
-        .page-header .back-btn { background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; }
+        .page-header {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 16px;
+            border-radius: 28px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.04);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .page-header .back-btn {
+            background: #fff;
+            border: none;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            font-size: 18px;
+            color: #1e293b;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+        .page-header .back-btn:active { transform: scale(0.9); }
         .page-header h1 { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; flex: 1; }
-        
-        .profile-card { background: #fff; border-radius: 20px; padding: 24px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.04); margin-bottom: 16px; }
-        .profile-avatar { width: 96px; height: 96px; border-radius: 50%; background: #0d9488; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 700; margin: 0 auto 12px; }
-        .profile-card h2 { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; }
-        .profile-card p { font-size: 14px; color: #94a3b8; margin: 0; }
-        .profile-card .badge { display: inline-block; background: #e6f7f5; color: #0d9488; padding: 4px 16px; border-radius: 30px; font-size: 12px; font-weight: 600; margin-top: 8px; }
-        
-        .info-group { background: #fff; border-radius: 16px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
-        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+        .page-header h1 i { color: #0d9488; }
+
+        .profile-card {
+            background: #fff;
+            border-radius: 28px;
+            padding: 32px 20px 24px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.04);
+            border: 1px solid rgba(255,255,255,0.3);
+            margin-bottom: 16px;
+        }
+        .profile-card .avatar {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0d9488, #0f766e);
+            color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 32px; font-weight: 700;
+            margin: 0 auto 12px;
+            box-shadow: 0 8px 24px rgba(13,148,136,0.3);
+        }
+        .profile-card .name { font-size: 20px; font-weight: 700; color: #1e293b; margin: 0; }
+        .profile-card .email { font-size: 14px; color: #64748b; margin: 0 0 8px; }
+        .profile-card .role {
+            display: inline-block;
+            background: rgba(13,148,136,0.1);
+            color: #0d9488;
+            padding: 4px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .info-group {
+            background: #fff;
+            border-radius: 24px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
         .info-row:last-child { border-bottom: none; }
         .info-row .label { font-size: 14px; color: #94a3b8; }
         .info-row .value { font-size: 14px; font-weight: 600; color: #1e293b; }
-        
-        .btn-edit { width: 100%; padding: 12px; background: #0d9488; color: #fff; border: none; border-radius: 14px; font-size: 15px; font-weight: 600; cursor: pointer; }
+
+        .btn-edit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #0d9488, #0f766e);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(13,148,136,0.25);
+            transition: 0.2s;
+        }
         .btn-edit:active { transform: scale(0.98); }
-        
-        .bottom-nav { display: flex; justify-content: space-around; align-items: center; background: #fff; padding: 10px 0; border-radius: 30px; box-shadow: 0 -2px 12px rgba(0,0,0,0.04); margin-top: 8px; }
-        .bottom-nav a { color: #94a3b8; font-size: 22px; text-decoration: none; padding: 8px 16px; border-radius: 30px; transition: 0.2s; }
-        .bottom-nav a.active { color: #0d9488; background: #e6f7f5; }
+
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 10px 0;
+            border-radius: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            margin-top: 8px;
+        }
+        .bottom-nav a {
+            color: #94a3b8;
+            font-size: 22px;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            transition: 0.2s;
+        }
+        .bottom-nav a.active {
+            color: #0d9488;
+            background: rgba(13,148,136,0.1);
+        }
+
+        @media (max-width: 480px) {
+            .profile-card { padding: 24px 16px 20px; }
+            .profile-card .avatar { width: 64px; height: 64px; font-size: 26px; }
+        }
     </style>
 </head>
 <body>
+    <div class="app-container">
+        <div class="page-header">
+            <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
+            <h1><i class="fas fa-user"></i> الملف الشخصي</h1>
+        </div>
 
-<div class="app-container">
-    <div class="page-header">
-        <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-right"></i></button>
-        <h1><i class="fas fa-user" style="color:#0d9488;"></i> الملف الشخصي</h1>
+        <div class="profile-card">
+            <div class="avatar" id="profileAvatar">أ</div>
+            <div class="name" id="profileName">أحمد محمد</div>
+            <div class="email" id="profileEmail">ahmed@test.com</div>
+            <span class="role" id="profileRole">🩺 مريض</span>
+        </div>
+
+        <div class="info-group">
+            <div class="info-row"><span class="label">رقم الهاتف</span><span class="value" id="profilePhone">01001234567</span></div>
+            <div class="info-row"><span class="label">العنوان</span><span class="value" id="profileAddress">القاهرة، مصر</span></div>
+            <div class="info-row"><span class="label">تاريخ الميلاد</span><span class="value" id="profileBirth">01/01/1990</span></div>
+            <div class="info-row"><span class="label">الحالة</span><span class="value" style="color:#0d9488;">نشط</span></div>
+        </div>
+
+        <button class="btn-edit" onclick="alert('✏️ جاري فتح صفحة التعديل...')"><i class="fas fa-edit"></i> تعديل الملف الشخصي</button>
+
+        <nav class="bottom-nav">
+            <a href="index.html"><i class="fas fa-home"></i></a>
+            <a href="map.html"><i class="fas fa-map"></i></a>
+            <a href="chat.html"><i class="fas fa-comment-dots"></i></a>
+            <a href="settings.html" class="active"><i class="fas fa-cog"></i></a>
+            <a href="gateway-details.html?gateway=communication"><i class="fas fa-share-alt"></i></a>
+        </nav>
     </div>
 
-    <div class="profile-card">
-        <div class="profile-avatar" id="profileAvatar">أ</div>
-        <h2 id="profileName">أحمد محمد</h2>
-        <p id="profileEmail">ahmed@test.com</p>
-        <span class="badge" id="profileRole">🩺 مريض</span>
-    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const name = localStorage.getItem('user_name') || 'أحمد محمد';
+            const email = localStorage.getItem('user_email') || 'ahmed@test.com';
+            const role = localStorage.getItem('user_role') || 'patient';
+            const phone = localStorage.getItem('user_phone') || '01001234567';
 
-    <div class="info-group">
-        <div class="info-row"><span class="label">رقم الهاتف</span><span class="value" id="profilePhone">01001234567</span></div>
-        <div class="info-row"><span class="label">العنوان</span><span class="value" id="profileAddress">القاهرة، مصر</span></div>
-        <div class="info-row"><span class="label">تاريخ الميلاد</span><span class="value" id="profileBirth">01/01/1990</span></div>
-        <div class="info-row"><span class="label">الحالة</span><span class="value" style="color:#0d9488;">نشط</span></div>
-    </div>
+            document.getElementById('profileName').textContent = name;
+            document.getElementById('profileEmail').textContent = email;
+            document.getElementById('profilePhone').textContent = phone;
+            document.getElementById('profileAvatar').textContent = name.charAt(0);
 
-    <button class="btn-edit" onclick="alert('✏️ جاري فتح صفحة التعديل...')"><i class="fas fa-edit"></i> تعديل الملف الشخصي</button>
-
-    <nav class="bottom-nav">
-        <a href="index.html"><i class="fas fa-home"></i></a>
-        <a href="map.html"><i class="fas fa-map"></i></a>
-        <a href="settings.html" class="active"><i class="fas fa-cog"></i></a>
-<a href="gateway-details.html?gateway=communication"><i class="fas fa-share-alt"></i></a>
-    </nav>
-</div>
-
-<script>
-    // جلب البيانات من localStorage
-    document.addEventListener('DOMContentLoaded', function() {
-        const name = localStorage.getItem('user_name') || 'أحمد محمد';
-        const email = localStorage.getItem('user_email') || 'ahmed@test.com';
-        const role = localStorage.getItem('user_role') || 'patient';
-        const phone = localStorage.getItem('user_phone') || '01001234567';
-        
-        document.getElementById('profileName').textContent = name;
-        document.getElementById('profileEmail').textContent = email;
-        document.getElementById('profilePhone').textContent = phone;
-        document.getElementById('profileAvatar').textContent = name.charAt(0);
-        
-        const roleMap = { 'patient': '🩺 مريض', 'doctor': '👨‍⚕️ طبيب', 'pharmacy': '💊 صيدلي', 'lab': '🧪 مختبر', 'admin': '🛠️ مشرف' };
-        document.getElementById('profileRole').textContent = roleMap[role] || '🩺 مريض';
-    });
-</script>
-
+            const roleMap = { 'patient': '🩺 مريض', 'doctor': '👨‍⚕️ طبيب', 'pharmacy': '💊 صيدلي', 'lab': '🧪 مختبر', 'admin': '🛠️ مشرف' };
+            document.getElementById('profileRole').textContent = roleMap[role] || '🩺 مريض';
+        });
+    </script>
 </body>
-</html> 
+</html>

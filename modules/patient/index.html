@@ -11,68 +11,242 @@
     <link rel="stylesheet" href="../../CSS/style.css" />
     <link rel="stylesheet" href="style.css" />
     <style>
-        /* ===== نفس التنسيقات القديمة ===== */
+        /* ===== تنسيقات عصري ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; }
         .patient-dashboard { max-width: 480px; margin: 0 auto; }
-        .dashboard-header { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 16px; border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); margin-bottom: 16px; }
-        .greeting h2 { font-size: 14px; font-weight: 400; color: #94a3b8; margin: 0; }
+
+        /* هيدر زجاجي */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 16px;
+            border-radius: 28px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.04);
+            margin-bottom: 20px;
+        }
+        .greeting h2 { font-size: 13px; font-weight: 400; color: #94a3b8; margin: 0; }
         .greeting .user-name { font-size: 18px; font-weight: 700; color: #1e293b; margin: 0; }
         .greeting .user-id-display { font-size: 12px; color: #94a3b8; margin: 0; }
         .actions { display: flex; align-items: center; gap: 12px; }
-        .icon-btn { position: relative; background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; color: #1e293b; cursor: pointer; }
-        .icon-btn .badge { position: absolute; top: -2px; right: -2px; background: #ef4444; color: #fff; font-size: 10px; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
-        .avatar-circle { width: 44px; height: 44px; border-radius: 50%; background: var(--gateway-biometric); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .icon-btn {
+            position: relative;
+            background: rgba(255,255,255,0.8);
+            border: none;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            font-size: 18px;
+            color: #1e293b;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+        .icon-btn .badge {
+            position: absolute;
+            top: -2px; right: -2px;
+            background: #ef4444; color: #fff;
+            font-size: 10px; width: 18px; height: 18px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700;
+        }
+        .avatar-circle {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0d9488, #0f766e);
+            color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(13,148,136,0.3);
+            transition: 0.2s;
+        }
         .avatar-circle:active { transform: scale(0.95); }
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
-        .stat-card { background: #fff; padding: 14px 8px; border-radius: 16px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
-        .stat-card .num { font-size: 22px; font-weight: 800; color: var(--gateway-biometric); }
+
+        /* إحصائيات */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: #fff;
+            padding: 16px 8px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .stat-card .num { font-size: 22px; font-weight: 800; color: #0d9488; }
         .stat-card .label { font-size: 11px; color: #94a3b8; }
-        .services-hub-btn { display: block; background: linear-gradient(135deg, var(--gateway-biometric) 0%, #0f766e 100%); color: #fff; padding: 16px; border-radius: 16px; text-decoration: none; text-align: center; margin-bottom: 16px; box-shadow: 0 4px 20px rgba(13,148,136,0.25); transition: 0.3s; }
+
+        /* زر مركز الخدمات */
+        .services-hub-btn {
+            display: block;
+            background: linear-gradient(135deg, #0d9488, #0f766e);
+            color: #fff;
+            padding: 18px;
+            border-radius: 24px;
+            text-decoration: none;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(13,148,136,0.25);
+            transition: 0.3s;
+        }
         .services-hub-btn:active { transform: scale(0.98); }
-        .services-hub-btn i { font-size: 24px; display: block; margin-bottom: 4px; }
+        .services-hub-btn i { font-size: 28px; display: block; margin-bottom: 4px; }
         .services-hub-btn span { font-size: 18px; font-weight: 700; }
         .services-hub-btn small { font-size: 13px; opacity: 0.85; display: block; margin-top: 2px; }
-        .main-ad-banner { background: #fff; border-radius: 20px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); position: relative; overflow: hidden; }
+
+        /* إعلانات */
+        .main-ad-banner {
+            background: #fff;
+            border-radius: 24px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
         .ad-content { display: flex; align-items: center; gap: 14px; }
-        .ad-icon { width: 48px; height: 48px; background: rgba(13,148,136,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--gateway-biometric); flex-shrink: 0; }
+        .ad-icon {
+            width: 48px; height: 48px;
+            background: rgba(13,148,136,0.1);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; color: #0d9488;
+        }
         .ad-text h3 { font-size: 16px; font-weight: 700; color: #1e293b; margin: 0 0 2px; }
         .ad-text p { font-size: 13px; color: #64748b; margin: 0; }
-        .ad-cta { margin-right: auto; color: var(--gateway-biometric); font-weight: 600; font-size: 14px; }
-        .ad-badge { position: absolute; top: 8px; left: 8px; background: #f1f5f9; font-size: 10px; color: #64748b; padding: 2px 10px; border-radius: 30px; }
-        .ads-widget { background: #f8fafc; border-radius: 16px; padding: 12px 16px; margin-bottom: 12px; border: 1px solid #e2e8f0; }
+        .ad-cta { margin-right: auto; color: #0d9488; font-weight: 600; font-size: 14px; }
+        .ad-badge {
+            position: absolute;
+            top: 8px; left: 8px;
+            background: rgba(255,255,255,0.8);
+            font-size: 10px; color: #64748b;
+            padding: 2px 12px; border-radius: 30px;
+        }
+        .ads-widget {
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
         .ads-content { display: flex; align-items: center; gap: 12px; }
-        .ads-content i { font-size: 20px; color: var(--gateway-biometric); }
+        .ads-content i { font-size: 20px; color: #0d9488; }
         .ads-text h4 { font-size: 14px; font-weight: 700; color: #1e293b; margin: 0; }
         .ads-text p { font-size: 12px; color: #64748b; margin: 0; }
-        .ads-link { margin-right: auto; font-size: 13px; font-weight: 600; color: var(--gateway-biometric); text-decoration: none; }
-        .news-widget { background: #fff; border-radius: 16px; padding: 12px 16px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+        .ads-link { margin-right: auto; font-size: 13px; font-weight: 600; color: #0d9488; text-decoration: none; }
+
+        /* الأخبار */
+        .news-widget {
+            background: #fff;
+            border-radius: 20px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
         .news-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-        .news-header i { color: var(--gateway-biometric); }
+        .news-header i { color: #0d9488; }
         .news-header span { font-weight: 600; font-size: 14px; color: #1e293b; }
         .news-ticker { display: flex; flex-direction: column; gap: 4px; max-height: 60px; overflow-y: auto; }
         .news-item { font-size: 13px; color: #475569; padding: 4px 0; border-bottom: 1px solid #f1f5f9; }
         .news-item:last-child { border-bottom: none; }
+
         #aiReportContainer { margin-bottom: 16px; }
-        .containers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
-        .container-card { background: #fff; padding: 16px 12px; border-radius: 16px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
-        .container-icon { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 22px; }
+
+        /* الحاويات الثلاث */
+        .containers-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .container-card {
+            background: #fff;
+            padding: 16px 10px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: 0.2s;
+        }
+        .container-card:active { transform: scale(0.95); }
+        .container-icon {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 22px;
+        }
         .container-card h3 { font-size: 14px; font-weight: 700; color: #1e293b; margin: 0 0 4px; }
         .container-card p { font-size: 11px; color: #64748b; margin: 0 0 10px; line-height: 1.4; }
-        .btn-explore { display: inline-block; font-size: 12px; font-weight: 600; color: var(--gateway-biometric); text-decoration: none; }
-        .bottom-nav { display: flex; justify-content: space-around; align-items: center; background: #fff; padding: 10px 0; border-radius: 30px; box-shadow: 0 -2px 12px rgba(0,0,0,0.04); margin-top: 8px; }
-        .bottom-nav a { color: #94a3b8; font-size: 22px; text-decoration: none; padding: 8px 16px; border-radius: 30px; transition: 0.2s; }
-        .bottom-nav a.active { color: var(--gateway-biometric); background: rgba(13,148,136,0.1); }
+        .btn-explore { display: inline-block; font-size: 12px; font-weight: 600; color: #0d9488; text-decoration: none; }
+
+        /* القائمة السفلية */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 10px 0;
+            border-radius: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255,255,255,0.3);
+            margin-top: 8px;
+        }
+        .bottom-nav a {
+            color: #94a3b8;
+            font-size: 22px;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            transition: 0.2s;
+        }
+        .bottom-nav a.active {
+            color: #0d9488;
+            background: rgba(13,148,136,0.1);
+        }
         .bottom-nav a:active { transform: scale(0.9); }
+
+        /* خروج */
         .logout-btn-container { margin-top: 16px; text-align: center; }
-        .logout-btn { width: 100%; padding: 12px; background: #fef2f2; color: #dc2626; border: none; border-radius: 14px; font-size: 15px; font-weight: 600; cursor: pointer; border: 1px solid #fecaca; transition: 0.2s; }
+        .logout-btn {
+            width: 100%;
+            padding: 14px;
+            background: rgba(254,242,242,0.8);
+            backdrop-filter: blur(8px);
+            color: #dc2626;
+            border: 1px solid rgba(254,202,202,0.5);
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
         .logout-btn:active { transform: scale(0.98); }
         .footer-note { text-align: center; font-size: 11px; color: #94a3b8; margin-top: 14px; }
-        @media (max-width: 480px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .containers-grid { grid-template-columns: 1fr; } }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .containers-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
     <div class="patient-dashboard">
+        <!-- هيدر -->
         <header class="dashboard-header">
             <div class="greeting">
                 <h2>مرحباً</h2>
@@ -90,6 +264,7 @@
             </div>
         </header>
 
+        <!-- إحصائيات -->
         <div class="stats-grid" id="statsGrid">
             <div class="stat-card"><div class="num" id="statPrescriptions">0</div><div class="label">روشتات</div></div>
             <div class="stat-card"><div class="num" id="statLoyalty">0</div><div class="label">نقاط الولاء</div></div>
@@ -97,12 +272,14 @@
             <div class="stat-card"><div class="num" id="statWallet">0</div><div class="label">رصيد المحفظة</div></div>
         </div>
 
+        <!-- زر مركز الخدمات -->
         <a href="services-app.html" class="services-hub-btn">
             <i class="fas fa-th-large"></i>
             <span>🌟 مركز الخدمات</span>
             <small>بوابات ذكية (10 أقسام)</small>
         </a>
 
+        <!-- الإعلانات -->
         <div class="main-ad-banner" id="mainAdBanner">
             <div class="ad-content">
                 <div class="ad-icon"><i class="fas fa-gift"></i></div>
@@ -126,6 +303,7 @@
             </div>
         </div>
 
+        <!-- الأخبار -->
         <div class="news-widget">
             <div class="news-header">
                 <i class="fas fa-newspaper"></i>
@@ -136,34 +314,36 @@
             </div>
         </div>
 
+        <!-- التقرير الذكي -->
         <div id="aiReportContainer">
             <div style="background:#f8fafc;padding:20px;border-radius:20px;text-align:center;color:#94a3b8;border:1px dashed #e2e8f0;">
                 <i class="fas fa-robot" style="font-size:40px;display:block;margin-bottom:10px;opacity:0.3;"></i>
                 ⚙️ جاري تحضير التقرير الذكي... سجّل بياناتك البيومترية أولاً.<br>
-                <a href="user-profile.html" style="color:var(--gateway-biometric);font-weight:600;">اذهب للملف البيومتري</a>
+                <a href="user-profile.html" style="color:#0d9488;font-weight:600;">اذهب للملف البيومتري</a>
             </div>
         </div>
 
+        <!-- الحاويات الثلاث -->
         <div class="containers-grid">
             <div class="container-card">
-                <div class="container-icon" style="background: rgba(13,148,136,0.1);">
-                    <i class="fas fa-link" style="color: var(--gateway-biometric);"></i>
+                <div class="container-icon" style="background:rgba(13,148,136,0.1);">
+                    <i class="fas fa-link" style="color:#0d9488;"></i>
                 </div>
                 <h3>خدمات الربط</h3>
                 <p>استخدم كود التعاون للاستفادة من ولاء الصيدلية، الطلب السريع، والمحفظة الذكية.</p>
                 <a href="gateway-details.html?gateway=communication" class="btn-explore">استكشف ←</a>
             </div>
             <div class="container-card">
-                <div class="container-icon" style="background: rgba(99,102,241,0.1);">
-                    <i class="fas fa-brain" style="color: #6366f1;"></i>
+                <div class="container-icon" style="background:rgba(99,102,241,0.1);">
+                    <i class="fas fa-brain" style="color:#6366f1;"></i>
                 </div>
                 <h3>خدمات الأبلكيشن</h3>
                 <p>أدوات صحية ذكية بدون ربط: الملف البيومتري، المساعد الطبي، منظم الأدوية، والمزيد.</p>
                 <a href="services-app.html" class="btn-explore">استكشف ←</a>
             </div>
             <div class="container-card">
-                <div class="container-icon" style="background: rgba(239,68,68,0.1);">
-                    <i class="fas fa-shield-alt" style="color: #ef4444;"></i>
+                <div class="container-icon" style="background:rgba(239,68,68,0.1);">
+                    <i class="fas fa-shield-alt" style="color:#ef4444;"></i>
                 </div>
                 <h3>الخزنة الطبية</h3>
                 <p>ملفاتك المشفرة، التقارير، وكارت الطوارئ (ICE) في مكان آمن.</p>
@@ -171,7 +351,7 @@
             </div>
         </div>
 
-        <!-- ✅ القائمة السفلية مع روابط map, chat, settings, gateway-details -->
+        <!-- القائمة السفلية -->
         <nav class="bottom-nav">
             <a href="index.html" class="active" id="navHome"><i class="fas fa-home"></i></a>
             <a href="map.html" id="navMap"><i class="fas fa-map"></i></a>
@@ -180,6 +360,7 @@
             <a href="gateway-details.html?gateway=communication" id="navNetwork"><i class="fas fa-share-alt"></i></a>
         </nav>
 
+        <!-- خروج -->
         <div class="logout-btn-container">
             <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
         </div>
@@ -187,87 +368,38 @@
     </div>
 
     <script>
-        // ============================================================
-        // ===== جلب البيانات من السيرفر والإحصائيات =====
-        // ============================================================
-
         const API_BASE = 'http://localhost:5000/api';
+        function getToken() { return localStorage.getItem('token'); }
 
-        function getToken() {
-            return localStorage.getItem('token');
-        }
-
-        // ----- جلب بيانات المستخدم -----
         async function fetchUserData() {
             const token = getToken();
-            if (!token) {
-                window.location.href = '../../auth/login.html';
-                return null;
-            }
-
+            if (!token) { window.location.href = '../../auth/login.html'; return null; }
             try {
                 const res = await fetch(`${API_BASE}/auth/me`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
                 });
-
-                if (!res.ok) {
-                    if (res.status === 401 || res.status === 403) {
-                        logout();
-                    }
-                    throw new Error(`HTTP ${res.status}`);
-                }
-
+                if (!res.ok) { if (res.status === 401 || res.status === 403) { logout(); } throw new Error(`HTTP ${res.status}`); }
                 const data = await res.json();
                 const user = data.user;
-
                 localStorage.setItem('user_name', user.full_name || 'مستخدم');
                 localStorage.setItem('user_id', user.id || '');
                 localStorage.setItem('user_role', user.role || 'patient');
-
                 document.getElementById('userNameDisplay').textContent = user.full_name || 'مستخدم';
                 document.getElementById('userIdDisplay').textContent = '🆔 ' + (user.id || '');
-                const avatar = document.getElementById('avatarLetter');
-                avatar.textContent = (user.full_name?.charAt(0) || 'م').toUpperCase();
-
+                document.getElementById('avatarLetter').textContent = (user.full_name?.charAt(0) || 'م').toUpperCase();
                 await loadPatientStats();
-
-                console.log('✅ تم جلب بيانات المستخدم:', user);
                 return data;
-            } catch (err) {
-                console.error('❌ فشل جلب بيانات المستخدم:', err);
-                const name = localStorage.getItem('user_name') || 'مستخدم';
-                const userId = localStorage.getItem('user_id') || 'غير معروف';
-                document.getElementById('userNameDisplay').textContent = name;
-                document.getElementById('userIdDisplay').textContent = '🆔 ' + userId;
-                const avatar = document.getElementById('avatarLetter');
-                avatar.textContent = name.charAt(0).toUpperCase();
-                return null;
-            }
+            } catch (err) { console.error(err); return null; }
         }
 
-        // ============================================================
-        // ===== جلب الإحصائيات الحقيقية (دالة واحدة فقط) =====
-        // ============================================================
         async function loadPatientStats() {
             const token = getToken();
             if (!token) return;
-
             try {
                 const res = await fetch(`${API_BASE}/stats`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
                 });
-
-                if (!res.ok) {
-                    console.warn('⚠️ فشل جلب الإحصائيات:', res.status);
-                    return;
-                }
-
+                if (!res.ok) { console.warn('⚠️ فشل جلب الإحصائيات:', res.status); return; }
                 const data = await res.json();
                 if (data.success) {
                     const s = data.stats;
@@ -276,21 +408,16 @@
                     document.getElementById('statAppointments').textContent = s.appointments || 0;
                     document.getElementById('statWallet').textContent = (s.wallet || 0) + ' ج.م';
                 }
-            } catch (err) {
-                console.error('❌ فشل جلب الإحصائيات:', err);
-            }
+            } catch (err) { console.error('❌ فشل جلب الإحصائيات:', err); }
         }
 
-        // ----- تسجيل الخروج -----
         function logout() {
             if (confirm('هل أنت متأكد من الخروج من حسابك؟')) {
-                localStorage.clear();
-                sessionStorage.clear();
+                localStorage.clear(); sessionStorage.clear();
                 window.location.href = '../../auth/login.html';
             }
         }
 
-        // ----- تحميل الإعلانات والأخبار (من localStorage مؤقتاً) -----
         function loadAds() {
             const ads = JSON.parse(localStorage.getItem('ads_data') || '[]');
             const activeAds = ads.filter(ad => ad.active !== false);
@@ -319,9 +446,9 @@
                 if (typeof HealthAI !== 'undefined' && HealthAI.run) {
                     const ai = await HealthAI.run();
                     container.innerHTML = ai.renderHTML ? ai.renderHTML() :
-                        `<div style="background:#f8fafc;padding:20px;border-radius:20px;color:#1e293b;border:1px solid #e2e8f0;"><i class="fas fa-robot" style="font-size:40px;display:block;margin-bottom:10px;color:var(--gateway-biometric);"></i><h4 style="margin:0 0 8px;">تقريرك الصحي الذكي</h4><p style="font-size:14px;color:#475569;">${ai.summary || 'لا توجد بيانات كافية لعرض التقرير.'}</p></div>`;
+                        `<div style="background:#f8fafc;padding:20px;border-radius:20px;color:#1e293b;border:1px solid #e2e8f0;"><i class="fas fa-robot" style="font-size:40px;display:block;margin-bottom:10px;color:#0d9488;"></i><h4 style="margin:0 0 8px;">تقريرك الصحي الذكي</h4><p style="font-size:14px;color:#475569;">${ai.summary || 'لا توجد بيانات كافية لعرض التقرير.'}</p></div>`;
                 } else {
-                    container.innerHTML = `<div style="background:#f8fafc;padding:20px;border-radius:20px;text-align:center;color:#94a3b8;border:1px dashed #e2e8f0;"><i class="fas fa-robot" style="font-size:40px;display:block;margin-bottom:10px;opacity:0.3;"></i>⚙️ جاري تحضير التقرير الذكي... سجّل بياناتك البيومترية أولاً.<br><a href="user-profile.html" style="color:var(--gateway-biometric);font-weight:600;">اذهب للملف البيومتري</a></div>`;
+                    container.innerHTML = `<div style="background:#f8fafc;padding:20px;border-radius:20px;text-align:center;color:#94a3b8;border:1px dashed #e2e8f0;"><i class="fas fa-robot" style="font-size:40px;display:block;margin-bottom:10px;opacity:0.3;"></i>⚙️ جاري تحضير التقرير الذكي... سجّل بياناتك البيومترية أولاً.<br><a href="user-profile.html" style="color:#0d9488;font-weight:600;">اذهب للملف البيومتري</a></div>`;
                 }
             } catch (error) {
                 console.warn('⚠️ فشل تحميل التقرير الذكي:', error);
@@ -331,13 +458,7 @@
 
         function highlightNav() {
             const current = window.location.pathname.split('/').pop() || 'index.html';
-            const map = {
-                'index.html': 'navHome',
-                'map.html': 'navMap',
-                'chat.html': 'navChat',
-                'settings.html': 'navSettings',
-                'gateway-details.html': 'navNetwork'
-            };
+            const map = { 'index.html': 'navHome', 'map.html': 'navMap', 'chat.html': 'navChat', 'settings.html': 'navSettings', 'gateway-details.html': 'navNetwork' };
             const activeId = map[current];
             if (activeId) {
                 document.querySelectorAll('.bottom-nav a').forEach(a => a.classList.remove('active'));
@@ -347,23 +468,14 @@
         }
 
         document.addEventListener('DOMContentLoaded', async function() {
-            console.log('🚀 جاري تحميل لوحة المريض...');
-
             await fetchUserData();
             loadAds();
             loadNews();
             await loadAIReport();
             highlightNav();
-
             if ('serviceWorker' in navigator) {
-                try {
-                    await navigator.serviceWorker.register('../../sw.js');
-                    console.log('✅ Service Worker مسجل بنجاح');
-                } catch (err) {
-                    console.warn('⚠️ فشل تسجيل Service Worker:', err);
-                }
+                try { await navigator.serviceWorker.register('../../sw.js'); console.log('✅ Service Worker مسجل بنجاح'); } catch (err) { console.warn('⚠️ فشل تسجيل Service Worker:', err); }
             }
-
             console.log('✅ لوحة المريض (مربوطة بالسيرفر) جاهزة!');
         });
 

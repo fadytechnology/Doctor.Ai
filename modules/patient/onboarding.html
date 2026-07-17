@@ -3,171 +3,151 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>إكمال الملف الشخصي - Doctor.ai</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <title>مرحباً في Doctor.ai</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="../../CSS/style.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Cairo', sans-serif; background: #f2f4f8; direction: rtl; padding: 16px; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .app-container { max-width: 480px; width: 100%; background: #fff; border-radius: 28px; padding: 24px 20px; box-shadow: 0 8px 40px rgba(0,0,0,0.06); }
-        .header { text-align: center; margin-bottom: 24px; }
-        .header .logo { font-size: 28px; font-weight: 800; color: #0d9488; }
-        .header .logo i { color: #fbbf24; }
-        .header .step-indicator { display: flex; justify-content: center; gap: 8px; margin: 16px 0 10px; }
-        .step-dot { width: 40px; height: 4px; border-radius: 4px; background: #e5e7eb; transition: 0.3s; }
-        .step-dot.active { background: #0d9488; }
-        .step-dot.done { background: #0d9488; opacity: 0.5; }
-        .step-title { font-size: 18px; font-weight: 700; color: #1e293b; }
-        .step-subtitle { font-size: 13px; color: #94a3b8; }
-
-        .step-content { display: none; animation: fadeIn 0.3s ease; }
-        .step-content.active { display: block; }
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-weight: 600; color: #1e293b; font-size: 13px; margin-bottom: 4px; }
-        .form-group label i { color: #0d9488; margin-left: 6px; }
-        .form-group input, .form-group select { width: 100%; padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 15px; background: #f9fafb; }
-        .form-group input:focus, .form-group select:focus { outline: none; border-color: #0d9488; background: #fff; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .form-group .location-btn { background: #0d9488; color: #fff; border: none; padding: 8px 16px; border-radius: 10px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 6px; }
-        .btn-group { display: flex; gap: 12px; margin-top: 24px; }
-        .btn-primary { flex: 1; padding: 14px; background: #0d9488; color: #fff; border: none; border-radius: 14px; font-size: 16px; font-weight: 600; cursor: pointer; }
-        .btn-primary:active { transform: scale(0.98); }
-        .btn-secondary { flex: 0.5; padding: 14px; background: transparent; color: #64748b; border: 2px solid #e5e7eb; border-radius: 14px; font-size: 16px; font-weight: 600; cursor: pointer; }
-        .info-box { background: #f1f5f9; padding: 12px; border-radius: 12px; font-size: 13px; color: #475569; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } .app-container { padding: 16px; } }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .onboarding-container {
+            max-width: 420px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 40px;
+            padding: 40px 28px 32px;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+        .onboarding-container .logo {
+            font-size: 40px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .onboarding-container .logo i {
+            color: #fbbf24;
+            margin-left: 8px;
+        }
+        .onboarding-container .subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+        .onboarding-container .illustration {
+            font-size: 80px;
+            color: #fff;
+            margin-bottom: 24px;
+            opacity: 0.9;
+        }
+        .onboarding-container h1 {
+            color: #fff;
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        .onboarding-container p {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+        .onboarding-container .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+        .onboarding-container .features .feature {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 12px 4px;
+            border-radius: 16px;
+            color: #fff;
+            font-size: 12px;
+        }
+        .onboarding-container .features .feature i {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 4px;
+            color: #fbbf24;
+        }
+        .onboarding-container .btn-start {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: #fff;
+            color: #0d9488;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        .onboarding-container .btn-start:hover {
+            transform: scale(1.02);
+            background: #f0fdf4;
+        }
+        .onboarding-container .btn-start:active {
+            transform: scale(0.98);
+        }
+        .onboarding-container .skip-link {
+            display: block;
+            margin-top: 16px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 13px;
+            text-decoration: none;
+        }
+        .onboarding-container .skip-link:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        @media (max-width: 480px) {
+            .onboarding-container { padding: 32px 16px 24px; }
+            .onboarding-container .features { grid-template-columns: 1fr 1fr 1fr; }
+            .onboarding-container .features .feature { font-size: 11px; padding: 8px 4px; }
+        }
     </style>
 </head>
 <body>
-<div class="app-container">
-    <div class="header">
+    <div class="onboarding-container">
         <div class="logo"><i class="fas fa-heartbeat"></i> Doctor.<span style="color:#fbbf24;">ai</span></div>
-        <div class="step-indicator"><div class="step-dot active" id="dot1"></div><div class="step-dot" id="dot2"></div><div class="step-dot" id="dot3"></div><div class="step-dot" id="dot4"></div></div>
-        <div class="step-title" id="stepTitle">البيانات الشخصية</div>
-        <div class="step-subtitle" id="stepSubtitle">الخطوة 1 من 4 - تعريف الحساب</div>
+        <div class="subtitle">منصتك الصحية الذكية</div>
+        <div class="illustration">
+            <i class="fas fa-user-md"></i>
+        </div>
+        <h1>مرحباً بك</h1>
+        <p>تطبيقك الطبي الشامل لإدارة صحتك، التواصل مع الأطباء، وتتبع أدويتك بكل سهولة.</p>
+        <div class="features">
+            <div class="feature">
+                <i class="fas fa-heartbeat"></i>
+                قياسات
+            </div>
+            <div class="feature">
+                <i class="fas fa-pills"></i>
+                أدوية
+            </div>
+            <div class="feature">
+                <i class="fas fa-comment-dots"></i>
+                شات
+            </div>
+        </div>
+        <a href="login.html" class="btn-start">
+            <i class="fas fa-arrow-left"></i> ابدأ الآن
+        </a>
+        <a href="index.html" class="skip-link">تخطي ←</a>
     </div>
-
-    <!-- الخطوة 1: البيانات الشخصية -->
-    <div class="step-content active" id="step1">
-        <div class="info-box"><i class="fas fa-info-circle" style="color:#0d9488;"></i> هذه البيانات مسجلة مسبقاً، يمكنك تعديلها.</div>
-        <div class="form-group"><label><i class="fas fa-user"></i> الاسم الكامل</label><input type="text" id="fullName" placeholder="أحمد محمد علي" /></div>
-        <div class="form-group"><label><i class="fas fa-envelope"></i> البريد الإلكتروني</label><input type="email" id="email" placeholder="ahmed@example.com" /></div>
-        <div class="form-group"><label><i class="fas fa-phone"></i> رقم الهاتف</label><input type="text" id="phone" placeholder="01001234567" /></div>
-        <div class="btn-group"><button class="btn-secondary" style="visibility:hidden;">رجوع</button><button class="btn-primary" onclick="nextStep()">التالي <i class="fas fa-arrow-left"></i></button></div>
-    </div>
-
-    <!-- الخطوة 2: البروفيل الجسدي -->
-    <div class="step-content" id="step2">
-        <div class="form-row"><div class="form-group"><label><i class="fas fa-calendar-alt"></i> تاريخ الميلاد</label><input type="date" id="birthDate" /></div><div class="form-group"><label><i class="fas fa-venus-mars"></i> الجنس</label><select id="gender"><option value="male">ذكر</option><option value="female">أنثى</option></select></div></div>
-        <div class="form-row"><div class="form-group"><label><i class="fas fa-weight"></i> الوزن (كجم)</label><input type="number" id="weight" step="0.1" placeholder="72.5" /></div><div class="form-group"><label><i class="fas fa-ruler-vertical"></i> الطول (سم)</label><input type="number" id="height" step="0.1" placeholder="175" /></div></div>
-        <div class="form-group"><label><i class="fas fa-tint"></i> فصيلة الدم</label><select id="bloodType"><option value="">اختر</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div>
-        <div class="btn-group"><button class="btn-secondary" onclick="prevStep()"><i class="fas fa-arrow-right"></i> رجوع</button><button class="btn-primary" onclick="nextStep()">التالي <i class="fas fa-arrow-left"></i></button></div>
-    </div>
-
-    <!-- الخطوة 3: اللوكيشن -->
-    <div class="step-content" id="step3">
-        <div class="form-group"><label><i class="fas fa-city"></i> المدينة</label><input type="text" id="city" placeholder="مثال: القاهرة" /></div>
-        <div class="form-group"><label><i class="fas fa-map-pin"></i> العنوان التفصيلي</label><input type="text" id="address" placeholder="الشارع، المنطقة، رقم العمارة" /></div>
-        <button class="form-group location-btn" onclick="getLocation()"><i class="fas fa-map-marker-alt"></i> تحديد موقعي الحالي</button>
-        <div id="locationStatus" style="font-size:12px;color:#94a3b8;margin-top:8px;"></div>
-        <div class="btn-group"><button class="btn-secondary" onclick="prevStep()"><i class="fas fa-arrow-right"></i> رجوع</button><button class="btn-primary" onclick="nextStep()">التالي <i class="fas fa-arrow-left"></i></button></div>
-    </div>
-
-    <!-- الخطوة 4: تأكيد الحساب -->
-    <div class="step-content" id="step4">
-        <div class="form-group"><label><i class="fas fa-lock"></i> كلمة المرور الجديدة (اتركها فارغة للتغيير)</label><input type="password" id="newPassword" placeholder="أدخل كلمة مرور جديدة" /></div>
-        <div class="form-group"><label><i class="fas fa-check-circle"></i> تأكيد كلمة المرور</label><input type="password" id="confirmPassword" placeholder="أعد كتابة كلمة المرور" /></div>
-        <div class="btn-group"><button class="btn-secondary" onclick="prevStep()"><i class="fas fa-arrow-right"></i> رجوع</button><button class="btn-primary" onclick="finishOnboarding()"><i class="fas fa-save"></i> حفظ البيانات</button></div>
-    </div>
-</div>
-
-<script>
-let currentStep = 1; const totalSteps = 4;
-function updateUI() {
-    document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-    document.getElementById(`step${currentStep}`).classList.add('active');
-    for (let i = 1; i <= totalSteps; i++) {
-        const dot = document.getElementById(`dot${i}`);
-        dot.classList.remove('active', 'done');
-        if (i === currentStep) dot.classList.add('active');
-        else if (i < currentStep) dot.classList.add('done');
-    }
-    const titles = ['البيانات الشخصية', 'البروفيل الجسدي', 'اللوكيشن', 'تأكيد الحساب'];
-    const subtitles = ['الخطوة 1 من 4', 'الخطوة 2 من 4', 'الخطوة 3 من 4', 'الخطوة 4 من 4'];
-    document.getElementById('stepTitle').textContent = titles[currentStep-1];
-    document.getElementById('stepSubtitle').textContent = subtitles[currentStep-1];
-}
-function nextStep() {
-    if (currentStep === 1) {
-        if (!document.getElementById('fullName').value.trim() || !document.getElementById('email').value.trim()) {
-            alert('❌ يرجى إدخال الاسم والبريد الإلكتروني');
-            return;
-        }
-    }
-    if (currentStep < totalSteps) { currentStep++; updateUI(); window.scrollTo({top:0,behavior:'smooth'}); }
-}
-function prevStep() { if (currentStep > 1) { currentStep--; updateUI(); window.scrollTo({top:0,behavior:'smooth'}); } }
-
-function getLocation() {
-    if (navigator.geolocation) {
-        document.getElementById('locationStatus').textContent = '⏳ جاري تحديد الموقع...';
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                document.getElementById('locationStatus').textContent = `📍 الموقع: ${pos.coords.latitude}, ${pos.coords.longitude}`;
-                // هنخزن الإحداثيات في متغير
-                window._lat = pos.coords.latitude;
-                window._lng = pos.coords.longitude;
-            },
-            () => { document.getElementById('locationStatus').textContent = '❌ لم نتمكن من تحديد الموقع، ادخل العنوان يدوياً.'; }
-        );
-    } else { alert('المتصفح لا يدعم تحديد الموقع'); }
-}
-
-function finishOnboarding() {
-    const pwd = document.getElementById('newPassword').value;
-    if (pwd && pwd !== document.getElementById('confirmPassword').value) {
-        alert('❌ كلمة المرور غير متطابقة');
-        return;
-    }
-    const data = {
-        fullName: document.getElementById('fullName').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        birthDate: document.getElementById('birthDate').value,
-        gender: document.getElementById('gender').value,
-        weight: parseFloat(document.getElementById('weight').value) || 0,
-        height: parseFloat(document.getElementById('height').value) || 0,
-        bloodType: document.getElementById('bloodType').value,
-        city: document.getElementById('city').value.trim(),
-        address: document.getElementById('address').value.trim(),
-        lat: window._lat || null,
-        lng: window._lng || null,
-        isOnboarded: true,
-        updatedAt: new Date().toISOString()
-    };
-    if (data.weight && data.height) {
-        const h = data.height/100;
-        data.bmi = Math.round((data.weight / (h*h)) * 10) / 10;
-    }
-    localStorage.setItem('patientProfile', JSON.stringify(data));
-    // تحديث الملف البيومتري القديم
-    let bio = localStorage.getItem('biometricAdvanced');
-    if (bio) { let b = JSON.parse(bio); b.weight = data.weight; b.height = data.height; localStorage.setItem('biometricAdvanced', JSON.stringify(b)); }
-    alert(`✅ تم حفظ الملف الشخصي بنجاح!\nمرحباً ${data.fullName}`);
-    window.location.href = 'index.html';
-}
-document.addEventListener('DOMContentLoaded', function() {
-    const saved = localStorage.getItem('patientProfile');
-    if (saved) { try { const d = JSON.parse(saved); if (d.isOnboarded) { window.location.href = 'index.html'; return; } } catch(e) {} }
-    // تعبئة البيانات الافتراضية من localStorage القديم لو موجودة
-    const old = localStorage.getItem('biometricAdvanced');
-    if (old) { try { const o = JSON.parse(old); if (o.weight) document.getElementById('weight').value = o.weight; if (o.height) document.getElementById('height').value = o.height; } catch(e) {} }
-    const user = localStorage.getItem('currentUser');
-    if (user) { try { const u = JSON.parse(user); if (u.fullName) document.getElementById('fullName').value = u.fullName; if (u.email) document.getElementById('email').value = u.email; if (u.phone) document.getElementById('phone').value = u.phone; } catch(e) {} }
-    updateUI();
-    console.log('✅ Onboarding (Profile) Ready');
-});
-</script>
 </body>
 </html>
